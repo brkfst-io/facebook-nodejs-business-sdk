@@ -7,10 +7,10 @@
  * @format
  * @flow
  */
-import AdVideo from './objects/ad-video';
-import FacebookAdsApi from './api';
-import fs from 'fs';
-import path from 'path';
+import AdVideo from "./objects/ad-video";
+import FacebookAdsApi from "./api";
+import fs from "fs";
+import path from "path";
 /**
  * Video uploader that can upload videos to adaccount
  **/
@@ -30,7 +30,7 @@ class VideoUploader {
   upload(video: AdVideo, waitForEncoding: boolean): Object {
     // Check there is no existing session
     if (this._session) {
-      throw Error('There is already an upload session for this video uploader');
+      throw Error("There is already an upload session for this video uploader");
     }
 
     // Initate an upload session
@@ -79,7 +79,7 @@ class VideoUploadSession {
     this._startRequestManager = new VideoUploadStartRequestManager(this._api);
     // Setup transfer request manager
     this._transferRequestManager = new VideoUploadTransferRequestManager(
-      this._api,
+      this._api
     );
     // Setup finish request manager
     this._finishRequestManager = new VideoUploadFinishRequestManager(this._api);
@@ -90,19 +90,19 @@ class VideoUploadSession {
 
     // Run start request manager
     const startResponse = await this._startRequestManager.sendRequest(
-      this.getStartRequestContext(),
+      this.getStartRequestContext()
     );
-    this._startOffset = parseInt(startResponse['start_offset']);
-    this._endOffset = parseInt(startResponse['end_offset']);
-    this._sessionId = startResponse['upload_session_id'];
-    videoId = startResponse['video_id'];
+    this._startOffset = parseInt(startResponse["start_offset"]);
+    this._endOffset = parseInt(startResponse["end_offset"]);
+    this._sessionId = startResponse["upload_session_id"];
+    videoId = startResponse["video_id"];
     // Run transfer request manager
     await this._transferRequestManager.sendRequest(
-      this.getTransferRequestContext(),
+      this.getTransferRequestContext()
     );
     // Run finish request manager
     const finishResponse = await this._finishRequestManager.sendRequest(
-      this.getFinishRequestContext(),
+      this.getFinishRequestContext()
     );
     // Populate the video info
     const body = finishResponse;
@@ -168,15 +168,15 @@ class VideoUploadRequestManager {
 
   sendRequest(context: VideoUploadRequestContext): Object {
     throw new TypeError(
-      'Class extending VideoUploadRequestManager must implement ' +
-        'sendRequest method',
+      "Class extending VideoUploadRequestManager must implement " +
+        "sendRequest method"
     );
   }
 
   getParamsFromContext(context: VideoUploadRequestContext): Object {
     throw new TypeError(
-      'Class extending VideoUploadRequestManager must implement ' +
-        'getParamsFromContext method',
+      "Class extending VideoUploadRequestManager must implement " +
+        "getParamsFromContext method"
     );
   }
 }
@@ -190,7 +190,7 @@ class VideoUploadStartRequestManager extends VideoUploadRequestManager {
     const request = new VideoUploadRequest(this._api);
     request.setParams(this.getParamsFromContext(context));
 
-    const response = await request.send([context.accountId, 'advideos']);
+    const response = await request.send([context.accountId, "advideos"]);
 
     return response;
   }
@@ -198,7 +198,7 @@ class VideoUploadStartRequestManager extends VideoUploadRequestManager {
   getParamsFromContext(context: VideoUploadRequestContext): Object {
     return {
       file_size: context.fileSize,
-      upload_phase: 'start',
+      upload_phase: "start",
     };
   }
 }
@@ -222,12 +222,12 @@ class VideoUploadTransferRequestManager extends VideoUploadRequestManager {
     let numRetry = Math.max(fileSize / (1024 * 1024 * 10), 2);
     let response = null;
     // While there are still more chunks to send
-    const videoFileDescriptor = fs.openSync(filePath, 'r');
+    const videoFileDescriptor = fs.openSync(filePath, "r");
     while (start_offset !== end_offset) {
       context.startOffset = start_offset;
       context.endOffset = end_offset;
       let params = {
-        upload_phase: 'transfer',
+        upload_phase: "transfer",
         start_offset: context.startOffset,
         upload_session_id: context.sessionId,
         video_file_chunk: context.videoFileChunk,
@@ -240,22 +240,22 @@ class VideoUploadTransferRequestManager extends VideoUploadRequestManager {
       });
       // Send the request
       try {
-        response = await request.send([context.accountId, 'advideos']);
-        start_offset = parseInt(response['start_offset']);
-        end_offset = parseInt(response['end_offset']);
+        response = await request.send([context.accountId, "advideos"]);
+        start_offset = parseInt(response["start_offset"]);
+        end_offset = parseInt(response["end_offset"]);
       } catch (error) {
         if (numRetry > 0) {
           numRetry = Math.max(numRetry - 1, 0);
           continue;
         }
-        fs.close(videoFileDescriptor, err => {});
+        fs.close(videoFileDescriptor, (err) => {});
         throw error;
       }
     }
 
     this._startOffset = start_offset;
     this._endOffset = end_offset;
-    fs.close(videoFileDescriptor, err => {});
+    fs.close(videoFileDescriptor, (err) => {});
 
     return response;
   }
@@ -273,14 +273,14 @@ class VideoUploadFinishRequestManager extends VideoUploadRequestManager {
     request.setParams(this.getParamsFromContext(context));
 
     // Sent the request
-    const response = await request.send([context.accountId, 'advideos']);
+    const response = await request.send([context.accountId, "advideos"]);
 
     return response;
   }
 
   getParamsFromContext(context: VideoUploadRequestContext): Object {
     return {
-      upload_phase: 'finish',
+      upload_phase: "finish",
       upload_session_id: context.sessionId,
       title: context.fileName,
     };
@@ -400,15 +400,15 @@ class VideoUploadRequest {
     return new Promise((resolve, reject) => {
       this._api
         .call(
-          'POST',
+          "POST",
           path,
           this._params,
           this._files,
           true, // use multipart/form-data
-          FacebookAdsApi.GRAPH_VIDEO, // override graph.facebook.com
+          FacebookAdsApi.GRAPH_VIDEO // override graph.facebook.com
         )
-        .then(response => resolve(JSON.parse(response)))
-        .catch(error => reject(error));
+        .then((response) => resolve(JSON.parse(response)))
+        .catch((error) => reject(error));
     });
   }
 
@@ -419,7 +419,7 @@ class VideoUploadRequest {
 }
 
 function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 class VideoEncodingStatusChecker {
@@ -427,16 +427,16 @@ class VideoEncodingStatusChecker {
     api: FacebookAdsApi,
     videoId: number,
     interval: number,
-    timeout: number,
+    timeout: number
   ): Promise<void> {
     const startTime = new Date().getTime();
     let status = null;
 
     while (true) {
-      status = VideoEncodingStatusChecker.getStatus(api, videoId);
-      status = status['video_status'];
+      status = await VideoEncodingStatusChecker.getStatus(api, videoId);
+      status = status["status"]["video_status"];
 
-      if (status !== 'processing') {
+      if (status !== "processing") {
         break;
       }
 
@@ -447,18 +447,19 @@ class VideoEncodingStatusChecker {
       await sleep(interval);
     }
 
-    if (status !== 'ready') {
-      status = status == null ? '' : status;
+    if (status !== "ready") {
+      status = status == null ? "" : status;
       throw Error(`Video encoding status ${status}`);
     }
+    return status;
   }
 
   static getStatus(api: FacebookAdsApi, videoId: number): any {
-    const result = api.call('GET', [videoId.toString()], {fields: 'status'});
+    const result = api.call("GET", [videoId.toString()], { fields: "status" });
     // $FlowFixMe
-    return result['status'];
+    return result;
   }
 }
 
-export {VideoUploader, VideoUploadRequest, VideoEncodingStatusChecker};
-export type {SlideshowSpec};
+export { VideoUploader, VideoUploadRequest, VideoEncodingStatusChecker };
+export type { SlideshowSpec };
