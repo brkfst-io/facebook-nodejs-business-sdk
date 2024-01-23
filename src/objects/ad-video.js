@@ -9,16 +9,16 @@
  * @flow
  */
 
-import {AbstractCrudObject} from '../abstract-crud-object';
-import Cursor from '../cursor';
-import FacebookAdsBatchApi from '../api-batch';
-import VideoThumbnail from './video-thumbnail';
+import { AbstractCrudObject } from "../abstract-crud-object";
+import Cursor from "../cursor";
+import FacebookAdsBatchApi from "../api-batch";
+import VideoThumbnail from "./video-thumbnail";
 import {
   VideoUploader,
   VideoUploadRequest,
   VideoEncodingStatusChecker,
-} from '../video-uploader';
-import type {SlideshowSpec} from "../video-uploader"
+} from "../video-uploader";
+import type { SlideshowSpec } from "../video-uploader";
 
 /**
  * AdVideo
@@ -28,12 +28,11 @@ import type {SlideshowSpec} from "../video-uploader"
 export default class AdVideo extends AbstractCrudObject {
   static get Fields(): Object {
     return Object.freeze({
-      filepath: 'filepath',
-      id: 'id',
-      slideshow_spec: 'slideshow_spec',
+      filepath: "filepath",
+      id: "id",
+      slideshow_spec: "slideshow_spec",
     });
   }
-
 
   get filepath(): string {
     return this.filepath;
@@ -43,7 +42,6 @@ export default class AdVideo extends AbstractCrudObject {
     return this.slideshow_spec;
   }
 
-
   /**
    * Uploads filepath and creates the AdVideo object from it.
    * It requires 'filepath' property to be defined.
@@ -51,7 +49,7 @@ export default class AdVideo extends AbstractCrudObject {
   create(
     batch: FacebookAdsBatchApi,
     failureHandler: Function,
-    successHandler: Function,
+    successHandler: Function
   ): any {
     let response = null;
     var spec = this.slideshow_spec;
@@ -59,20 +57,18 @@ export default class AdVideo extends AbstractCrudObject {
       const request = new VideoUploadRequest(this.getApi());
 
       request.setParams({
-        'slideshow_spec[images_urls]': JSON.stringify(
-          spec['images_urls'],
-        ),
-        'slideshow_spec[duration_ms]': spec['duration_ms'],
-        'slideshow_spec[transition_ms]': spec['transition_ms'],
+        "slideshow_spec[images_urls]": JSON.stringify(spec["images_urls"]),
+        "slideshow_spec[duration_ms]": spec["duration_ms"],
+        "slideshow_spec[transition_ms]": spec["transition_ms"],
       });
-      response = request.send([this.getParentId(), 'advideos']);
+      response = request.send([this.getParentId(), "advideos"]);
     } else if (this.filepath) {
       const videoUploader = new VideoUploader();
 
       response = videoUploader.upload(this, true);
     } else {
       throw Error(
-        'AdVideo requires a filepath or slideshow_spec to be defined.',
+        "AdVideo requires a filepath or slideshow_spec to be defined."
       );
     }
 
@@ -83,14 +79,14 @@ export default class AdVideo extends AbstractCrudObject {
 
   waitUntilEncodingReady(interval: number = 30, timeout: number = 600): void {
     if (!this.id) {
-      throw Error('Invalid Video ID');
+      throw Error("Invalid Video ID");
     }
 
-    VideoEncodingStatusChecker.waitUntilReady(
+    return VideoEncodingStatusChecker.waitUntilReady(
       this.getApi(),
       parseInt(this.id),
       interval,
-      timeout,
+      timeout
     );
   }
 
@@ -98,6 +94,6 @@ export default class AdVideo extends AbstractCrudObject {
    *  Returns all the thumbnails associated with the ad video
    */
   getThumbnails(fields: Object, params: Object): Cursor | Promise<*> {
-    return this.getEdge(VideoThumbnail, fields, params, true, 'thumbnails');
+    return this.getEdge(VideoThumbnail, fields, params, true, "thumbnails");
   }
 }
