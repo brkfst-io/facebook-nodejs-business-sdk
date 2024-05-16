@@ -52,6 +52,7 @@ class VideoUploadSession {
   _api: FacebookAdsApi;
   _endOffset: number;
   _filePath: ?string;
+  _name: ?string;
   _sessionId: string;
   _slideshowSpec: ?SlideshowSpec;
   _startOffset: number;
@@ -68,9 +69,11 @@ class VideoUploadSession {
     if (video.filepath) {
       this._filePath = video.filepath;
       this._slideshowSpec = null;
+      this._name = video.name;
     } else if (video.slideshow_spec) {
       this._slideshowSpec = video.slideshow_spec;
       this._filePath = null;
+      this._name = null;
     }
 
     this._accountId = video.getParentId();
@@ -133,6 +136,9 @@ class VideoUploadSession {
 
     if (this._filePath) {
       context.filePath = this._filePath;
+    }
+    if (this._name) {
+      context.name = this._name;
     }
     if (this._slideshowSpec) {
       context.slideshowSpec = this._slideshowSpec;
@@ -232,6 +238,9 @@ class VideoUploadTransferRequestManager extends VideoUploadRequestManager {
         upload_session_id: context.sessionId,
         video_file_chunk: context.videoFileChunk,
       };
+      if (context.name) {
+        params.name = context.name;
+      }
       request.setParams(params, {
         video_file_chunk: fs.createReadStream(context.filePath, {
           start: context.startOffset,

@@ -149,6 +149,8 @@ export default class FacebookAdsApi {
           response = response.body;
         }
 
+        response = response.data;
+
         if (this._debug) {
           console.log(
             `200 ${method} ${url} ${
