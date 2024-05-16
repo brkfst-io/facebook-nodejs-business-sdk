@@ -15225,9 +15225,11 @@ var VideoUploadSession = function () {
     if (video.filepath) {
       this._filePath = video.filepath;
       this._slideshowSpec = null;
+      this._name = video.name;
     } else if (video.slideshow_spec) {
       this._slideshowSpec = video.slideshow_spec;
       this._filePath = null;
+      this._name = null;
     }
 
     this._accountId = video.getParentId();
@@ -15294,6 +15296,9 @@ var VideoUploadSession = function () {
 
       if (this._filePath) {
         context.filePath = this._filePath;
+      }
+      if (this._name) {
+        context.name = this._name;
       }
       if (this._slideshowSpec) {
         context.slideshowSpec = this._slideshowSpec;
@@ -15427,6 +15432,9 @@ var VideoUploadTransferRequestManager = function (_VideoUploadRequestMa2) {
             upload_session_id: context.sessionId,
             video_file_chunk: context.videoFileChunk
           };
+          if (context.name) {
+            params.name = context.name;
+          }
           request.setParams(params, {
             video_file_chunk: fs.createReadStream(context.filePath, {
               start: context.startOffset,
@@ -15788,6 +15796,11 @@ var AdVideo = function (_AbstractCrudObject) {
       return this.filepath;
     }
   }, {
+    key: "name",
+    get: function get() {
+      return this.name;
+    }
+  }, {
     key: "slideshow_spec",
     get: function get() {
       return this.slideshow_spec;
@@ -15796,6 +15809,7 @@ var AdVideo = function (_AbstractCrudObject) {
     key: "Fields",
     get: function get() {
       return Object.freeze({
+        name: "name",
         filepath: "filepath",
         id: "id",
         slideshow_spec: "slideshow_spec"
