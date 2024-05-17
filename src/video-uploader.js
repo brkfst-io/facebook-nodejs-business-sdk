@@ -317,6 +317,7 @@ class VideoUploadRequestContext {
   _filePath: string;
   _fileSize: number;
   _name: string;
+  _description: string;
   _sessionId: string;
   _startOffset: number;
   _endOffset: number;
@@ -360,6 +361,14 @@ class VideoUploadRequestContext {
 
   set name(name: string): void {
     this._name = name;
+  }
+
+  get description(): string {
+    return this._description;
+  }
+
+  set description(description: string): void {
+    this._description = description;
   }
 
   get sessionId(): string {

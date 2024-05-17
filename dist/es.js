@@ -14998,6 +14998,14 @@ var VideoUploadRequestContext = function () {
       this._name = name;
     }
   }, {
+    key: "description",
+    get: function get() {
+      return this._description;
+    },
+    set: function set(description) {
+      this._description = description;
+    }
+  }, {
     key: "sessionId",
     get: function get() {
       return this._sessionId;
