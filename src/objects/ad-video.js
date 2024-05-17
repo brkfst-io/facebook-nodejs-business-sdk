@@ -28,6 +28,7 @@ import type { SlideshowSpec } from "../video-uploader";
 export default class AdVideo extends AbstractCrudObject {
   static get Fields(): Object {
     return Object.freeze({
+      name: "name",
       filepath: "filepath",
       id: "id",
       slideshow_spec: "slideshow_spec",
@@ -40,6 +41,10 @@ export default class AdVideo extends AbstractCrudObject {
 
   get slideshow_spec(): ?SlideshowSpec {
     return this.slideshow_spec;
+  }
+
+  get name(): string {
+    return this.name;
   }
 
   /**
