@@ -2075,7 +2075,9 @@ var VideoUploadSession = function () {
       context.sessionId = this._sessionId;
       context.accountId = this._accountId;
 
-      if (this._filePath) {
+      if (this._name) {
+        context.fileName = this._name;
+      } else if (this._filePath) {
         context.fileName = path.basename(this._filePath);
       }
 
