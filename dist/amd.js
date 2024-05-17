@@ -14928,10 +14928,14 @@ var VideoUploadFinishRequestManager = function (_VideoUploadRequestMa3) {
   }, {
     key: "getParamsFromContext",
     value: function getParamsFromContext(context) {
+      var title = context.fileName;
+      if (context.name) {
+        title = context.name;
+      }
       return {
         upload_phase: "finish",
         upload_session_id: context.sessionId,
-        title: context.fileName
+        title: title
       };
     }
   }]);
