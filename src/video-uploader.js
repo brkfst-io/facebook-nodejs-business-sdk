@@ -53,6 +53,7 @@ class VideoUploadSession {
   _endOffset: number;
   _filePath: ?string;
   _name: ?string;
+  _description: ?string;
   _sessionId: string;
   _slideshowSpec: ?SlideshowSpec;
   _startOffset: number;
@@ -70,10 +71,12 @@ class VideoUploadSession {
       this._filePath = video.filepath;
       this._slideshowSpec = null;
       this._name = video.name;
+      this._description = video.description;
     } else if (video.slideshow_spec) {
       this._slideshowSpec = video.slideshow_spec;
       this._filePath = null;
       this._name = null;
+      this._description = null;
     }
 
     this._accountId = video.getParentId();
@@ -153,6 +156,9 @@ class VideoUploadSession {
 
     context.sessionId = this._sessionId;
     context.accountId = this._accountId;
+    if (this._description) {
+      context.description = this._description;
+    }
 
     if (this._name) {
       context.fileName = this._name;
@@ -290,15 +296,15 @@ class VideoUploadFinishRequestManager extends VideoUploadRequestManager {
   }
 
   getParamsFromContext(context: VideoUploadRequestContext): Object {
-    let title = context.fileName;
-    if (context.name) {
-      title = context.name;
-    }
-    return {
+    const params = {
       upload_phase: "finish",
       upload_session_id: context.sessionId,
-      title: title,
+      title: context.fileName,
     };
+    if (context.description) {
+      params.description = context.description;
+    }
+    return params;
   }
 }
 

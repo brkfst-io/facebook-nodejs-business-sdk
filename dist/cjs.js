@@ -14648,10 +14648,12 @@ var VideoUploadSession = function () {
       this._filePath = video.filepath;
       this._slideshowSpec = null;
       this._name = video.name;
+      this._description = video.description;
     } else if (video.slideshow_spec) {
       this._slideshowSpec = video.slideshow_spec;
       this._filePath = null;
       this._name = null;
+      this._description = null;
     }
 
     this._accountId = video.getParentId();
@@ -14736,6 +14738,9 @@ var VideoUploadSession = function () {
 
       context.sessionId = this._sessionId;
       context.accountId = this._accountId;
+      if (this._description) {
+        context.description = this._description;
+      }
 
       if (this._name) {
         context.fileName = this._name;
@@ -14934,15 +14939,15 @@ var VideoUploadFinishRequestManager = function (_VideoUploadRequestMa3) {
   }, {
     key: "getParamsFromContext",
     value: function getParamsFromContext(context) {
-      var title = context.fileName;
-      if (context.name) {
-        title = context.name;
-      }
-      return {
+      var params = {
         upload_phase: "finish",
         upload_session_id: context.sessionId,
-        title: title
+        title: context.fileName
       };
+      if (context.description) {
+        params.description = context.description;
+      }
+      return params;
     }
   }]);
   return VideoUploadFinishRequestManager;
