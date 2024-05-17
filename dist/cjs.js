@@ -15234,6 +15234,11 @@ var AdVideo = function (_AbstractCrudObject) {
       return this.slideshow_spec;
     }
   }, {
+    key: "description",
+    get: function get() {
+      return this.description;
+    }
+  }, {
     key: "name",
     get: function get() {
       return this.name;
@@ -15243,6 +15248,7 @@ var AdVideo = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         name: "name",
+        description: "description",
         filepath: "filepath",
         id: "id",
         slideshow_spec: "slideshow_spec"
