@@ -212,11 +212,7 @@ var toConsumableArray = function (arr) {
  *
  * @format
  */
-<<<<<<< HEAD
-var _requestPromise = require('request-promise');
-=======
 var axios = require("axios");
->>>>>>> brkfst-api-patch
 
 /**
  * Isomorphic Http Promise Requests Class
@@ -306,18 +302,11 @@ var Http = function () {
 
       var options = {
         method: method,
-<<<<<<< HEAD
-        uri: url,
-        json: !useMultipartFormData,
-        headers: { 'User-Agent': 'fbbizsdk-nodejs-v' + FacebookAdsApi.SDK_VERSION },
-        body: Object,
-=======
         url: url,
         baseURL: FacebookAdsApi.GRAPH,
         json: !useMultipartFormData,
         headers: { 'User-Agent': 'fbbizsdk-nodejs-v' + FacebookAdsApi.SDK_VERSION },
         data: Object,
->>>>>>> brkfst-api-patch
         resolveWithFullResponse: showHeader
       };
       // Prevent null or undefined input
@@ -326,28 +315,16 @@ var Http = function () {
         data = {};
       }
 
-<<<<<<< HEAD
-      options.body = data;
-=======
       options.data = data;
->>>>>>> brkfst-api-patch
 
       // Handle file attachments if provided
       if (useMultipartFormData || files && Object.keys(files).length > 0) {
         // Use formData instead of body (required by the request-promise library)
-<<<<<<< HEAD
-        options.formData = Object.assign(data, files);
-        delete options.body;
-      }
-
-      return _requestPromise(options).catch(function (response) {
-=======
         options.data = Object.assign(data, files);
         delete options.data;
       }
 
       return axios(options).catch(function (response) {
->>>>>>> brkfst-api-patch
         throw response;
       });
     }
@@ -366,12 +343,6 @@ var Http = function () {
  */
 
 // request-promise error types
-<<<<<<< HEAD
-var REQUEST_ERROR = 'RequestError';
-var STATUS_CODE_ERROR = 'StatusCodeError';
-
-=======
->>>>>>> brkfst-api-patch
 function FacebookError(error) {
   this.name = 'FacebookError';
   this.message = error.message;
@@ -437,25 +408,6 @@ function constructErrorResponse(response) {
     headers = response.headers;
   } else {
     // Handle single response
-<<<<<<< HEAD
-    if (response.name === STATUS_CODE_ERROR) {
-      // Handle when we can get response error code
-      body = response.error ? response.error : response;
-      body = typeof body === 'string' ? JSON.parse(body) : body;
-      // Construct an error message from subfields in body.error
-      message = body.error.error_user_msg ? body.error.error_user_title + ': ' + body.error.error_user_msg : body.error.message;
-      status = response.statusCode;
-      if (response.response) {
-        headers = response.response.headers;
-      }
-    } else if (response.name === REQUEST_ERROR) {
-      // Handle network errors e.g. timeout, destination unreachable
-      body = { error: response.error };
-      // An error message is in the response already
-      message = response.message;
-      // Network errors have no status code
-      status = null;
-=======
     if (response.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
@@ -474,7 +426,6 @@ function constructErrorResponse(response) {
       message = "Something happened in setting up the request that triggered an Error";
       status = null;
       headers = null;
->>>>>>> brkfst-api-patch
     }
   }
 
@@ -554,10 +505,7 @@ var privateMethods = {
   },
   parseParam: function parseParam(err) {
     var stack = err.stack.split('\n');
-<<<<<<< HEAD
-=======
 
->>>>>>> brkfst-api-patch
     var params = {};
 
     if (stack.length == 0) {
@@ -593,7 +541,6 @@ var privateMethods = {
 
 var FacebookAdsApi = function () {
   createClass(FacebookAdsApi, null, [{
-<<<<<<< HEAD
     key: "VERSION",
     get: function get() {
       return "v19.0";
@@ -612,26 +559,6 @@ var FacebookAdsApi = function () {
     key: "GRAPH_VIDEO",
     get: function get() {
       return "https://graph-video.facebook.com";
-=======
-    key: 'VERSION',
-    get: function get() {
-      return 'v18.0';
-    }
-  }, {
-    key: 'SDK_VERSION',
-    get: function get() {
-      return '18.0.4';
-    }
-  }, {
-    key: 'GRAPH',
-    get: function get() {
-      return 'https://graph.facebook.com';
-    }
-  }, {
-    key: 'GRAPH_VIDEO',
-    get: function get() {
-      return 'https://graph-video.facebook.com';
->>>>>>> brkfst-api-patch
     }
 
     /**
@@ -642,20 +569,12 @@ var FacebookAdsApi = function () {
   }]);
 
   function FacebookAdsApi(accessToken) {
-<<<<<<< HEAD
     var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "en_US";
-=======
-    var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en_US';
->>>>>>> brkfst-api-patch
     var crash_log = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
     classCallCheck(this, FacebookAdsApi);
 
     if (!accessToken) {
-<<<<<<< HEAD
       throw new Error("Access token required");
-=======
-      throw new Error('Access token required');
->>>>>>> brkfst-api-patch
     }
     this.accessToken = accessToken;
     this.locale = locale;
@@ -675,7 +594,6 @@ var FacebookAdsApi = function () {
 
 
   createClass(FacebookAdsApi, [{
-<<<<<<< HEAD
     key: "getAppID",
     value: function getAppID() {
       var url = [FacebookAdsApi.GRAPH, FacebookAdsApi.VERSION, "debug_token"].join("/");
@@ -689,33 +607,12 @@ var FacebookAdsApi = function () {
     }
   }, {
     key: "setDebug",
-=======
-    key: 'getAppID',
-    value: function getAppID() {
-      var url = [FacebookAdsApi.GRAPH, FacebookAdsApi.VERSION, 'debug_token'].join('/');
-
-      var params = {};
-
-      params['access_token'] = this.accessToken;
-      params['input_token'] = this.accessToken;
-      params['fields'] = 'app_id';
-      url += '?' + FacebookAdsApi._encodeParams(params);
-
-      return Http.request('GET', url, {}, {}, false);
-    }
-  }, {
-    key: 'setDebug',
->>>>>>> brkfst-api-patch
     value: function setDebug(flag) {
       this._debug = flag;
       return this;
     }
   }, {
-<<<<<<< HEAD
     key: "setShowHeader",
-=======
-    key: 'setShowHeader',
->>>>>>> brkfst-api-patch
     value: function setShowHeader(flag) {
       this._showHeader = flag;
       return this;
@@ -731,11 +628,7 @@ var FacebookAdsApi = function () {
      */
 
   }, {
-<<<<<<< HEAD
     key: "call",
-=======
-    key: 'call',
->>>>>>> brkfst-api-patch
     value: function call(method, path$$1) {
       var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       var files = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
@@ -743,44 +636,30 @@ var FacebookAdsApi = function () {
       var _this = this;
 
       var useMultipartFormData = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-<<<<<<< HEAD
       var urlOverride = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : "";
 
       var url = void 0;
       var data = {};
       if (method === "POST" || method === "PUT") {
-=======
-      var urlOverride = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
-
-      var url = void 0;
-      var data = {};
-      if (method === 'POST' || method === 'PUT') {
->>>>>>> brkfst-api-patch
         data = params;
         params = {};
       }
       var domain = urlOverride || FacebookAdsApi.GRAPH;
-<<<<<<< HEAD
       if (typeof path$$1 !== "string" && !(path$$1 instanceof String)) {
         url = [domain, FacebookAdsApi.VERSION].concat(toConsumableArray(path$$1)).join("/");
         params["access_token"] = this.accessToken;
         url += "?" + FacebookAdsApi._encodeParams(params);
-=======
-      if (typeof path$$1 !== 'string' && !(path$$1 instanceof String)) {
-        url = [domain, FacebookAdsApi.VERSION].concat(toConsumableArray(path$$1)).join('/');
-        params['access_token'] = this.accessToken;
-        url += '?' + FacebookAdsApi._encodeParams(params);
->>>>>>> brkfst-api-patch
       } else {
         url = path$$1;
       }
       var strUrl = url;
       return Http.request(method, strUrl, data, files, useMultipartFormData, this._showHeader).then(function (response) {
         if (_this._showHeader) {
-<<<<<<< HEAD
           response.body["headers"] = response.headers;
           response = response.body;
         }
+
+        response = response.data;
 
         if (_this._debug) {
           console.log("200 " + method + " " + url + " " + (Object.keys(data).length > 0 ? JSON.stringify(data) : ""));
@@ -790,35 +669,14 @@ var FacebookAdsApi = function () {
       }).catch(function (response) {
         if (_this._debug) {
           console.log(response.statusCode + " " + method + " " + url + "\n            " + (Object.keys(data).length > 0 ? JSON.stringify(data) : ""));
-=======
-          response.data['headers'] = response.headers;
-        }
-
-        response = response.data;
-
-        if (_this._debug) {
-          console.log('200 ' + method + ' ' + url + ' ' + (Object.keys(data).length > 0 ? JSON.stringify(data) : ""));
-          console.log('Response: ' + (response ? JSON.stringify(response) : ""));
-        }
-        return Promise.resolve(response);
-      }).catch(function (response) {
-        if (_this._debug && response.response) {
-          console.log(response.response.status + ' ' + method + ' ' + url + '\n            ' + (Object.keys(data).length > 0 ? JSON.stringify(data) : ''));
->>>>>>> brkfst-api-patch
         }
         throw new FacebookRequestError(response, method, url, data);
       });
     }
   }], [{
-<<<<<<< HEAD
     key: "init",
     value: function init(accessToken) {
       var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "en_US";
-=======
-    key: 'init',
-    value: function init(accessToken) {
-      var locale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'en_US';
->>>>>>> brkfst-api-patch
       var crash_log = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
       var api = new this(accessToken, locale, crash_log);
@@ -826,25 +684,16 @@ var FacebookAdsApi = function () {
       return api;
     }
   }, {
-<<<<<<< HEAD
     key: "setDefaultApi",
-=======
-    key: 'setDefaultApi',
->>>>>>> brkfst-api-patch
     value: function setDefaultApi(api) {
       this._defaultApi = api;
     }
   }, {
-<<<<<<< HEAD
     key: "getDefaultApi",
-=======
-    key: 'getDefaultApi',
->>>>>>> brkfst-api-patch
     value: function getDefaultApi() {
       return this._defaultApi;
     }
   }, {
-<<<<<<< HEAD
     key: "_encodeParams",
     value: function _encodeParams(params) {
       return Object.keys(params).map(function (key) {
@@ -854,17 +703,6 @@ var FacebookAdsApi = function () {
         }
         return encodeURIComponent(key) + "=" + encodeURIComponent(param);
       }).join("&");
-=======
-    key: '_encodeParams',
-    value: function _encodeParams(params) {
-      return Object.keys(params).map(function (key) {
-        var param = params[key];
-        if ((typeof param === 'undefined' ? 'undefined' : _typeof(param)) === 'object') {
-          param = param ? JSON.stringify(param) : '';
-        }
-        return encodeURIComponent(key) + '=' + encodeURIComponent(param);
-      }).join('&');
->>>>>>> brkfst-api-patch
     }
   }]);
   return FacebookAdsApi;
@@ -1081,10 +919,7 @@ var Cursor = function (_Array) {
           _this.set(objects);
           _this.paging = response.paging;
           _this.summary = response.summary;
-<<<<<<< HEAD
-=======
           _this.headers = response.headers;
->>>>>>> brkfst-api-patch
           resolve(_this);
         }).catch(reject);
       });
@@ -1371,14 +1206,7 @@ var AbstractCrudObject = function (_AbstractObject) {
       var fetchFirstPage = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
       var endpoint = arguments[4];
 
-<<<<<<< HEAD
-      if (params == null) {
-        params = {};
-      }
-      if (fields) {
-=======
       if (fields && fields.length > 0) {
->>>>>>> brkfst-api-patch
         params['fields'] = fields.join(',');
       }
       var sourceObject = this;
@@ -1408,12 +1236,6 @@ var AbstractCrudObject = function (_AbstractObject) {
       var targetClassConstructor = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
       var pathOverride = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
-<<<<<<< HEAD
-      if (params == null) {
-        params = {};
-      }
-=======
->>>>>>> brkfst-api-patch
       if (fields && fields.length > 0) {
         params['fields'] = fields.join(',');
       }
@@ -1469,11 +1291,7 @@ var AbstractCrudObject = function (_AbstractObject) {
       var api = arguments[3];
 
       api = api || FacebookAdsApi.getDefaultApi();
-<<<<<<< HEAD
-      if (fields) {
-=======
       if (fields && fields.length > 0) {
->>>>>>> brkfst-api-patch
         params['fields'] = fields.join(',');
       }
       params['ids'] = ids.join(',');
@@ -2068,16 +1886,6 @@ var FacebookAdsApiBatch = function () {
   return FacebookAdsApiBatch;
 }();
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -2088,7 +1896,6 @@ var FacebookAdsApiBatch = function () {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoThumbnail
  * @extends AbstractCrudObject
@@ -2177,17 +1984,11 @@ var VideoUploadSession = function () {
     if (video.filepath) {
       this._filePath = video.filepath;
       this._slideshowSpec = null;
-<<<<<<< HEAD
-    } else if (video.slideshow_spec) {
-      this._slideshowSpec = video.slideshow_spec;
-      this._filePath = null;
-=======
       this._name = video.name;
     } else if (video.slideshow_spec) {
       this._slideshowSpec = video.slideshow_spec;
       this._filePath = null;
       this._name = null;
->>>>>>> brkfst-api-patch
     }
 
     this._accountId = video.getParentId();
@@ -2255,12 +2056,9 @@ var VideoUploadSession = function () {
       if (this._filePath) {
         context.filePath = this._filePath;
       }
-<<<<<<< HEAD
-=======
       if (this._name) {
         context.name = this._name;
       }
->>>>>>> brkfst-api-patch
       if (this._slideshowSpec) {
         context.slideshowSpec = this._slideshowSpec;
       }
@@ -2393,12 +2191,9 @@ var VideoUploadTransferRequestManager = function (_VideoUploadRequestMa2) {
             upload_session_id: context.sessionId,
             video_file_chunk: context.videoFileChunk
           };
-<<<<<<< HEAD
-=======
           if (context.name) {
             params.name = context.name;
           }
->>>>>>> brkfst-api-patch
           request.setParams(params, {
             video_file_chunk: fs.createReadStream(context.filePath, {
               start: context.startOffset,
@@ -2760,14 +2555,11 @@ var AdVideo = function (_AbstractCrudObject) {
       return this.filepath;
     }
   }, {
-<<<<<<< HEAD
-=======
     key: "name",
     get: function get() {
       return this.name;
     }
   }, {
->>>>>>> brkfst-api-patch
     key: "slideshow_spec",
     get: function get() {
       return this.slideshow_spec;
@@ -2776,10 +2568,7 @@ var AdVideo = function (_AbstractCrudObject) {
     key: "Fields",
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-=======
         name: "name",
->>>>>>> brkfst-api-patch
         filepath: "filepath",
         id: "id",
         slideshow_spec: "slideshow_spec"
@@ -2789,51 +2578,6 @@ var AdVideo = function (_AbstractCrudObject) {
   return AdVideo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * AREffectsBatchStatus
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var AREffectsBatchStatus = function (_AbstractCrudObject) {
-  inherits(AREffectsBatchStatus, _AbstractCrudObject);
-
-  function AREffectsBatchStatus() {
-    classCallCheck(this, AREffectsBatchStatus);
-    return possibleConstructorReturn(this, (AREffectsBatchStatus.__proto__ || Object.getPrototypeOf(AREffectsBatchStatus)).apply(this, arguments));
-  }
-
-  createClass(AREffectsBatchStatus, null, [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        errors: 'errors',
-        product_groups: 'product_groups',
-        status: 'status'
-      });
-    }
-  }]);
-  return AREffectsBatchStatus;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -2844,7 +2588,6 @@ var AREffectsBatchStatus = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeInsights
  * @extends AbstractCrudObject
@@ -2870,16 +2613,6 @@ var AdCreativeInsights = function (_AbstractCrudObject) {
   return AdCreativeInsights;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -2890,7 +2623,6 @@ var AdCreativeInsights = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdPreview
  * @extends AbstractCrudObject
@@ -2909,12 +2641,8 @@ var AdPreview = function (_AbstractCrudObject) {
     key: 'Fields',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-        body: 'body'
-=======
         body: 'body',
         transformation_spec: 'transformation_spec'
->>>>>>> brkfst-api-patch
       });
     }
   }, {
@@ -2927,11 +2655,8 @@ var AdPreview = function (_AbstractCrudObject) {
         audience_network_rewarded_video: 'AUDIENCE_NETWORK_REWARDED_VIDEO',
         biz_disco_feed_mobile: 'BIZ_DISCO_FEED_MOBILE',
         desktop_feed_standard: 'DESKTOP_FEED_STANDARD',
-<<<<<<< HEAD
-=======
         facebook_profile_feed_desktop: 'FACEBOOK_PROFILE_FEED_DESKTOP',
         facebook_profile_feed_mobile: 'FACEBOOK_PROFILE_FEED_MOBILE',
->>>>>>> brkfst-api-patch
         facebook_reels_banner: 'FACEBOOK_REELS_BANNER',
         facebook_reels_banner_desktop: 'FACEBOOK_REELS_BANNER_DESKTOP',
         facebook_reels_mobile: 'FACEBOOK_REELS_MOBILE',
@@ -2945,23 +2670,14 @@ var AdPreview = function (_AbstractCrudObject) {
         instagram_feed_web: 'INSTAGRAM_FEED_WEB',
         instagram_feed_web_m_site: 'INSTAGRAM_FEED_WEB_M_SITE',
         instagram_profile_feed: 'INSTAGRAM_PROFILE_FEED',
-<<<<<<< HEAD
-=======
         instagram_profile_reels: 'INSTAGRAM_PROFILE_REELS',
->>>>>>> brkfst-api-patch
         instagram_reels: 'INSTAGRAM_REELS',
         instagram_reels_overlay: 'INSTAGRAM_REELS_OVERLAY',
         instagram_search_chain: 'INSTAGRAM_SEARCH_CHAIN',
         instagram_search_grid: 'INSTAGRAM_SEARCH_GRID',
-<<<<<<< HEAD
-        instagram_shop: 'INSTAGRAM_SHOP',
-        instagram_standard: 'INSTAGRAM_STANDARD',
-        instagram_story: 'INSTAGRAM_STORY',
-=======
         instagram_standard: 'INSTAGRAM_STANDARD',
         instagram_story: 'INSTAGRAM_STORY',
         instagram_story_effect_tray: 'INSTAGRAM_STORY_EFFECT_TRAY',
->>>>>>> brkfst-api-patch
         instagram_story_web: 'INSTAGRAM_STORY_WEB',
         instagram_story_web_m_site: 'INSTAGRAM_STORY_WEB_M_SITE',
         instant_article_recirculation_ad: 'INSTANT_ARTICLE_RECIRCULATION_AD',
@@ -2991,8 +2707,6 @@ var AdPreview = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'CreativeFeature',
     get: function get() {
       return Object.freeze({
@@ -3002,7 +2716,6 @@ var AdPreview = function (_AbstractCrudObject) {
       });
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'RenderType',
     get: function get() {
       return Object.freeze({
@@ -3013,16 +2726,6 @@ var AdPreview = function (_AbstractCrudObject) {
   return AdPreview;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -3033,7 +2736,6 @@ var AdPreview = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreative
  * @extends AbstractCrudObject
@@ -3114,20 +2816,14 @@ var AdCreative = function (_AbstractCrudObject) {
         authorization_category: 'authorization_category',
         auto_update: 'auto_update',
         body: 'body',
-<<<<<<< HEAD
-=======
         branded_content: 'branded_content',
->>>>>>> brkfst-api-patch
         branded_content_sponsor_page_id: 'branded_content_sponsor_page_id',
         bundle_folder_id: 'bundle_folder_id',
         call_to_action_type: 'call_to_action_type',
         categorization_criteria: 'categorization_criteria',
         category_media_source: 'category_media_source',
         collaborative_ads_lsb_image_bank_id: 'collaborative_ads_lsb_image_bank_id',
-<<<<<<< HEAD
-=======
         creative_sourcing_spec: 'creative_sourcing_spec',
->>>>>>> brkfst-api-patch
         degrees_of_freedom_spec: 'degrees_of_freedom_spec',
         destination_set_id: 'destination_set_id',
         dynamic_ad_voice: 'dynamic_ad_voice',
@@ -3137,19 +2833,13 @@ var AdCreative = function (_AbstractCrudObject) {
         effective_object_story_id: 'effective_object_story_id',
         enable_direct_install: 'enable_direct_install',
         enable_launch_instant_app: 'enable_launch_instant_app',
-<<<<<<< HEAD
-=======
         facebook_branded_content: 'facebook_branded_content',
->>>>>>> brkfst-api-patch
         id: 'id',
         image_crops: 'image_crops',
         image_hash: 'image_hash',
         image_url: 'image_url',
         instagram_actor_id: 'instagram_actor_id',
-<<<<<<< HEAD
-=======
         instagram_branded_content: 'instagram_branded_content',
->>>>>>> brkfst-api-patch
         instagram_permalink_url: 'instagram_permalink_url',
         instagram_story_id: 'instagram_story_id',
         instagram_user_id: 'instagram_user_id',
@@ -3167,10 +2857,7 @@ var AdCreative = function (_AbstractCrudObject) {
         object_type: 'object_type',
         object_url: 'object_url',
         omnichannel_link_spec: 'omnichannel_link_spec',
-<<<<<<< HEAD
-=======
         photo_album_source_object_story_id: 'photo_album_source_object_story_id',
->>>>>>> brkfst-api-patch
         place_page_set_id: 'place_page_set_id',
         platform_customizations: 'platform_customizations',
         playable_asset_id: 'playable_asset_id',
@@ -3196,10 +2883,7 @@ var AdCreative = function (_AbstractCrudObject) {
         add_to_cart: 'ADD_TO_CART',
         apply_now: 'APPLY_NOW',
         audio_call: 'AUDIO_CALL',
-<<<<<<< HEAD
-=======
         book_now: 'BOOK_NOW',
->>>>>>> brkfst-api-patch
         book_travel: 'BOOK_TRAVEL',
         buy: 'BUY',
         buy_now: 'BUY_NOW',
@@ -3207,10 +2891,7 @@ var AdCreative = function (_AbstractCrudObject) {
         call: 'CALL',
         call_me: 'CALL_ME',
         call_now: 'CALL_NOW',
-<<<<<<< HEAD
-=======
         confirm: 'CONFIRM',
->>>>>>> brkfst-api-patch
         contact: 'CONTACT',
         contact_us: 'CONTACT_US',
         donate: 'DONATE',
@@ -3225,17 +2906,11 @@ var AdCreative = function (_AbstractCrudObject) {
         get_directions: 'GET_DIRECTIONS',
         get_offer: 'GET_OFFER',
         get_offer_view: 'GET_OFFER_VIEW',
-<<<<<<< HEAD
-        get_quote: 'GET_QUOTE',
-        get_showtimes: 'GET_SHOWTIMES',
-        get_started: 'GET_STARTED',
-=======
         get_promotions: 'GET_PROMOTIONS',
         get_quote: 'GET_QUOTE',
         get_showtimes: 'GET_SHOWTIMES',
         get_started: 'GET_STARTED',
         inquire_now: 'INQUIRE_NOW',
->>>>>>> brkfst-api-patch
         install_app: 'INSTALL_APP',
         install_mobile_app: 'INSTALL_MOBILE_APP',
         learn_more: 'LEARN_MORE',
@@ -3244,10 +2919,6 @@ var AdCreative = function (_AbstractCrudObject) {
         listen_now: 'LISTEN_NOW',
         message_page: 'MESSAGE_PAGE',
         mobile_download: 'MOBILE_DOWNLOAD',
-<<<<<<< HEAD
-        moments: 'MOMENTS',
-=======
->>>>>>> brkfst-api-patch
         no_button: 'NO_BUTTON',
         open_instant_app: 'OPEN_INSTANT_APP',
         open_link: 'OPEN_LINK',
@@ -3372,16 +3043,6 @@ var AdCreative = function (_AbstractCrudObject) {
   return AdCreative;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -3392,7 +3053,6 @@ var AdCreative = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleHistory
  * @extends AbstractCrudObject
@@ -3429,10 +3089,7 @@ var AdRuleHistory = function (_AbstractCrudObject) {
         changed_bid: 'CHANGED_BID',
         changed_budget: 'CHANGED_BUDGET',
         email: 'EMAIL',
-<<<<<<< HEAD
-=======
         enable_advantage_plus_creative: 'ENABLE_ADVANTAGE_PLUS_CREATIVE',
->>>>>>> brkfst-api-patch
         enable_autoflow: 'ENABLE_AUTOFLOW',
         endpoint_pinged: 'ENDPOINT_PINGED',
         error: 'ERROR',
@@ -3447,16 +3104,6 @@ var AdRuleHistory = function (_AbstractCrudObject) {
   return AdRuleHistory;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -3467,7 +3114,6 @@ var AdRuleHistory = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRule
  * @extends AbstractCrudObject
@@ -3570,18 +3216,11 @@ var AdRule = function (_AbstractCrudObject) {
         am_activity_history_table: 'AM_ACTIVITY_HISTORY_TABLE',
         am_ad_object_name_card: 'AM_AD_OBJECT_NAME_CARD',
         am_amfe_l3_recommendation: 'AM_AMFE_L3_RECOMMENDATION',
-<<<<<<< HEAD
-=======
         am_autoflow_guidance_card: 'AM_AUTOFLOW_GUIDANCE_CARD',
->>>>>>> brkfst-api-patch
         am_auto_apply_widget: 'AM_AUTO_APPLY_WIDGET',
         am_editor_card: 'AM_EDITOR_CARD',
         am_info_card: 'AM_INFO_CARD',
         am_name_cell_dropdown: 'AM_NAME_CELL_DROPDOWN',
-<<<<<<< HEAD
-        am_performance_summary: 'AM_PERFORMANCE_SUMMARY',
-        am_rule_landing_page_banner: 'AM_RULE_LANDING_PAGE_BANNER',
-=======
         am_optimization_tip_guidance_card: 'AM_OPTIMIZATION_TIP_GUIDANCE_CARD',
         am_performance_summary: 'AM_PERFORMANCE_SUMMARY',
         am_rule_landing_page_banner: 'AM_RULE_LANDING_PAGE_BANNER',
@@ -3589,7 +3228,6 @@ var AdRule = function (_AbstractCrudObject) {
         am_syd_resolution_flow_modal: 'AM_SYD_RESOLUTION_FLOW_MODAL',
         am_table_delivery_column_popover: 'AM_TABLE_DELIVERY_COLUMN_POPOVER',
         am_table_toggle_popover: 'AM_TABLE_TOGGLE_POPOVER',
->>>>>>> brkfst-api-patch
         am_toolbar_create_rule_dropdown: 'AM_TOOLBAR_CREATE_RULE_DROPDOWN',
         pe_campaign_structure_menu: 'PE_CAMPAIGN_STRUCTURE_MENU',
         pe_editor_card: 'PE_EDITOR_CARD',
@@ -3609,16 +3247,6 @@ var AdRule = function (_AbstractCrudObject) {
   return AdRule;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -3629,7 +3257,6 @@ var AdRule = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdsInsights
  * @extends AbstractCrudObject
@@ -3653,18 +3280,10 @@ var AdsInsights = function (_AbstractCrudObject) {
         account_name: 'account_name',
         action_values: 'action_values',
         actions: 'actions',
-<<<<<<< HEAD
-        ad_bid_value: 'ad_bid_value',
-=======
->>>>>>> brkfst-api-patch
         ad_click_actions: 'ad_click_actions',
         ad_id: 'ad_id',
         ad_impression_actions: 'ad_impression_actions',
         ad_name: 'ad_name',
-<<<<<<< HEAD
-        adset_bid_value: 'adset_bid_value',
-=======
->>>>>>> brkfst-api-patch
         adset_end: 'adset_end',
         adset_id: 'adset_id',
         adset_name: 'adset_name',
@@ -3685,10 +3304,7 @@ var AdsInsights = function (_AbstractCrudObject) {
         catalog_segment_value_omni_purchase_roas: 'catalog_segment_value_omni_purchase_roas',
         catalog_segment_value_website_purchase_roas: 'catalog_segment_value_website_purchase_roas',
         clicks: 'clicks',
-<<<<<<< HEAD
-=======
         conversion_lead_rate: 'conversion_lead_rate',
->>>>>>> brkfst-api-patch
         conversion_rate_ranking: 'conversion_rate_ranking',
         conversion_values: 'conversion_values',
         conversions: 'conversions',
@@ -3699,10 +3315,7 @@ var AdsInsights = function (_AbstractCrudObject) {
         cost_per_action_type: 'cost_per_action_type',
         cost_per_ad_click: 'cost_per_ad_click',
         cost_per_conversion: 'cost_per_conversion',
-<<<<<<< HEAD
-=======
         cost_per_conversion_lead: 'cost_per_conversion_lead',
->>>>>>> brkfst-api-patch
         cost_per_dda_countby_convs: 'cost_per_dda_countby_convs',
         cost_per_estimated_ad_recallers: 'cost_per_estimated_ad_recallers',
         cost_per_inline_link_click: 'cost_per_inline_link_click',
@@ -3719,10 +3332,7 @@ var AdsInsights = function (_AbstractCrudObject) {
         cpm: 'cpm',
         cpp: 'cpp',
         created_time: 'created_time',
-<<<<<<< HEAD
-=======
         creative_media_type: 'creative_media_type',
->>>>>>> brkfst-api-patch
         ctr: 'ctr',
         date_start: 'date_start',
         date_stop: 'date_stop',
@@ -3743,22 +3353,16 @@ var AdsInsights = function (_AbstractCrudObject) {
         inline_link_click_ctr: 'inline_link_click_ctr',
         inline_link_clicks: 'inline_link_clicks',
         inline_post_engagement: 'inline_post_engagement',
-<<<<<<< HEAD
-=======
         instagram_upcoming_event_reminders_set: 'instagram_upcoming_event_reminders_set',
->>>>>>> brkfst-api-patch
         instant_experience_clicks_to_open: 'instant_experience_clicks_to_open',
         instant_experience_clicks_to_start: 'instant_experience_clicks_to_start',
         instant_experience_outbound_clicks: 'instant_experience_outbound_clicks',
         interactive_component_tap: 'interactive_component_tap',
         labels: 'labels',
         location: 'location',
-<<<<<<< HEAD
-=======
         marketing_messages_cost_per_delivered: 'marketing_messages_cost_per_delivered',
         marketing_messages_cost_per_link_btn_click: 'marketing_messages_cost_per_link_btn_click',
         marketing_messages_spend: 'marketing_messages_spend',
->>>>>>> brkfst-api-patch
         mobile_app_purchase_roas: 'mobile_app_purchase_roas',
         objective: 'objective',
         optimization_goal: 'optimization_goal',
@@ -3768,21 +3372,12 @@ var AdsInsights = function (_AbstractCrudObject) {
         purchase_roas: 'purchase_roas',
         qualifying_question_qualify_answer_rate: 'qualifying_question_qualify_answer_rate',
         quality_ranking: 'quality_ranking',
-<<<<<<< HEAD
-        quality_score_ectr: 'quality_score_ectr',
-        quality_score_ecvr: 'quality_score_ecvr',
-        quality_score_organic: 'quality_score_organic',
-=======
->>>>>>> brkfst-api-patch
         reach: 'reach',
         social_spend: 'social_spend',
         spend: 'spend',
         total_postbacks: 'total_postbacks',
         total_postbacks_detailed: 'total_postbacks_detailed',
-<<<<<<< HEAD
-=======
         total_postbacks_detailed_v4: 'total_postbacks_detailed_v4',
->>>>>>> brkfst-api-patch
         unique_actions: 'unique_actions',
         unique_clicks: 'unique_clicks',
         unique_conversions: 'unique_conversions',
@@ -3821,10 +3416,7 @@ var AdsInsights = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         value_1d_click: '1d_click',
-<<<<<<< HEAD
-=======
         value_1d_ev: '1d_ev',
->>>>>>> brkfst-api-patch
         value_1d_view: '1d_view',
         value_28d_click: '28d_click',
         value_28d_view: '28d_view',
@@ -3849,12 +3441,8 @@ var AdsInsights = function (_AbstractCrudObject) {
         action_target_id: 'action_target_id',
         action_type: 'action_type',
         action_video_sound: 'action_video_sound',
-<<<<<<< HEAD
-        action_video_type: 'action_video_type'
-=======
         action_video_type: 'action_video_type',
         standard_event_content_type: 'standard_event_content_type'
->>>>>>> brkfst-api-patch
       });
     }
   }, {
@@ -3875,40 +3463,21 @@ var AdsInsights = function (_AbstractCrudObject) {
         app_id: 'app_id',
         body_asset: 'body_asset',
         call_to_action_asset: 'call_to_action_asset',
-<<<<<<< HEAD
-=======
         coarse_conversion_value: 'coarse_conversion_value',
->>>>>>> brkfst-api-patch
         country: 'country',
         description_asset: 'description_asset',
         device_platform: 'device_platform',
         dma: 'dma',
-<<<<<<< HEAD
-=======
         fidelity_type: 'fidelity_type',
->>>>>>> brkfst-api-patch
         frequency_value: 'frequency_value',
         gender: 'gender',
         hourly_stats_aggregated_by_advertiser_time_zone: 'hourly_stats_aggregated_by_advertiser_time_zone',
         hourly_stats_aggregated_by_audience_time_zone: 'hourly_stats_aggregated_by_audience_time_zone',
-<<<<<<< HEAD
-=======
         hsid: 'hsid',
->>>>>>> brkfst-api-patch
         image_asset: 'image_asset',
         impression_device: 'impression_device',
         is_conversion_id_modeled: 'is_conversion_id_modeled',
         link_url_asset: 'link_url_asset',
-<<<<<<< HEAD
-        mmm: 'mmm',
-        place_page_id: 'place_page_id',
-        platform_position: 'platform_position',
-        product_id: 'product_id',
-        publisher_platform: 'publisher_platform',
-        region: 'region',
-        skan_campaign_id: 'skan_campaign_id',
-        skan_conversion_id: 'skan_conversion_id',
-=======
         marketing_messages_btn_name: 'marketing_messages_btn_name',
         mdsa_landing_destination: 'mdsa_landing_destination',
         media_asset_url: 'media_asset_url',
@@ -3929,7 +3498,6 @@ var AdsInsights = function (_AbstractCrudObject) {
         skan_conversion_id: 'skan_conversion_id',
         skan_version: 'skan_version',
         standard_event_content_type: 'standard_event_content_type',
->>>>>>> brkfst-api-patch
         title_asset: 'title_asset',
         video_asset: 'video_asset'
       });
@@ -3983,28 +3551,14 @@ var AdsInsights = function (_AbstractCrudObject) {
         action_target_id: 'action_target_id',
         action_type: 'action_type',
         action_video_sound: 'action_video_sound',
-<<<<<<< HEAD
-        action_video_type: 'action_video_type'
-=======
         action_video_type: 'action_video_type',
         standard_event_content_type: 'standard_event_content_type'
->>>>>>> brkfst-api-patch
       });
     }
   }]);
   return AdsInsights;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -4015,7 +3569,6 @@ var AdsInsights = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdReportRun
  * @extends AbstractCrudObject
@@ -4077,16 +3630,6 @@ var AdReportRun = function (_AbstractCrudObject) {
   return AdReportRun;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -4097,7 +3640,6 @@ var AdReportRun = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Lead
  * @extends AbstractCrudObject
@@ -4151,10 +3693,7 @@ var Lead = function (_AbstractCrudObject) {
         partner_name: 'partner_name',
         platform: 'platform',
         post: 'post',
-<<<<<<< HEAD
-=======
         post_submission_check_result: 'post_submission_check_result',
->>>>>>> brkfst-api-patch
         retailer_item_id: 'retailer_item_id',
         vehicle: 'vehicle'
       });
@@ -4163,16 +3702,6 @@ var Lead = function (_AbstractCrudObject) {
   return Lead;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -4183,7 +3712,6 @@ var Lead = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingSentenceLine
  * @extends AbstractCrudObject
@@ -4211,16 +3739,6 @@ var TargetingSentenceLine = function (_AbstractCrudObject) {
   return TargetingSentenceLine;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -4231,7 +3749,6 @@ var TargetingSentenceLine = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Ad
  * @extends AbstractCrudObject
@@ -4361,14 +3878,10 @@ var Ad = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         account_id: 'account_id',
-<<<<<<< HEAD
-        ad_review_feedback: 'ad_review_feedback',
-=======
         ad_active_time: 'ad_active_time',
         ad_review_feedback: 'ad_review_feedback',
         ad_schedule_end_time: 'ad_schedule_end_time',
         ad_schedule_start_time: 'ad_schedule_start_time',
->>>>>>> brkfst-api-patch
         adlabels: 'adlabels',
         adset: 'adset',
         adset_id: 'adset_id',
@@ -4508,16 +4021,6 @@ var Ad = function (_AbstractCrudObject) {
   return Ad;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -4564,7 +4067,6 @@ var AdAccountBusinessConstraints = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdActivity
  * @extends AbstractCrudObject
@@ -4670,12 +4172,6 @@ var AdActivity = function (_AbstractCrudObject) {
         update_campaign_ad_scheduling: 'update_campaign_ad_scheduling',
         update_campaign_budget: 'update_campaign_budget',
         update_campaign_budget_optimization_toggling_status: 'update_campaign_budget_optimization_toggling_status',
-<<<<<<< HEAD
-        update_campaign_delivery_type: 'update_campaign_delivery_type',
-        update_campaign_group_ad_scheduling: 'update_campaign_group_ad_scheduling',
-        update_campaign_group_delivery_type: 'update_campaign_group_delivery_type',
-        update_campaign_group_spend_cap: 'update_campaign_group_spend_cap',
-=======
         update_campaign_budget_scheduling_state: 'update_campaign_budget_scheduling_state',
         update_campaign_conversion_goal: 'update_campaign_conversion_goal',
         update_campaign_delivery_type: 'update_campaign_delivery_type',
@@ -4685,7 +4181,6 @@ var AdActivity = function (_AbstractCrudObject) {
         update_campaign_group_high_demand_periods: 'update_campaign_group_high_demand_periods',
         update_campaign_group_spend_cap: 'update_campaign_group_spend_cap',
         update_campaign_high_demand_periods: 'update_campaign_high_demand_periods',
->>>>>>> brkfst-api-patch
         update_campaign_name: 'update_campaign_name',
         update_campaign_run_status: 'update_campaign_run_status',
         update_campaign_schedule: 'update_campaign_schedule',
@@ -4723,16 +4218,6 @@ var AdActivity = function (_AbstractCrudObject) {
   return AdActivity;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -4743,7 +4228,6 @@ var AdActivity = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdPlacePageSet
  * @extends AbstractCrudObject
@@ -4799,16 +4283,6 @@ var AdPlacePageSet = function (_AbstractCrudObject) {
   return AdPlacePageSet;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -4819,7 +4293,6 @@ var AdPlacePageSet = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAsyncRequest
  * @extends AbstractCrudObject
@@ -4891,16 +4364,6 @@ var AdAsyncRequest = function (_AbstractCrudObject) {
   return AdAsyncRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -4991,7 +4454,6 @@ var HighDemandPeriod = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCampaignDeliveryEstimate
  * @extends AbstractCrudObject
@@ -5043,11 +4505,8 @@ var AdCampaignDeliveryEstimate = function (_AbstractCrudObject) {
         quality_call: 'QUALITY_CALL',
         quality_lead: 'QUALITY_LEAD',
         reach: 'REACH',
-<<<<<<< HEAD
-=======
         reminders_set: 'REMINDERS_SET',
         subscribers: 'SUBSCRIBERS',
->>>>>>> brkfst-api-patch
         thruplay: 'THRUPLAY',
         value: 'VALUE',
         visit_instagram_profile: 'VISIT_INSTAGRAM_PROFILE'
@@ -5057,16 +4516,6 @@ var AdCampaignDeliveryEstimate = function (_AbstractCrudObject) {
   return AdCampaignDeliveryEstimate;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -5077,7 +4526,6 @@ var AdCampaignDeliveryEstimate = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdSet
  * @extends AbstractCrudObject
@@ -5156,8 +4604,6 @@ var AdSet = function (_AbstractCrudObject) {
       return this.getEdge(AdAsyncRequest, fields, params, fetchFirstPage, '/asyncadrequests');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createBudgetSchedule',
     value: function createBudgetSchedule(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -5166,7 +4612,6 @@ var AdSet = function (_AbstractCrudObject) {
       return this.createEdge('/budget_schedules', fields, params, HighDemandPeriod, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getCopies',
     value: function getCopies(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -5261,10 +4706,7 @@ var AdSet = function (_AbstractCrudObject) {
         billing_event: 'billing_event',
         budget_remaining: 'budget_remaining',
         campaign: 'campaign',
-<<<<<<< HEAD
-=======
         campaign_active_time: 'campaign_active_time',
->>>>>>> brkfst-api-patch
         campaign_attribution: 'campaign_attribution',
         campaign_id: 'campaign_id',
         configured_status: 'configured_status',
@@ -5274,11 +4716,8 @@ var AdSet = function (_AbstractCrudObject) {
         daily_min_spend_target: 'daily_min_spend_target',
         daily_spend_cap: 'daily_spend_cap',
         destination_type: 'destination_type',
-<<<<<<< HEAD
-=======
         dsa_beneficiary: 'dsa_beneficiary',
         dsa_payor: 'dsa_payor',
->>>>>>> brkfst-api-patch
         effective_status: 'effective_status',
         end_time: 'end_time',
         existing_customer_budget_percentage: 'existing_customer_budget_percentage',
@@ -5286,10 +4725,7 @@ var AdSet = function (_AbstractCrudObject) {
         full_funnel_exploration_mode: 'full_funnel_exploration_mode',
         id: 'id',
         instagram_actor_id: 'instagram_actor_id',
-<<<<<<< HEAD
-=======
         is_budget_schedule_enabled: 'is_budget_schedule_enabled',
->>>>>>> brkfst-api-patch
         is_dynamic_creative: 'is_dynamic_creative',
         issues_info: 'issues_info',
         learning_stage_info: 'learning_stage_info',
@@ -5393,11 +4829,8 @@ var AdSet = function (_AbstractCrudObject) {
         quality_call: 'QUALITY_CALL',
         quality_lead: 'QUALITY_LEAD',
         reach: 'REACH',
-<<<<<<< HEAD
-=======
         reminders_set: 'REMINDERS_SET',
         subscribers: 'SUBSCRIBERS',
->>>>>>> brkfst-api-patch
         thruplay: 'THRUPLAY',
         value: 'VALUE',
         visit_instagram_profile: 'VISIT_INSTAGRAM_PROFILE'
@@ -5527,16 +4960,6 @@ var AdSet = function (_AbstractCrudObject) {
   return AdSet;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -5547,7 +4970,6 @@ var AdSet = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Campaign
  * @extends AbstractCrudObject
@@ -5603,8 +5025,6 @@ var Campaign = function (_AbstractCrudObject) {
       return this.getEdge(AdSet, fields, params, fetchFirstPage, '/adsets');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createBudgetSchedule',
     value: function createBudgetSchedule(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -5613,7 +5033,6 @@ var Campaign = function (_AbstractCrudObject) {
       return this.createEdge('/budget_schedules', fields, params, HighDemandPeriod, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getCopies',
     value: function getCopies(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -5680,11 +5099,6 @@ var Campaign = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         account_id: 'account_id',
-<<<<<<< HEAD
-        ad_strategy_group_id: 'ad_strategy_group_id',
-        ad_strategy_id: 'ad_strategy_id',
-=======
->>>>>>> brkfst-api-patch
         adlabels: 'adlabels',
         bid_strategy: 'bid_strategy',
         boosted_object_id: 'boosted_object_id',
@@ -5692,10 +5106,7 @@ var Campaign = function (_AbstractCrudObject) {
         budget_rebalance_flag: 'budget_rebalance_flag',
         budget_remaining: 'budget_remaining',
         buying_type: 'buying_type',
-<<<<<<< HEAD
-=======
         campaign_group_active_time: 'campaign_group_active_time',
->>>>>>> brkfst-api-patch
         can_create_brand_lift_study: 'can_create_brand_lift_study',
         can_use_spend_cap: 'can_use_spend_cap',
         configured_status: 'configured_status',
@@ -5704,10 +5115,7 @@ var Campaign = function (_AbstractCrudObject) {
         effective_status: 'effective_status',
         has_secondary_skadnetwork_reporting: 'has_secondary_skadnetwork_reporting',
         id: 'id',
-<<<<<<< HEAD
-=======
         is_budget_schedule_enabled: 'is_budget_schedule_enabled',
->>>>>>> brkfst-api-patch
         is_skadnetwork_attribution: 'is_skadnetwork_attribution',
         issues_info: 'issues_info',
         last_budget_toggling_time: 'last_budget_toggling_time',
@@ -6144,16 +5552,6 @@ var Campaign = function (_AbstractCrudObject) {
   return Campaign;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6164,7 +5562,6 @@ var Campaign = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdStudyCell
  * @extends AbstractCrudObject
@@ -6261,16 +5658,6 @@ var AdStudyCell = function (_AbstractCrudObject) {
   return AdStudyCell;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6281,7 +5668,6 @@ var AdStudyCell = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PrivateLiftStudyInstance
  * @extends AbstractCrudObject
@@ -6348,16 +5734,6 @@ var PrivateLiftStudyInstance = function (_AbstractCrudObject) {
   return PrivateLiftStudyInstance;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6368,7 +5744,6 @@ var PrivateLiftStudyInstance = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdPlacement
  * @extends AbstractCrudObject
@@ -6410,16 +5785,6 @@ var AdPlacement = function (_AbstractCrudObject) {
   return AdPlacement;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6430,7 +5795,6 @@ var AdPlacement = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdNetworkAnalyticsSyncQueryResult
  * @extends AbstractCrudObject
@@ -6536,16 +5900,6 @@ var AdNetworkAnalyticsSyncQueryResult = function (_AbstractCrudObject) {
   return AdNetworkAnalyticsSyncQueryResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6556,7 +5910,6 @@ var AdNetworkAnalyticsSyncQueryResult = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdNetworkAnalyticsAsyncQueryResult
  * @extends AbstractCrudObject
@@ -6587,16 +5940,6 @@ var AdNetworkAnalyticsAsyncQueryResult = function (_AbstractCrudObject) {
   return AdNetworkAnalyticsAsyncQueryResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6607,7 +5950,6 @@ var AdNetworkAnalyticsAsyncQueryResult = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProfilePictureSource
  * @extends AbstractCrudObject
@@ -6657,16 +5999,6 @@ var ProfilePictureSource = function (_AbstractCrudObject) {
   return ProfilePictureSource;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6677,7 +6009,6 @@ var ProfilePictureSource = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Profile
  * @extends AbstractCrudObject
@@ -6758,16 +6089,6 @@ var Profile = function (_AbstractCrudObject) {
   return Profile;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6778,7 +6099,6 @@ var Profile = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Comment
  * @extends AbstractCrudObject
@@ -6944,16 +6264,6 @@ var Comment = function (_AbstractCrudObject) {
   return Comment;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -6964,7 +6274,6 @@ var Comment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * InsightsResult
  * @extends AbstractCrudObject
@@ -7034,16 +6343,6 @@ var InsightsResult = function (_AbstractCrudObject) {
   return InsightsResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -7148,7 +6447,6 @@ var PagePostExperiment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * RTBDynamicPost
  * @extends AbstractCrudObject
@@ -7208,16 +6506,6 @@ var RTBDynamicPost = function (_AbstractCrudObject) {
   return RTBDynamicPost;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -7228,7 +6516,6 @@ var RTBDynamicPost = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Post
  * @extends AbstractCrudObject
@@ -7441,19 +6728,6 @@ var Post = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-    key: 'CheckinEntryPoint',
-    get: function get() {
-      return Object.freeze({
-        branding_checkin: 'BRANDING_CHECKIN',
-        branding_other: 'BRANDING_OTHER',
-        branding_photo: 'BRANDING_PHOTO',
-        branding_status: 'BRANDING_STATUS'
-      });
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'Formatting',
     get: function get() {
       return Object.freeze({
@@ -7530,16 +6804,6 @@ var Post = function (_AbstractCrudObject) {
   return Post;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -7550,7 +6814,6 @@ var Post = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PagePost
  * @extends AbstractCrudObject
@@ -7791,16 +7054,6 @@ var PagePost = function (_AbstractCrudObject) {
   return PagePost;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -7811,7 +7064,6 @@ var PagePost = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AssignedUser
  * @extends AbstractCrudObject
@@ -7840,16 +7092,6 @@ var AssignedUser = function (_AbstractCrudObject) {
   return AssignedUser;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -7860,7 +7102,6 @@ var AssignedUser = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageCallToAction
  * @extends AbstractCrudObject
@@ -8029,16 +7270,6 @@ var PageCallToAction = function (_AbstractCrudObject) {
   return PageCallToAction;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8049,7 +7280,6 @@ var PageCallToAction = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CanvasBodyElement
  * @extends AbstractCrudObject
@@ -8075,16 +7305,6 @@ var CanvasBodyElement = function (_AbstractCrudObject) {
   return CanvasBodyElement;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8095,7 +7315,6 @@ var CanvasBodyElement = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TextWithEntities
  * @extends AbstractCrudObject
@@ -8121,16 +7340,6 @@ var TextWithEntities = function (_AbstractCrudObject) {
   return TextWithEntities;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8141,7 +7350,6 @@ var TextWithEntities = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Canvas
  * @extends AbstractCrudObject
@@ -8220,16 +7428,6 @@ var Canvas = function (_AbstractCrudObject) {
   return Canvas;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8240,7 +7438,6 @@ var Canvas = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ChatPlugin
  * @extends AbstractCrudObject
@@ -8277,82 +7474,6 @@ var ChatPlugin = function (_AbstractCrudObject) {
   return ChatPlugin;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * URL
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var URL = function (_AbstractCrudObject) {
-  inherits(URL, _AbstractCrudObject);
-
-  function URL() {
-    classCallCheck(this, URL);
-    return possibleConstructorReturn(this, (URL.__proto__ || Object.getPrototypeOf(URL)).apply(this, arguments));
-  }
-
-  createClass(URL, [{
-    key: 'get',
-    value: function get(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      // $FlowFixMe : Support Generic Types
-      return this.read(fields, params);
-    }
-
-    // $FlowFixMe : Support Generic Types
-
-  }, {
-    key: 'update',
-    value: function update(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      // $FlowFixMe : Support Generic Types
-      return get$1(URL.prototype.__proto__ || Object.getPrototypeOf(URL.prototype), 'update', this).call(this, params);
-    }
-  }], [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        development_instant_article: 'development_instant_article',
-        engagement: 'engagement',
-        id: 'id',
-        instant_article: 'instant_article',
-        og_object: 'og_object',
-        ownership_permissions: 'ownership_permissions',
-        scopes: 'scopes'
-      });
-    }
-  }, {
-    key: 'Scopes',
-    get: function get() {
-      return Object.freeze({
-        news_tab: 'NEWS_TAB',
-        news_tab_dev_env: 'NEWS_TAB_DEV_ENV'
-      });
-    }
-  }]);
-  return URL;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8363,7 +7484,6 @@ var URL = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageCommerceEligibility
  * @extends AbstractCrudObject
@@ -8390,16 +7510,6 @@ var PageCommerceEligibility = function (_AbstractCrudObject) {
   return PageCommerceEligibility;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8410,7 +7520,6 @@ var PageCommerceEligibility = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CommerceOrder
  * @extends AbstractCrudObject
@@ -8615,16 +7724,6 @@ var CommerceOrder = function (_AbstractCrudObject) {
   return CommerceOrder;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8635,7 +7734,6 @@ var CommerceOrder = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CommercePayout
  * @extends AbstractCrudObject
@@ -8665,16 +7763,6 @@ var CommercePayout = function (_AbstractCrudObject) {
   return CommercePayout;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8685,7 +7773,6 @@ var CommercePayout = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CommerceOrderTransactionDetail
  * @extends AbstractCrudObject
@@ -8735,16 +7822,6 @@ var CommerceOrderTransactionDetail = function (_AbstractCrudObject) {
   return CommerceOrderTransactionDetail;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8755,7 +7832,6 @@ var CommerceOrderTransactionDetail = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CatalogItemChannelsToIntegrityStatus
  * @extends AbstractCrudObject
@@ -8782,16 +7858,6 @@ var CatalogItemChannelsToIntegrityStatus = function (_AbstractCrudObject) {
   return CatalogItemChannelsToIntegrityStatus;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8848,7 +7914,6 @@ var DynamicVideoMetadata = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AutomotiveModel
  * @extends AbstractCrudObject
@@ -8885,11 +7950,7 @@ var AutomotiveModel = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-=======
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'get',
@@ -8959,16 +8020,6 @@ var AutomotiveModel = function (_AbstractCrudObject) {
   return AutomotiveModel;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -8979,7 +8030,6 @@ var AutomotiveModel = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * StoreCatalogSettings
  * @extends AbstractCrudObject
@@ -9025,16 +8075,6 @@ var StoreCatalogSettings = function (_AbstractCrudObject) {
   return StoreCatalogSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9045,7 +8085,6 @@ var StoreCatalogSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductCatalogCategory
  * @extends AbstractCrudObject
@@ -9086,16 +8125,6 @@ var ProductCatalogCategory = function (_AbstractCrudObject) {
   return ProductCatalogCategory;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9106,7 +8135,6 @@ var ProductCatalogCategory = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CheckBatchRequestStatus
  * @extends AbstractCrudObject
@@ -9147,16 +8175,6 @@ var CheckBatchRequestStatus = function (_AbstractCrudObject) {
   return CheckBatchRequestStatus;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9167,7 +8185,6 @@ var CheckBatchRequestStatus = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CatalogSegmentAllMatchCountLaser
  * @extends AbstractCrudObject
@@ -9198,16 +8215,6 @@ var CatalogSegmentAllMatchCountLaser = function (_AbstractCrudObject) {
   return CatalogSegmentAllMatchCountLaser;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9218,7 +8225,6 @@ var CatalogSegmentAllMatchCountLaser = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CollaborativeAdsShareSettings
  * @extends AbstractCrudObject
@@ -9257,16 +8263,6 @@ var CollaborativeAdsShareSettings = function (_AbstractCrudObject) {
   return CollaborativeAdsShareSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9277,7 +8273,6 @@ var CollaborativeAdsShareSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductCatalogDataSource
  * @extends AbstractCrudObject
@@ -9316,16 +8311,6 @@ var ProductCatalogDataSource = function (_AbstractCrudObject) {
   return ProductCatalogDataSource;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9336,7 +8321,6 @@ var ProductCatalogDataSource = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Destination
  * @extends AbstractCrudObject
@@ -9373,11 +8357,7 @@ var Destination = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-=======
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'get',
@@ -9434,16 +8414,6 @@ var Destination = function (_AbstractCrudObject) {
   return Destination;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9454,7 +8424,6 @@ var Destination = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductCatalogDiagnosticGroup
  * @extends AbstractCrudObject
@@ -9531,10 +8500,7 @@ var ProductCatalogDiagnosticGroup = function (_AbstractCrudObject) {
         attributes_missing: 'ATTRIBUTES_MISSING',
         category: 'CATEGORY',
         checkout: 'CHECKOUT',
-<<<<<<< HEAD
-=======
         da_visibility_issues: 'DA_VISIBILITY_ISSUES',
->>>>>>> brkfst-api-patch
         image_quality: 'IMAGE_QUALITY',
         low_quality_title_and_description: 'LOW_QUALITY_TITLE_AND_DESCRIPTION',
         policy_violation: 'POLICY_VIOLATION',
@@ -9567,10 +8533,7 @@ var ProductCatalogDiagnosticGroup = function (_AbstractCrudObject) {
         attributes_missing: 'ATTRIBUTES_MISSING',
         category: 'CATEGORY',
         checkout: 'CHECKOUT',
-<<<<<<< HEAD
-=======
         da_visibility_issues: 'DA_VISIBILITY_ISSUES',
->>>>>>> brkfst-api-patch
         image_quality: 'IMAGE_QUALITY',
         low_quality_title_and_description: 'LOW_QUALITY_TITLE_AND_DESCRIPTION',
         policy_violation: 'POLICY_VIOLATION',
@@ -9581,16 +8544,6 @@ var ProductCatalogDiagnosticGroup = function (_AbstractCrudObject) {
   return ProductCatalogDiagnosticGroup;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9601,7 +8554,6 @@ var ProductCatalogDiagnosticGroup = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductEventStat
  * @extends AbstractCrudObject
@@ -9674,16 +8626,6 @@ var ProductEventStat = function (_AbstractCrudObject) {
   return ProductEventStat;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9694,7 +8636,6 @@ var ProductEventStat = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ExternalEventSource
  * @extends AbstractCrudObject
@@ -9722,16 +8663,6 @@ var ExternalEventSource = function (_AbstractCrudObject) {
   return ExternalEventSource;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9742,7 +8673,6 @@ var ExternalEventSource = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Flight
  * @extends AbstractCrudObject
@@ -9779,11 +8709,7 @@ var Flight = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-=======
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'get',
@@ -9853,16 +8779,6 @@ var Flight = function (_AbstractCrudObject) {
   return Flight;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -9873,7 +8789,6 @@ var Flight = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * HomeListing
  * @extends AbstractCrudObject
@@ -9910,11 +8825,7 @@ var HomeListing = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-=======
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
->>>>>>> brkfst-api-patch
     }
 
     // $FlowFixMe : Support Generic Types
@@ -10022,16 +8933,6 @@ var HomeListing = function (_AbstractCrudObject) {
   return HomeListing;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -10042,7 +8943,6 @@ var HomeListing = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductCatalogHotelRoomsBatch
  * @extends AbstractCrudObject
@@ -10071,16 +8971,6 @@ var ProductCatalogHotelRoomsBatch = function (_AbstractCrudObject) {
   return ProductCatalogHotelRoomsBatch;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -10091,7 +8981,6 @@ var ProductCatalogHotelRoomsBatch = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * DynamicPriceConfigByDate
  * @extends AbstractCrudObject
@@ -10128,16 +9017,6 @@ var DynamicPriceConfigByDate = function (_AbstractCrudObject) {
   return DynamicPriceConfigByDate;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -10148,7 +9027,6 @@ var DynamicPriceConfigByDate = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * HotelRoom
  * @extends AbstractCrudObject
@@ -10200,16 +9078,6 @@ var HotelRoom = function (_AbstractCrudObject) {
   return HotelRoom;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -10220,7 +9088,6 @@ var HotelRoom = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Hotel
  * @extends AbstractCrudObject
@@ -10265,11 +9132,7 @@ var Hotel = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-=======
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
->>>>>>> brkfst-api-patch
     }
 
     // $FlowFixMe : Support Generic Types
@@ -10354,16 +9217,6 @@ var Hotel = function (_AbstractCrudObject) {
   return Hotel;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -10412,7 +9265,6 @@ var ProductCatalogPricingVariablesBatch = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * MediaTitle
  * @extends AbstractCrudObject
@@ -10449,11 +9301,7 @@ var MediaTitle = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-=======
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
->>>>>>> brkfst-api-patch
     }
 
     // $FlowFixMe : Support Generic Types
@@ -10545,52 +9393,6 @@ var MediaTitle = function (_AbstractCrudObject) {
   return MediaTitle;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * ProductCatalogPricingVariablesBatch
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var ProductCatalogPricingVariablesBatch = function (_AbstractCrudObject) {
-  inherits(ProductCatalogPricingVariablesBatch, _AbstractCrudObject);
-
-  function ProductCatalogPricingVariablesBatch() {
-    classCallCheck(this, ProductCatalogPricingVariablesBatch);
-    return possibleConstructorReturn(this, (ProductCatalogPricingVariablesBatch.__proto__ || Object.getPrototypeOf(ProductCatalogPricingVariablesBatch)).apply(this, arguments));
-  }
-
-  createClass(ProductCatalogPricingVariablesBatch, null, [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        errors: 'errors',
-        errors_total_count: 'errors_total_count',
-        handle: 'handle',
-        status: 'status'
-      });
-    }
-  }]);
-  return ProductCatalogPricingVariablesBatch;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -10601,7 +9403,6 @@ var ProductCatalogPricingVariablesBatch = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VehicleOffer
  * @extends AbstractCrudObject
@@ -10638,11 +9439,7 @@ var VehicleOffer = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-=======
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'get',
@@ -10661,10 +9458,7 @@ var VehicleOffer = function (_AbstractCrudObject) {
         amount_price: 'amount_price',
         amount_qualifier: 'amount_qualifier',
         applinks: 'applinks',
-<<<<<<< HEAD
-=======
         availability: 'availability',
->>>>>>> brkfst-api-patch
         body_style: 'body_style',
         cashback_currency: 'cashback_currency',
         cashback_price: 'cashback_price',
@@ -10674,13 +9468,6 @@ var VehicleOffer = function (_AbstractCrudObject) {
         downpayment_currency: 'downpayment_currency',
         downpayment_price: 'downpayment_price',
         downpayment_qualifier: 'downpayment_qualifier',
-<<<<<<< HEAD
-        end_date: 'end_date',
-        end_time: 'end_time',
-        id: 'id',
-        image_fetch_status: 'image_fetch_status',
-        images: 'images',
-=======
         drivetrain: 'drivetrain',
         end_date: 'end_date',
         end_time: 'end_time',
@@ -10692,7 +9479,6 @@ var VehicleOffer = function (_AbstractCrudObject) {
         images: 'images',
         interior_color: 'interior_color',
         interior_upholstery: 'interior_upholstery',
->>>>>>> brkfst-api-patch
         make: 'make',
         model: 'model',
         offer_description: 'offer_description',
@@ -10705,10 +9491,7 @@ var VehicleOffer = function (_AbstractCrudObject) {
         term_length: 'term_length',
         term_qualifier: 'term_qualifier',
         title: 'title',
-<<<<<<< HEAD
-=======
         transmission: 'transmission',
->>>>>>> brkfst-api-patch
         trim: 'trim',
         unit_price: 'unit_price',
         url: 'url',
@@ -10741,16 +9524,6 @@ var VehicleOffer = function (_AbstractCrudObject) {
   return VehicleOffer;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -10761,7 +9534,6 @@ var VehicleOffer = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Vehicle
  * @extends AbstractCrudObject
@@ -10798,11 +9570,7 @@ var Vehicle = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-=======
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'get',
@@ -11013,16 +9781,6 @@ var Vehicle = function (_AbstractCrudObject) {
   return Vehicle;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -11033,7 +9791,6 @@ var Vehicle = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductSet
  * @extends AbstractCrudObject
@@ -11170,16 +9927,6 @@ var ProductSet = function (_AbstractCrudObject) {
   return ProductSet;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -11190,7 +9937,6 @@ var ProductSet = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductItem
  * @extends AbstractCrudObject
@@ -11221,8 +9967,6 @@ var ProductItem = function (_AbstractCrudObject) {
 
       return this.getEdge(ProductSet, fields, params, fetchFirstPage, '/product_sets');
     }
-<<<<<<< HEAD
-=======
   }, {
     key: 'getVideosMetadata',
     value: function getVideosMetadata(fields) {
@@ -11231,7 +9975,6 @@ var ProductItem = function (_AbstractCrudObject) {
 
       return this.getEdge(DynamicVideoMetadata, fields, params, fetchFirstPage, '/videos_metadata');
     }
->>>>>>> brkfst-api-patch
 
     // $FlowFixMe : Support Generic Types
 
@@ -11271,10 +10014,6 @@ var ProductItem = function (_AbstractCrudObject) {
         additional_variant_attributes: 'additional_variant_attributes',
         age_group: 'age_group',
         applinks: 'applinks',
-<<<<<<< HEAD
-        ar_data: 'ar_data',
-=======
->>>>>>> brkfst-api-patch
         availability: 'availability',
         brand: 'brand',
         capability_to_review_status: 'capability_to_review_status',
@@ -11325,10 +10064,7 @@ var ProductItem = function (_AbstractCrudObject) {
         product_catalog: 'product_catalog',
         product_feed: 'product_feed',
         product_group: 'product_group',
-<<<<<<< HEAD
-=======
         product_local_info: 'product_local_info',
->>>>>>> brkfst-api-patch
         product_type: 'product_type',
         quantity_to_sell_on_facebook: 'quantity_to_sell_on_facebook',
         retailer_id: 'retailer_id',
@@ -11343,13 +10079,9 @@ var ProductItem = function (_AbstractCrudObject) {
         short_description: 'short_description',
         size: 'size',
         start_date: 'start_date',
-<<<<<<< HEAD
-        url: 'url',
-=======
         tags: 'tags',
         url: 'url',
         video_fetch_status: 'video_fetch_status',
->>>>>>> brkfst-api-patch
         visibility: 'visibility',
         wa_compliance_category: 'wa_compliance_category'
       });
@@ -11374,10 +10106,7 @@ var ProductItem = function (_AbstractCrudObject) {
         available_for_order: 'available for order',
         discontinued: 'discontinued',
         in_stock: 'in stock',
-<<<<<<< HEAD
-=======
         mark_as_sold: 'mark_as_sold',
->>>>>>> brkfst-api-patch
         out_of_stock: 'out of stock',
         pending: 'pending',
         preorder: 'preorder'
@@ -11439,8 +10168,6 @@ var ProductItem = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'VideoFetchStatus',
     get: function get() {
       return Object.freeze({
@@ -11453,7 +10180,6 @@ var ProductItem = function (_AbstractCrudObject) {
       });
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'Visibility',
     get: function get() {
       return Object.freeze({
@@ -11690,12 +10416,6 @@ var ProductItem = function (_AbstractCrudObject) {
         available: 'AVAILABLE',
         bad_quality_image: 'BAD_QUALITY_IMAGE',
         cannot_edit_subscription_products: 'CANNOT_EDIT_SUBSCRIPTION_PRODUCTS',
-<<<<<<< HEAD
-        crawled_availability_mismatch: 'CRAWLED_AVAILABILITY_MISMATCH',
-        digital_goods_not_available_for_checkout: 'DIGITAL_GOODS_NOT_AVAILABLE_FOR_CHECKOUT',
-        duplicate_images: 'DUPLICATE_IMAGES',
-        duplicate_title_and_description: 'DUPLICATE_TITLE_AND_DESCRIPTION',
-=======
         checkout_disabled_by_user: 'CHECKOUT_DISABLED_BY_USER',
         commerce_account_not_legally_compliant: 'COMMERCE_ACCOUNT_NOT_LEGALLY_COMPLIANT',
         crawled_availability_mismatch: 'CRAWLED_AVAILABILITY_MISMATCH',
@@ -11710,7 +10430,6 @@ var ProductItem = function (_AbstractCrudObject) {
         empty_product_url: 'EMPTY_PRODUCT_URL',
         empty_seller_description: 'EMPTY_SELLER_DESCRIPTION',
         external_merchant_id_mismatch: 'EXTERNAL_MERCHANT_ID_MISMATCH',
->>>>>>> brkfst-api-patch
         generic_invalid_field: 'GENERIC_INVALID_FIELD',
         hidden_until_product_launch: 'HIDDEN_UNTIL_PRODUCT_LAUNCH',
         image_fetch_failed: 'IMAGE_FETCH_FAILED',
@@ -11733,16 +10452,11 @@ var ProductItem = function (_AbstractCrudObject) {
         in_another_product_launch: 'IN_ANOTHER_PRODUCT_LAUNCH',
         item_group_not_specified: 'ITEM_GROUP_NOT_SPECIFIED',
         item_not_shippable_for_sca_shop: 'ITEM_NOT_SHIPPABLE_FOR_SCA_SHOP',
-<<<<<<< HEAD
-        item_override_not_visible: 'ITEM_OVERRIDE_NOT_VISIBLE',
-        item_stale_out_of_stock: 'ITEM_STALE_OUT_OF_STOCK',
-=======
         item_override_empty_availability: 'ITEM_OVERRIDE_EMPTY_AVAILABILITY',
         item_override_empty_price: 'ITEM_OVERRIDE_EMPTY_PRICE',
         item_override_not_visible: 'ITEM_OVERRIDE_NOT_VISIBLE',
         item_stale_out_of_stock: 'ITEM_STALE_OUT_OF_STOCK',
         marketplace_disabled_by_user: 'MARKETPLACE_DISABLED_BY_USER',
->>>>>>> brkfst-api-patch
         mini_shops_disabled_by_user: 'MINI_SHOPS_DISABLED_BY_USER',
         missing_checkout: 'MISSING_CHECKOUT',
         missing_checkout_currency: 'MISSING_CHECKOUT_CURRENCY',
@@ -11754,17 +10468,11 @@ var ProductItem = function (_AbstractCrudObject) {
         missing_tax_category: 'MISSING_TAX_CATEGORY',
         negative_community_feedback: 'NEGATIVE_COMMUNITY_FEEDBACK',
         not_enough_images: 'NOT_ENOUGH_IMAGES',
-<<<<<<< HEAD
-        part_of_product_launch: 'PART_OF_PRODUCT_LAUNCH',
-        product_expired: 'PRODUCT_EXPIRED',
-        product_item_hidden_from_all_shops: 'PRODUCT_ITEM_HIDDEN_FROM_ALL_SHOPS',
-=======
         not_enough_unique_products: 'NOT_ENOUGH_UNIQUE_PRODUCTS',
         part_of_product_launch: 'PART_OF_PRODUCT_LAUNCH',
         product_expired: 'PRODUCT_EXPIRED',
         product_item_hidden_from_all_shops: 'PRODUCT_ITEM_HIDDEN_FROM_ALL_SHOPS',
         product_item_invalid_partner_tokens: 'PRODUCT_ITEM_INVALID_PARTNER_TOKENS',
->>>>>>> brkfst-api-patch
         product_item_not_included_in_any_shop: 'PRODUCT_ITEM_NOT_INCLUDED_IN_ANY_SHOP',
         product_item_not_visible: 'PRODUCT_ITEM_NOT_VISIBLE',
         product_not_approved: 'PRODUCT_NOT_APPROVED',
@@ -11774,10 +10482,7 @@ var ProductItem = function (_AbstractCrudObject) {
         property_price_currency_not_supported: 'PROPERTY_PRICE_CURRENCY_NOT_SUPPORTED',
         property_price_too_high: 'PROPERTY_PRICE_TOO_HIGH',
         property_price_too_low: 'PROPERTY_PRICE_TOO_LOW',
-<<<<<<< HEAD
-=======
         property_unit_price_currency_mismatch_item_price_currency: 'PROPERTY_UNIT_PRICE_CURRENCY_MISMATCH_ITEM_PRICE_CURRENCY',
->>>>>>> brkfst-api-patch
         property_value_contains_html_tags: 'PROPERTY_VALUE_CONTAINS_HTML_TAGS',
         property_value_description_contains_off_platform_link: 'PROPERTY_VALUE_DESCRIPTION_CONTAINS_OFF_PLATFORM_LINK',
         property_value_format: 'PROPERTY_VALUE_FORMAT',
@@ -11786,22 +10491,12 @@ var ProductItem = function (_AbstractCrudObject) {
         property_value_non_positive: 'PROPERTY_VALUE_NON_POSITIVE',
         property_value_string_exceeds_length: 'PROPERTY_VALUE_STRING_EXCEEDS_LENGTH',
         property_value_string_too_short: 'PROPERTY_VALUE_STRING_TOO_SHORT',
-<<<<<<< HEAD
-=======
         property_value_uppercase: 'PROPERTY_VALUE_UPPERCASE',
->>>>>>> brkfst-api-patch
         property_value_uppercase_warning: 'PROPERTY_VALUE_UPPERCASE_WARNING',
         quality_duplicated_description: 'QUALITY_DUPLICATED_DESCRIPTION',
         quality_item_link_broken: 'QUALITY_ITEM_LINK_BROKEN',
         quality_item_link_redirecting: 'QUALITY_ITEM_LINK_REDIRECTING',
         retailer_id_not_provided: 'RETAILER_ID_NOT_PROVIDED',
-<<<<<<< HEAD
-        shopify_item_missing_shipping_profile: 'SHOPIFY_ITEM_MISSING_SHIPPING_PROFILE',
-        subscription_info_not_enabled_for_feed: 'SUBSCRIPTION_INFO_NOT_ENABLED_FOR_FEED',
-        tax_category_not_supported_in_uk: 'TAX_CATEGORY_NOT_SUPPORTED_IN_UK',
-        unsupported_product_category: 'UNSUPPORTED_PRODUCT_CATEGORY',
-        variant_attribute_issue: 'VARIANT_ATTRIBUTE_ISSUE'
-=======
         shopify_invalid_retailer_id: 'SHOPIFY_INVALID_RETAILER_ID',
         shopify_item_missing_shipping_profile: 'SHOPIFY_ITEM_MISSING_SHIPPING_PROFILE',
         shops_policy_violation: 'SHOPS_POLICY_VIOLATION',
@@ -11816,7 +10511,6 @@ var ProductItem = function (_AbstractCrudObject) {
         video_fetch_failed_link_broken: 'VIDEO_FETCH_FAILED_LINK_BROKEN',
         video_fetch_failed_timed_out: 'VIDEO_FETCH_FAILED_TIMED_OUT',
         video_not_downloadable: 'VIDEO_NOT_DOWNLOADABLE'
->>>>>>> brkfst-api-patch
       });
     }
   }, {
@@ -12097,16 +10791,6 @@ var ProductItem = function (_AbstractCrudObject) {
   return ProductItem;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -12117,7 +10801,6 @@ var ProductItem = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeedRule
  * @extends AbstractCrudObject
@@ -12187,16 +10870,6 @@ var ProductFeedRule = function (_AbstractCrudObject) {
   return ProductFeedRule;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -12207,7 +10880,6 @@ var ProductFeedRule = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeedSchedule
  * @extends AbstractCrudObject
@@ -12247,22 +10919,6 @@ var ProductFeedSchedule = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-    key: 'DayOfWeek',
-    get: function get() {
-      return Object.freeze({
-        friday: 'FRIDAY',
-        monday: 'MONDAY',
-        saturday: 'SATURDAY',
-        sunday: 'SUNDAY',
-        thursday: 'THURSDAY',
-        tuesday: 'TUESDAY',
-        wednesday: 'WEDNESDAY'
-      });
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'Interval',
     get: function get() {
       return Object.freeze({
@@ -12276,16 +10932,6 @@ var ProductFeedSchedule = function (_AbstractCrudObject) {
   return ProductFeedSchedule;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -12296,7 +10942,6 @@ var ProductFeedSchedule = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeedUploadErrorSample
  * @extends AbstractCrudObject
@@ -12332,16 +10977,6 @@ var ProductFeedUploadErrorSample = function (_AbstractCrudObject) {
   return ProductFeedUploadErrorSample;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -12352,7 +10987,6 @@ var ProductFeedUploadErrorSample = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeedRuleSuggestion
  * @extends AbstractCrudObject
@@ -12380,16 +11014,6 @@ var ProductFeedRuleSuggestion = function (_AbstractCrudObject) {
   return ProductFeedRuleSuggestion;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -12400,7 +11024,6 @@ var ProductFeedRuleSuggestion = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeedUploadError
  * @extends AbstractCrudObject
@@ -12482,16 +11105,6 @@ var ProductFeedUploadError = function (_AbstractCrudObject) {
   return ProductFeedUploadError;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -12502,7 +11115,6 @@ var ProductFeedUploadError = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeedUpload
  * @extends AbstractCrudObject
@@ -12575,16 +11187,6 @@ var ProductFeedUpload = function (_AbstractCrudObject) {
   return ProductFeedUpload;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -12595,7 +11197,6 @@ var ProductFeedUpload = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeed
  * @extends AbstractCrudObject
@@ -12896,28 +11497,14 @@ var ProductFeed = function (_AbstractCrudObject) {
         country: 'COUNTRY',
         language: 'LANGUAGE',
         language_and_country: 'LANGUAGE_AND_COUNTRY',
-<<<<<<< HEAD
-        local: 'LOCAL'
-=======
         local: 'LOCAL',
         smart_pixel_language_or_country: 'SMART_PIXEL_LANGUAGE_OR_COUNTRY'
->>>>>>> brkfst-api-patch
       });
     }
   }]);
   return ProductFeed;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -12928,7 +11515,6 @@ var ProductFeed = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductGroup
  * @extends AbstractCrudObject
@@ -13003,16 +11589,6 @@ var ProductGroup = function (_AbstractCrudObject) {
   return ProductGroup;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -13023,7 +11599,6 @@ var ProductGroup = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductCatalogProductSetsBatch
  * @extends AbstractCrudObject
@@ -13052,16 +11627,6 @@ var ProductCatalogProductSetsBatch = function (_AbstractCrudObject) {
   return ProductCatalogProductSetsBatch;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -13072,7 +11637,6 @@ var ProductCatalogProductSetsBatch = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductCatalog
  * @extends AbstractCrudObject
@@ -13111,17 +11675,6 @@ var ProductCatalog = function (_AbstractCrudObject) {
       return this.createEdge('/agencies', fields, params, ProductCatalog, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-    key: 'getArEffectsBatchStatus',
-    value: function getArEffectsBatchStatus(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(AREffectsBatchStatus, fields, params, fetchFirstPage, '/ar_effects_batch_status');
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'deleteAssignedUsers',
     value: function deleteAssignedUsers() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -13352,25 +11905,6 @@ var ProductCatalog = function (_AbstractCrudObject) {
       return this.createEdge('/localized_items_batch', fields, params, ProductCatalog, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-    key: 'getMediaTitles',
-    value: function getMediaTitles(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(MediaTitle, fields, params, fetchFirstPage, '/media_titles');
-    }
-  }, {
-    key: 'createMediaTitle',
-    value: function createMediaTitle(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var pathOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-      return this.createEdge('/media_titles', fields, params, MediaTitle, pathOverride);
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'getPricingVariablesBatch',
     value: function getPricingVariablesBatch(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -13532,10 +12066,7 @@ var ProductCatalog = function (_AbstractCrudObject) {
         owner_business: 'owner_business',
         product_count: 'product_count',
         store_catalog_settings: 'store_catalog_settings',
-<<<<<<< HEAD
-=======
         user_access_expire_time: 'user_access_expire_time',
->>>>>>> brkfst-api-patch
         vertical: 'vertical'
       });
     }
@@ -13572,10 +12103,7 @@ var ProductCatalog = function (_AbstractCrudObject) {
     key: 'PermittedTasks',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-=======
         aa_analyze: 'AA_ANALYZE',
->>>>>>> brkfst-api-patch
         advertise: 'ADVERTISE',
         manage: 'MANAGE',
         manage_ar: 'MANAGE_AR'
@@ -13585,10 +12113,7 @@ var ProductCatalog = function (_AbstractCrudObject) {
     key: 'Tasks',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-=======
         aa_analyze: 'AA_ANALYZE',
->>>>>>> brkfst-api-patch
         advertise: 'ADVERTISE',
         manage: 'MANAGE',
         manage_ar: 'MANAGE_AR'
@@ -13637,16 +12162,6 @@ var ProductCatalog = function (_AbstractCrudObject) {
   return ProductCatalog;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -13657,7 +12172,6 @@ var ProductCatalog = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CommerceMerchantSettingsSetupStatus
  * @extends AbstractCrudObject
@@ -13688,16 +12202,6 @@ var CommerceMerchantSettingsSetupStatus = function (_AbstractCrudObject) {
   return CommerceMerchantSettingsSetupStatus;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -13708,7 +12212,6 @@ var CommerceMerchantSettingsSetupStatus = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Shop
  * @extends AbstractCrudObject
@@ -13738,11 +12241,8 @@ var Shop = function (_AbstractCrudObject) {
         fb_sales_channel: 'fb_sales_channel',
         id: 'id',
         ig_sales_channel: 'ig_sales_channel',
-<<<<<<< HEAD
-=======
         is_onsite_enabled: 'is_onsite_enabled',
         shop_status: 'shop_status',
->>>>>>> brkfst-api-patch
         workspace: 'workspace'
       });
     }
@@ -13750,16 +12250,6 @@ var Shop = function (_AbstractCrudObject) {
   return Shop;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -13770,7 +12260,6 @@ var Shop = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CommerceMerchantSettings
  * @extends AbstractCrudObject
@@ -13927,10 +12416,6 @@ var CommerceMerchantSettings = function (_AbstractCrudObject) {
       return Object.freeze({
         braintree_merchant_id: 'braintree_merchant_id',
         checkout_message: 'checkout_message',
-<<<<<<< HEAD
-        commerce_store: 'commerce_store',
-=======
->>>>>>> brkfst-api-patch
         contact_email: 'contact_email',
         cta: 'cta',
         disable_checkout_urls: 'disable_checkout_urls',
@@ -13960,16 +12445,6 @@ var CommerceMerchantSettings = function (_AbstractCrudObject) {
   return CommerceMerchantSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -13980,7 +12455,6 @@ var CommerceMerchantSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UnifiedThread
  * @extends AbstractCrudObject
@@ -14021,10 +12495,7 @@ var UnifiedThread = function (_AbstractCrudObject) {
         id: 'id',
         is_subscribed: 'is_subscribed',
         link: 'link',
-<<<<<<< HEAD
-=======
         linked_group: 'linked_group',
->>>>>>> brkfst-api-patch
         message_count: 'message_count',
         name: 'name',
         participants: 'participants',
@@ -14049,16 +12520,6 @@ var UnifiedThread = function (_AbstractCrudObject) {
   return UnifiedThread;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14069,7 +12530,6 @@ var UnifiedThread = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageUserMessageThreadLabel
  * @extends AbstractCrudObject
@@ -14130,16 +12590,6 @@ var PageUserMessageThreadLabel = function (_AbstractCrudObject) {
   return PageUserMessageThreadLabel;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14150,7 +12600,6 @@ var PageUserMessageThreadLabel = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomUserSettings
  * @extends AbstractCrudObject
@@ -14177,16 +12626,6 @@ var CustomUserSettings = function (_AbstractCrudObject) {
   return CustomUserSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14232,7 +12671,6 @@ var Dataset = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * NullNode
  * @extends AbstractCrudObject
@@ -14256,16 +12694,6 @@ var NullNode = function (_AbstractCrudObject) {
   return NullNode;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14276,7 +12704,6 @@ var NullNode = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AppRequestFormerRecipient
  * @extends AbstractCrudObject
@@ -14303,16 +12730,6 @@ var AppRequestFormerRecipient = function (_AbstractCrudObject) {
   return AppRequestFormerRecipient;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14323,7 +12740,6 @@ var AppRequestFormerRecipient = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AppRequest
  * @extends AbstractCrudObject
@@ -14376,16 +12792,6 @@ var AppRequest = function (_AbstractCrudObject) {
   return AppRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14396,7 +12802,6 @@ var AppRequest = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomConversionStatsResult
  * @extends AbstractCrudObject
@@ -14438,16 +12843,6 @@ var CustomConversionStatsResult = function (_AbstractCrudObject) {
   return CustomConversionStatsResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14458,7 +12853,6 @@ var CustomConversionStatsResult = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomConversion
  * @extends AbstractCrudObject
@@ -14566,16 +12960,6 @@ var CustomConversion = function (_AbstractCrudObject) {
   return CustomConversion;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14586,7 +12970,6 @@ var CustomConversion = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * InstagramUser
  * @extends AbstractCrudObject
@@ -14610,8 +12993,6 @@ var InstagramUser = function (_AbstractCrudObject) {
       return this.getEdge(Business, fields, params, fetchFirstPage, '/agencies');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getArEffects',
     value: function getArEffects(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -14620,7 +13001,6 @@ var InstagramUser = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/ar_effects');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getAuthorizedAdAccounts',
     value: function getAuthorizedAdAccounts(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -14665,16 +13045,6 @@ var InstagramUser = function (_AbstractCrudObject) {
   return InstagramUser;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14685,7 +13055,6 @@ var InstagramUser = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomAudienceSession
  * @extends AbstractCrudObject
@@ -14718,16 +13087,6 @@ var CustomAudienceSession = function (_AbstractCrudObject) {
   return CustomAudienceSession;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14738,7 +13097,6 @@ var CustomAudienceSession = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomAudiencesharedAccountInfo
  * @extends AbstractCrudObject
@@ -14768,16 +13126,6 @@ var CustomAudiencesharedAccountInfo = function (_AbstractCrudObject) {
   return CustomAudiencesharedAccountInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -14788,7 +13136,6 @@ var CustomAudiencesharedAccountInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomAudience
  * @extends AbstractCrudObject
@@ -14996,10 +13343,7 @@ var CustomAudience = function (_AbstractCrudObject) {
       return Object.freeze({
         app: 'APP',
         bag_of_accounts: 'BAG_OF_ACCOUNTS',
-<<<<<<< HEAD
-=======
         bidding: 'BIDDING',
->>>>>>> brkfst-api-patch
         claim: 'CLAIM',
         custom: 'CUSTOM',
         engagement: 'ENGAGEMENT',
@@ -15009,15 +13353,10 @@ var CustomAudience = function (_AbstractCrudObject) {
         measurement: 'MEASUREMENT',
         offline_conversion: 'OFFLINE_CONVERSION',
         partner: 'PARTNER',
-<<<<<<< HEAD
-        regulated_categories_audience: 'REGULATED_CATEGORIES_AUDIENCE',
-        study_rule_audience: 'STUDY_RULE_AUDIENCE',
-=======
         primary: 'PRIMARY',
         regulated_categories_audience: 'REGULATED_CATEGORIES_AUDIENCE',
         study_rule_audience: 'STUDY_RULE_AUDIENCE',
         subscriber_segment: 'SUBSCRIBER_SEGMENT',
->>>>>>> brkfst-api-patch
         video: 'VIDEO',
         website: 'WEBSITE'
       });
@@ -15034,16 +13373,6 @@ var CustomAudience = function (_AbstractCrudObject) {
   return CustomAudience;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -15054,7 +13383,6 @@ var CustomAudience = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * OfflineConversionDataSetUpload
  * @extends AbstractCrudObject
@@ -15138,16 +13466,6 @@ var OfflineConversionDataSetUpload = function (_AbstractCrudObject) {
   return OfflineConversionDataSetUpload;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -15158,7 +13476,6 @@ var OfflineConversionDataSetUpload = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * OfflineConversionDataSet
  * @extends AbstractCrudObject
@@ -15222,17 +13539,6 @@ var OfflineConversionDataSet = function (_AbstractCrudObject) {
       return this.getEdge(CustomConversion, fields, params, fetchFirstPage, '/customconversions');
     }
   }, {
-<<<<<<< HEAD
-    key: 'createEvent',
-    value: function createEvent(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var pathOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-      return this.createEdge('/events', fields, params, null, pathOverride);
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'getServerEventsPermittedBusiness',
     value: function getServerEventsPermittedBusiness(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -15380,16 +13686,6 @@ var OfflineConversionDataSet = function (_AbstractCrudObject) {
   return OfflineConversionDataSet;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -15400,7 +13696,6 @@ var OfflineConversionDataSet = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessAssetGroup
  * @extends AbstractCrudObject
@@ -15718,16 +14013,6 @@ var BusinessAssetGroup = function (_AbstractCrudObject) {
   return BusinessAssetGroup;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -15789,7 +14074,6 @@ var Avatar = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessUser
  * @extends AbstractCrudObject
@@ -15911,16 +14195,6 @@ var BusinessUser = function (_AbstractCrudObject) {
   return BusinessUser;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -15981,7 +14255,6 @@ var WhitehatFBDLRun = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * FundraiserPersonToCharity
  * @extends AbstractCrudObject
@@ -16086,16 +14359,6 @@ var FundraiserPersonToCharity = function (_AbstractCrudObject) {
   return FundraiserPersonToCharity;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -16106,7 +14369,6 @@ var FundraiserPersonToCharity = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * GameItem
  * @extends AbstractCrudObject
@@ -16156,16 +14418,6 @@ var GameItem = function (_AbstractCrudObject) {
   return GameItem;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -16176,7 +14428,6 @@ var GameItem = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UserIDForApp
  * @extends AbstractCrudObject
@@ -16203,16 +14454,6 @@ var UserIDForApp = function (_AbstractCrudObject) {
   return UserIDForApp;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -16223,7 +14464,6 @@ var UserIDForApp = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UserIDForPage
  * @extends AbstractCrudObject
@@ -16250,16 +14490,6 @@ var UserIDForPage = function (_AbstractCrudObject) {
   return UserIDForPage;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -16270,7 +14500,6 @@ var UserIDForPage = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PaymentEnginePayment
  * @extends AbstractCrudObject
@@ -16348,16 +14577,6 @@ var PaymentEnginePayment = function (_AbstractCrudObject) {
   return PaymentEnginePayment;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -16368,7 +14587,6 @@ var PaymentEnginePayment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Permission
  * @extends AbstractCrudObject
@@ -16404,16 +14622,6 @@ var Permission = function (_AbstractCrudObject) {
   return Permission;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -16424,7 +14632,6 @@ var Permission = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * User
  * @extends AbstractCrudObject
@@ -16468,11 +14675,7 @@ var User = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var pathOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-<<<<<<< HEAD
-      return this.createEdge('/accounts', fields, params, Page, pathOverride);
-=======
       return this.createEdge('/accounts', fields, params, null, pathOverride);
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'getAdStudies',
@@ -16568,11 +14771,7 @@ var User = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/avatars');
-=======
       return this.getEdge(Avatar, fields, params, fetchFirstPage, '/avatars');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'getBusinessUsers',
@@ -16630,8 +14829,6 @@ var User = function (_AbstractCrudObject) {
       return this.getEdge(Event, fields, params, fetchFirstPage, '/events');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getFbdlRuns',
     value: function getFbdlRuns(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -16640,7 +14837,6 @@ var User = function (_AbstractCrudObject) {
       return this.getEdge(WhitehatFBDLRun, fields, params, fetchFirstPage, '/fbdl_runs');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getFeed',
     value: function getFeed(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -16907,13 +15103,9 @@ var User = function (_AbstractCrudObject) {
       return Object.freeze({
         about: 'about',
         age_range: 'age_range',
-<<<<<<< HEAD
-        birthday: 'birthday',
-=======
         avatar_2d_profile_picture: 'avatar_2d_profile_picture',
         birthday: 'birthday',
         community: 'community',
->>>>>>> brkfst-api-patch
         cover: 'cover',
         currency: 'currency',
         education: 'education',
@@ -16929,10 +15121,7 @@ var User = function (_AbstractCrudObject) {
         install_type: 'install_type',
         installed: 'installed',
         is_guest_user: 'is_guest_user',
-<<<<<<< HEAD
-=======
         is_work_account: 'is_work_account',
->>>>>>> brkfst-api-patch
         languages: 'languages',
         last_name: 'last_name',
         link: 'link',
@@ -17000,16 +15189,6 @@ var User = function (_AbstractCrudObject) {
   return User;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -17020,7 +15199,6 @@ var User = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LiveVideoError
  * @extends AbstractCrudObject
@@ -17058,16 +15236,6 @@ var LiveVideoError = function (_AbstractCrudObject) {
   return LiveVideoError;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -17078,7 +15246,6 @@ var LiveVideoError = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LiveVideoInputStream
  * @extends AbstractCrudObject
@@ -17119,16 +15286,6 @@ var LiveVideoInputStream = function (_AbstractCrudObject) {
   return LiveVideoInputStream;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -17139,7 +15296,6 @@ var LiveVideoInputStream = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoPoll
  * @extends AbstractCrudObject
@@ -17218,16 +15374,6 @@ var VideoPoll = function (_AbstractCrudObject) {
   return VideoPoll;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -17238,7 +15384,6 @@ var VideoPoll = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LiveVideo
  * @extends AbstractCrudObject
@@ -17484,16 +15629,6 @@ var LiveVideo = function (_AbstractCrudObject) {
   return LiveVideo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -17504,7 +15639,6 @@ var LiveVideo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Event
  * @extends AbstractCrudObject
@@ -17722,16 +15856,6 @@ var Event = function (_AbstractCrudObject) {
   return Event;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -17742,7 +15866,6 @@ var Event = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ImageCopyright
  * @extends AbstractCrudObject
@@ -18059,147 +16182,6 @@ var ImageCopyright = function (_AbstractCrudObject) {
   return ImageCopyright;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * InstantArticleInsightsQueryResult
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var InstantArticleInsightsQueryResult = function (_AbstractCrudObject) {
-  inherits(InstantArticleInsightsQueryResult, _AbstractCrudObject);
-
-  function InstantArticleInsightsQueryResult() {
-    classCallCheck(this, InstantArticleInsightsQueryResult);
-    return possibleConstructorReturn(this, (InstantArticleInsightsQueryResult.__proto__ || Object.getPrototypeOf(InstantArticleInsightsQueryResult)).apply(this, arguments));
-  }
-
-  createClass(InstantArticleInsightsQueryResult, null, [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        breakdowns: 'breakdowns',
-        name: 'name',
-        time: 'time',
-        value: 'value'
-      });
-    }
-  }, {
-    key: 'Breakdown',
-    get: function get() {
-      return Object.freeze({
-        age: 'age',
-        country: 'country',
-        gender: 'gender',
-        gender_and_age: 'gender_and_age',
-        is_organic: 'is_organic',
-        is_shared_by_ia_owner: 'is_shared_by_ia_owner',
-        no_breakdown: 'no_breakdown',
-        platform: 'platform',
-        region: 'region'
-      });
-    }
-  }, {
-    key: 'Period',
-    get: function get() {
-      return Object.freeze({
-        day: 'day',
-        days_28: 'days_28',
-        lifetime: 'lifetime',
-        month: 'month',
-        total_over_range: 'total_over_range',
-        week: 'week'
-      });
-    }
-  }]);
-  return InstantArticleInsightsQueryResult;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * InstantArticle
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var InstantArticle = function (_AbstractCrudObject) {
-  inherits(InstantArticle, _AbstractCrudObject);
-
-  function InstantArticle() {
-    classCallCheck(this, InstantArticle);
-    return possibleConstructorReturn(this, (InstantArticle.__proto__ || Object.getPrototypeOf(InstantArticle)).apply(this, arguments));
-  }
-
-  createClass(InstantArticle, [{
-    key: 'getInsights',
-    value: function getInsights(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(InstantArticleInsightsQueryResult, fields, params, fetchFirstPage, '/insights');
-    }
-
-    // $FlowFixMe : Support Generic Types
-
-  }, {
-    key: 'delete',
-    value: function _delete(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      // $FlowFixMe : Support Generic Types
-      return get$1(InstantArticle.prototype.__proto__ || Object.getPrototypeOf(InstantArticle.prototype), 'delete', this).call(this, params);
-    }
-  }, {
-    key: 'get',
-    value: function get(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      // $FlowFixMe : Support Generic Types
-      return this.read(fields, params);
-    }
-  }], [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        canonical_url: 'canonical_url',
-        development_mode: 'development_mode',
-        html_source: 'html_source',
-        id: 'id',
-        most_recent_import_status: 'most_recent_import_status',
-        photos: 'photos',
-        publish_status: 'publish_status',
-        published: 'published',
-        videos: 'videos'
-      });
-    }
-  }]);
-  return InstantArticle;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18210,7 +16192,6 @@ var InstantArticle = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * InstantArticlesStats
  * @extends AbstractCrudObject
@@ -18240,16 +16221,6 @@ var InstantArticlesStats = function (_AbstractCrudObject) {
   return InstantArticlesStats;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18260,7 +16231,6 @@ var InstantArticlesStats = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LeadgenForm
  * @extends AbstractCrudObject
@@ -18399,16 +16369,6 @@ var LeadgenForm = function (_AbstractCrudObject) {
   return LeadgenForm;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18419,7 +16379,6 @@ var LeadgenForm = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * MediaFingerprint
  * @extends AbstractCrudObject
@@ -18481,16 +16440,6 @@ var MediaFingerprint = function (_AbstractCrudObject) {
   return MediaFingerprint;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18501,7 +16450,6 @@ var MediaFingerprint = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * MessagingFeatureReview
  * @extends AbstractCrudObject
@@ -18528,16 +16476,6 @@ var MessagingFeatureReview = function (_AbstractCrudObject) {
   return MessagingFeatureReview;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18605,7 +16543,6 @@ var MessengerAdsPartialAutomatedStepList = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * MessengerProfile
  * @extends AbstractCrudObject
@@ -18625,10 +16562,7 @@ var MessengerProfile = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         account_linking_url: 'account_linking_url',
-<<<<<<< HEAD
-=======
         commands: 'commands',
->>>>>>> brkfst-api-patch
         get_started: 'get_started',
         greeting: 'greeting',
         ice_breakers: 'ice_breakers',
@@ -18643,16 +16577,6 @@ var MessengerProfile = function (_AbstractCrudObject) {
   return MessengerProfile;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18663,7 +16587,6 @@ var MessengerProfile = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UserPageOneTimeOptInTokenSettings
  * @extends AbstractCrudObject
@@ -18707,16 +16630,6 @@ var UserPageOneTimeOptInTokenSettings = function (_AbstractCrudObject) {
   return UserPageOneTimeOptInTokenSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18727,7 +16640,6 @@ var UserPageOneTimeOptInTokenSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Persona
  * @extends AbstractCrudObject
@@ -18774,16 +16686,6 @@ var Persona = function (_AbstractCrudObject) {
   return Persona;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18794,7 +16696,6 @@ var Persona = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Recommendation
  * @extends AbstractCrudObject
@@ -18827,16 +16728,6 @@ var Recommendation = function (_AbstractCrudObject) {
   return Recommendation;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18847,7 +16738,6 @@ var Recommendation = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageSettings
  * @extends AbstractCrudObject
@@ -18874,16 +16764,6 @@ var PageSettings = function (_AbstractCrudObject) {
   return PageSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18942,7 +16822,6 @@ var Stories = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Tab
  * @extends AbstractCrudObject
@@ -18977,16 +16856,6 @@ var Tab = function (_AbstractCrudObject) {
   return Tab;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -18997,7 +16866,6 @@ var Tab = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageThreadOwner
  * @extends AbstractCrudObject
@@ -19023,16 +16891,6 @@ var PageThreadOwner = function (_AbstractCrudObject) {
   return PageThreadOwner;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -19043,7 +16901,6 @@ var PageThreadOwner = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoCopyrightRule
  * @extends AbstractCrudObject
@@ -19092,16 +16949,6 @@ var VideoCopyrightRule = function (_AbstractCrudObject) {
   return VideoCopyrightRule;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -19112,7 +16959,6 @@ var VideoCopyrightRule = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoCopyright
  * @extends AbstractCrudObject
@@ -19198,16 +17044,6 @@ var VideoCopyright = function (_AbstractCrudObject) {
   return VideoCopyright;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -19218,7 +17054,6 @@ var VideoCopyright = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoList
  * @extends AbstractCrudObject
@@ -19268,16 +17103,6 @@ var VideoList = function (_AbstractCrudObject) {
   return VideoList;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -19337,7 +17162,6 @@ var CTXPartnerAppWelcomeMessageFlow = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Page
  * @extends AbstractCrudObject
@@ -19353,8 +17177,6 @@ var Page = function (_AbstractCrudObject) {
   }
 
   createClass(Page, [{
-<<<<<<< HEAD
-=======
     key: 'getAbTests',
     value: function getAbTests(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -19371,7 +17193,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/ab_tests', fields, params, PagePostExperiment, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'createAcknowledgeOrder',
     value: function createAcknowledgeOrder(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -19545,17 +17366,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/chat_plugin', fields, params, Page, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-    key: 'getClaimedUrls',
-    value: function getClaimedUrls(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(URL, fields, params, fetchFirstPage, '/claimed_urls');
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'getCommerceEligibility',
     value: function getCommerceEligibility(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -19659,8 +17469,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/custom_user_settings', fields, params, Page, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getDataset',
     value: function getDataset(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -19669,7 +17477,6 @@ var Page = function (_AbstractCrudObject) {
       return this.getEdge(Dataset, fields, params, fetchFirstPage, '/dataset');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getEvents',
     value: function getEvents(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -19766,41 +17573,6 @@ var Page = function (_AbstractCrudObject) {
       return this.getEdge(InstagramUser, fields, params, fetchFirstPage, '/instagram_accounts');
     }
   }, {
-<<<<<<< HEAD
-    key: 'getInstantArticles',
-    value: function getInstantArticles(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(InstantArticle, fields, params, fetchFirstPage, '/instant_articles');
-    }
-  }, {
-    key: 'createInstantArticle',
-    value: function createInstantArticle(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var pathOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-      return this.createEdge('/instant_articles', fields, params, InstantArticle, pathOverride);
-    }
-  }, {
-    key: 'getInstantArticlesInsights',
-    value: function getInstantArticlesInsights(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(InstantArticleInsightsQueryResult, fields, params, fetchFirstPage, '/instant_articles_insights');
-    }
-  }, {
-    key: 'createInstantArticlesPublish',
-    value: function createInstantArticlesPublish(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var pathOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-      return this.createEdge('/instant_articles_publish', fields, params, Page, pathOverride);
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'getInstantArticlesStats',
     value: function getInstantArticlesStats(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -19809,17 +17581,6 @@ var Page = function (_AbstractCrudObject) {
       return this.getEdge(InstantArticlesStats, fields, params, fetchFirstPage, '/instant_articles_stats');
     }
   }, {
-<<<<<<< HEAD
-    key: 'getInvoiceAccessBankAccount',
-    value: function getInvoiceAccessBankAccount(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/invoice_access_bank_account');
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'getLeadGenForms',
     value: function getLeadGenForms(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -19923,8 +17684,6 @@ var Page = function (_AbstractCrudObject) {
       return this.getEdge(MessagingFeatureReview, fields, params, fetchFirstPage, '/messaging_feature_review');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getMessengerLeadForms',
     value: function getMessengerLeadForms(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -19941,7 +17700,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/messenger_lead_forms', fields, params, Page, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'deleteMessengerProfile',
     value: function deleteMessengerProfile() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -20045,8 +17803,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/personas', fields, params, Persona, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createPhotoStory',
     value: function createPhotoStory(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -20055,7 +17811,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/photo_stories', fields, params, Page, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getPhotos',
     value: function getPhotos(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -20192,8 +17947,6 @@ var Page = function (_AbstractCrudObject) {
       return this.getEdge(CommerceMerchantSettingsSetupStatus, fields, params, fetchFirstPage, '/shop_setup_status');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getStories',
     value: function getStories(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -20202,7 +17955,6 @@ var Page = function (_AbstractCrudObject) {
       return this.getEdge(Stories, fields, params, fetchFirstPage, '/stories');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'deleteSubscribedApps',
     value: function deleteSubscribedApps() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -20322,8 +18074,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/video_reels', fields, params, AdVideo, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createVideoStory',
     value: function createVideoStory(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -20332,7 +18082,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/video_stories', fields, params, null, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getVideos',
     value: function getVideos(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -20357,8 +18106,6 @@ var Page = function (_AbstractCrudObject) {
       return this.getEdge(PagePost, fields, params, fetchFirstPage, '/visitor_posts');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'deleteWelcomeMessageFlows',
     value: function deleteWelcomeMessageFlows() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -20382,7 +18129,6 @@ var Page = function (_AbstractCrudObject) {
       return this.createEdge('/welcome_message_flows', fields, params, null, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'get',
     value: function get(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -20442,10 +18188,7 @@ var Page = function (_AbstractCrudObject) {
         directed_by: 'directed_by',
         display_subtext: 'display_subtext',
         displayed_message_response_time: 'displayed_message_response_time',
-<<<<<<< HEAD
-=======
         does_viewer_have_page_permission_link_ig: 'does_viewer_have_page_permission_link_ig',
->>>>>>> brkfst-api-patch
         emails: 'emails',
         engagement: 'engagement',
         fan_count: 'fan_count',
@@ -20460,15 +18203,10 @@ var Page = function (_AbstractCrudObject) {
         global_brand_page_name: 'global_brand_page_name',
         global_brand_root_id: 'global_brand_root_id',
         has_added_app: 'has_added_app',
-<<<<<<< HEAD
-        has_transitioned_to_new_page_experience: 'has_transitioned_to_new_page_experience',
-        has_whatsapp_business_number: 'has_whatsapp_business_number',
-=======
         has_lead_access: 'has_lead_access',
         has_transitioned_to_new_page_experience: 'has_transitioned_to_new_page_experience',
         has_whatsapp_business_number: 'has_whatsapp_business_number',
         has_whatsapp_enterprise_number_using_cloud_api: 'has_whatsapp_enterprise_number_using_cloud_api',
->>>>>>> brkfst-api-patch
         has_whatsapp_number: 'has_whatsapp_number',
         hometown: 'hometown',
         hours: 'hours',
@@ -20476,18 +18214,11 @@ var Page = function (_AbstractCrudObject) {
         impressum: 'impressum',
         influences: 'influences',
         instagram_business_account: 'instagram_business_account',
-<<<<<<< HEAD
-        instant_articles_review_status: 'instant_articles_review_status',
-=======
->>>>>>> brkfst-api-patch
         is_always_open: 'is_always_open',
         is_chain: 'is_chain',
         is_community_page: 'is_community_page',
         is_eligible_for_branded_content: 'is_eligible_for_branded_content',
-<<<<<<< HEAD
-=======
         is_eligible_for_disable_connect_ig_btn_for_non_page_admin_am_web: 'is_eligible_for_disable_connect_ig_btn_for_non_page_admin_am_web',
->>>>>>> brkfst-api-patch
         is_messenger_bot_get_started_enabled: 'is_messenger_bot_get_started_enabled',
         is_messenger_platform_bot: 'is_messenger_platform_bot',
         is_owned: 'is_owned',
@@ -20507,10 +18238,6 @@ var Page = function (_AbstractCrudObject) {
         merchant_review_status: 'merchant_review_status',
         messaging_feature_status: 'messaging_feature_status',
         messenger_ads_default_icebreakers: 'messenger_ads_default_icebreakers',
-<<<<<<< HEAD
-        messenger_ads_default_page_welcome_message: 'messenger_ads_default_page_welcome_message',
-=======
->>>>>>> brkfst-api-patch
         messenger_ads_default_quick_replies: 'messenger_ads_default_quick_replies',
         messenger_ads_quick_replies_type: 'messenger_ads_quick_replies_type',
         mini_shop_storefront: 'mini_shop_storefront',
@@ -20523,10 +18250,7 @@ var Page = function (_AbstractCrudObject) {
         offer_eligible: 'offer_eligible',
         overall_star_rating: 'overall_star_rating',
         owner_business: 'owner_business',
-<<<<<<< HEAD
-=======
         page_about_story: 'page_about_story',
->>>>>>> brkfst-api-patch
         page_token: 'page_token',
         parent_page: 'parent_page',
         parking: 'parking',
@@ -20564,19 +18288,12 @@ var Page = function (_AbstractCrudObject) {
         store_number: 'store_number',
         studio: 'studio',
         supports_donate_button_in_live_video: 'supports_donate_button_in_live_video',
-<<<<<<< HEAD
-        supports_instant_articles: 'supports_instant_articles',
-=======
->>>>>>> brkfst-api-patch
         talking_about_count: 'talking_about_count',
         temporary_status: 'temporary_status',
         unread_message_count: 'unread_message_count',
         unread_notif_count: 'unread_notif_count',
         unseen_message_count: 'unseen_message_count',
-<<<<<<< HEAD
-=======
         user_access_expire_time: 'user_access_expire_time',
->>>>>>> brkfst-api-patch
         username: 'username',
         verification_status: 'verification_status',
         voip_info: 'voip_info',
@@ -20805,19 +18522,6 @@ var Page = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-    key: 'CheckinEntryPoint',
-    get: function get() {
-      return Object.freeze({
-        branding_checkin: 'BRANDING_CHECKIN',
-        branding_other: 'BRANDING_OTHER',
-        branding_photo: 'BRANDING_PHOTO',
-        branding_status: 'BRANDING_STATUS'
-      });
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'Formatting',
     get: function get() {
       return Object.freeze({
@@ -20874,17 +18578,6 @@ var Page = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-    key: 'PublishStatus',
-    get: function get() {
-      return Object.freeze({
-        draft: 'DRAFT',
-        live: 'LIVE'
-      });
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'MessagingType',
     get: function get() {
       return Object.freeze({
@@ -20914,8 +18607,6 @@ var Page = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'SuggestionAction',
     get: function get() {
       return Object.freeze({
@@ -20925,7 +18616,6 @@ var Page = function (_AbstractCrudObject) {
       });
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'Platform',
     get: function get() {
       return Object.freeze({
@@ -20966,12 +18656,7 @@ var Page = function (_AbstractCrudObject) {
     key: 'DeveloperAction',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-        enable_followup_message: 'ENABLE_FOLLOWUP_MESSAGE',
-        send_re_optin: 'SEND_RE_OPTIN'
-=======
         enable_followup_message: 'ENABLE_FOLLOWUP_MESSAGE'
->>>>>>> brkfst-api-patch
       });
     }
   }, {
@@ -20996,18 +18681,12 @@ var Page = function (_AbstractCrudObject) {
         founded: 'founded',
         general_info: 'general_info',
         general_manager: 'general_manager',
-<<<<<<< HEAD
-        hometown: 'hometown',
-        hours: 'hours',
-        inbox_labels: 'inbox_labels',
-=======
         group_feed: 'group_feed',
         hometown: 'hometown',
         hours: 'hours',
         inbox_labels: 'inbox_labels',
         invalid_topic_placeholder: 'invalid_topic_placeholder',
         invoice_access_bank_slip_events: 'invoice_access_bank_slip_events',
->>>>>>> brkfst-api-patch
         invoice_access_invoice_change: 'invoice_access_invoice_change',
         invoice_access_invoice_draft_change: 'invoice_access_invoice_draft_change',
         invoice_access_onboarding_status_active: 'invoice_access_onboarding_status_active',
@@ -21020,10 +18699,7 @@ var Page = function (_AbstractCrudObject) {
         members: 'members',
         mention: 'mention',
         merchant_review: 'merchant_review',
-<<<<<<< HEAD
-=======
         message_context: 'message_context',
->>>>>>> brkfst-api-patch
         message_deliveries: 'message_deliveries',
         message_echoes: 'message_echoes',
         message_mention: 'message_mention',
@@ -21039,10 +18715,7 @@ var Page = function (_AbstractCrudObject) {
         messaging_feedback: 'messaging_feedback',
         messaging_game_plays: 'messaging_game_plays',
         messaging_handovers: 'messaging_handovers',
-<<<<<<< HEAD
-=======
         messaging_in_thread_lead_form_submit: 'messaging_in_thread_lead_form_submit',
->>>>>>> brkfst-api-patch
         messaging_optins: 'messaging_optins',
         messaging_optouts: 'messaging_optouts',
         messaging_payments: 'messaging_payments',
@@ -21052,10 +18725,7 @@ var Page = function (_AbstractCrudObject) {
         messaging_referrals: 'messaging_referrals',
         mission: 'mission',
         name: 'name',
-<<<<<<< HEAD
-=======
         otp_verification: 'otp_verification',
->>>>>>> brkfst-api-patch
         page_about_story: 'page_about_story',
         page_change_proposal: 'page_change_proposal',
         page_upcoming_change: 'page_upcoming_change',
@@ -21072,10 +18742,7 @@ var Page = function (_AbstractCrudObject) {
         publisher_subscriptions: 'publisher_subscriptions',
         ratings: 'ratings',
         registration: 'registration',
-<<<<<<< HEAD
-=======
         send_cart: 'send_cart',
->>>>>>> brkfst-api-patch
         standby: 'standby',
         user_action: 'user_action',
         video_text_question_responses: 'video_text_question_responses',
@@ -21087,16 +18754,6 @@ var Page = function (_AbstractCrudObject) {
   return Page;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -21107,7 +18764,6 @@ var Page = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Photo
  * @extends AbstractCrudObject
@@ -21260,16 +18916,6 @@ var Photo = function (_AbstractCrudObject) {
   return Photo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -21280,7 +18926,6 @@ var Photo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Album
  * @extends AbstractCrudObject
@@ -21392,16 +19037,6 @@ var Album = function (_AbstractCrudObject) {
   return Album;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -21412,7 +19047,6 @@ var Album = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Group
  * @extends AbstractCrudObject
@@ -21459,25 +19093,6 @@ var Group = function (_AbstractCrudObject) {
       return this.createEdge('/albums', fields, params, Album, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-    key: 'getAttachmentSurfaces',
-    value: function getAttachmentSurfaces(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/attachment_surfaces');
-    }
-  }, {
-    key: 'createAttachmentSurface',
-    value: function createAttachmentSurface(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var pathOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-      return this.createEdge('/attachment_surfaces', fields, params, null, pathOverride);
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'getDocs',
     value: function getDocs(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -21589,17 +19204,6 @@ var Group = function (_AbstractCrudObject) {
       return this.getEdge(ProfilePictureSource, fields, params, fetchFirstPage, '/picture');
     }
   }, {
-<<<<<<< HEAD
-    key: 'createShiftSetting',
-    value: function createShiftSetting(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var pathOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-      return this.createEdge('/shift_settings', fields, params, null, pathOverride);
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'getVideos',
     value: function getVideos(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -21749,16 +19353,6 @@ var Group = function (_AbstractCrudObject) {
   return Group;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -21769,7 +19363,6 @@ var Group = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * DACheck
  * @extends AbstractCrudObject
@@ -21810,16 +19403,6 @@ var DACheck = function (_AbstractCrudObject) {
   return DACheck;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -21830,7 +19413,6 @@ var DACheck = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Application
  * @extends AbstractCrudObject
@@ -22093,8 +19675,6 @@ var Application = function (_AbstractCrudObject) {
       return this.getEdge(Event, fields, params, fetchFirstPage, '/events');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getIapPurchases',
     value: function getIapPurchases(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22103,7 +19683,6 @@ var Application = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/iap_purchases');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getInsightsPushSchedule',
     value: function getInsightsPushSchedule(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22120,8 +19699,6 @@ var Application = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/ios_dialog_configs');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getLinkedDataset',
     value: function getLinkedDataset(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22130,7 +19707,6 @@ var Application = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/linked_dataset');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'createMmpAuditing',
     value: function createMmpAuditing(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22171,8 +19747,6 @@ var Application = function (_AbstractCrudObject) {
       return this.getEdge(NullNode, fields, params, fetchFirstPage, '/object_types');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getObjects',
     value: function getObjects(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22181,7 +19755,6 @@ var Application = function (_AbstractCrudObject) {
       return this.getEdge(NullNode, fields, params, fetchFirstPage, '/objects');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'createOccludesPopup',
     value: function createOccludesPopup(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22238,8 +19811,6 @@ var Application = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/roles');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getServerDomainInfos',
     value: function getServerDomainInfos(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22248,7 +19819,6 @@ var Application = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/server_domain_infos');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getSubscribedDomains',
     value: function getSubscribedDomains(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22351,11 +19921,8 @@ var Application = function (_AbstractCrudObject) {
         auto_event_mapping_android: 'auto_event_mapping_android',
         auto_event_mapping_ios: 'auto_event_mapping_ios',
         auto_event_setup_enabled: 'auto_event_setup_enabled',
-<<<<<<< HEAD
-=======
         auto_log_app_events_default: 'auto_log_app_events_default',
         auto_log_app_events_enabled: 'auto_log_app_events_enabled',
->>>>>>> brkfst-api-patch
         business: 'business',
         canvas_fluid_height: 'canvas_fluid_height',
         canvas_fluid_width: 'canvas_fluid_width',
@@ -22408,10 +19975,7 @@ var Application = function (_AbstractCrudObject) {
         privacy_policy_url: 'privacy_policy_url',
         profile_section_url: 'profile_section_url',
         property_id: 'property_id',
-<<<<<<< HEAD
-=======
         protected_mode_rules: 'protected_mode_rules',
->>>>>>> brkfst-api-patch
         real_time_mode_devices: 'real_time_mode_devices',
         restrictions: 'restrictions',
         restrictive_data_filter_params: 'restrictive_data_filter_params',
@@ -22512,10 +20076,7 @@ var Application = function (_AbstractCrudObject) {
     key: 'LoggingSource',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-=======
         detection: 'DETECTION',
->>>>>>> brkfst-api-patch
         messenger_bot: 'MESSENGER_BOT'
       });
     }
@@ -22532,16 +20093,6 @@ var Application = function (_AbstractCrudObject) {
   return Application;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -22552,7 +20103,6 @@ var Application = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * OmegaCustomerTrx
  * @extends AbstractCrudObject
@@ -22622,16 +20172,6 @@ var OmegaCustomerTrx = function (_AbstractCrudObject) {
   return OmegaCustomerTrx;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -22642,7 +20182,6 @@ var OmegaCustomerTrx = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * WhatsAppBusinessAccount
  * @extends AbstractCrudObject
@@ -22697,14 +20236,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/conversation_analytics');
     }
   }, {
-<<<<<<< HEAD
-    key: 'getExtensions',
-    value: function getExtensions(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/extensions');
-=======
     key: 'getDccConfig',
     value: function getDccConfig(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22743,7 +20274,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/message_template_previews');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'deleteMessageTemplates',
@@ -22769,8 +20299,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
       return this.createEdge('/message_templates', fields, params, WhatsAppBusinessAccount, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createMigrateMessageTemplate',
     value: function createMigrateMessageTemplate(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22779,7 +20307,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
       return this.createEdge('/migrate_message_templates', fields, params, WhatsAppBusinessAccount, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getPhoneNumbers',
     value: function getPhoneNumbers(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22850,8 +20377,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
       return this.createEdge('/subscribed_apps', fields, params, WhatsAppBusinessAccount, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getTemplateAnalytics',
     value: function getTemplateAnalytics(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22876,7 +20401,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
       return this.createEdge('/upsert_message_templates', fields, params, WhatsAppBusinessAccount, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'get',
     value: function get(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -22884,8 +20408,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
       // $FlowFixMe : Support Generic Types
       return this.read(fields, params);
     }
-<<<<<<< HEAD
-=======
 
     // $FlowFixMe : Support Generic Types
 
@@ -22897,7 +20419,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
       // $FlowFixMe : Support Generic Types
       return get$1(WhatsAppBusinessAccount.prototype.__proto__ || Object.getPrototypeOf(WhatsAppBusinessAccount.prototype), 'update', this).call(this, params);
     }
->>>>>>> brkfst-api-patch
   }], [{
     key: 'Fields',
     get: function get() {
@@ -22908,13 +20429,9 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
         country: 'country',
         creation_time: 'creation_time',
         currency: 'currency',
-<<<<<<< HEAD
-        id: 'id',
-=======
         health_status: 'health_status',
         id: 'id',
         is_enabled_for_insights: 'is_enabled_for_insights',
->>>>>>> brkfst-api-patch
         message_template_namespace: 'message_template_namespace',
         name: 'name',
         on_behalf_of_business_info: 'on_behalf_of_business_info',
@@ -22932,15 +20449,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         develop: 'DEVELOP',
-<<<<<<< HEAD
-        full_control: 'FULL_CONTROL',
-        manage: 'MANAGE',
-        manage_extensions: 'MANAGE_EXTENSIONS',
-        manage_phone: 'MANAGE_PHONE',
-        manage_templates: 'MANAGE_TEMPLATES',
-        messaging: 'MESSAGING',
-        view_cost: 'VIEW_COST'
-=======
         manage: 'MANAGE',
         manage_extensions: 'MANAGE_EXTENSIONS',
         manage_phone: 'MANAGE_PHONE',
@@ -22949,7 +20457,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
         view_cost: 'VIEW_COST',
         view_phone_assets: 'VIEW_PHONE_ASSETS',
         view_templates: 'VIEW_TEMPLATES'
->>>>>>> brkfst-api-patch
       });
     }
   }, {
@@ -22961,8 +20468,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
         utility: 'UTILITY'
       });
     }
-<<<<<<< HEAD
-=======
   }, {
     key: 'SubCategory',
     get: function get() {
@@ -22972,21 +20477,10 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
         order_status: 'ORDER_STATUS'
       });
     }
->>>>>>> brkfst-api-patch
   }]);
   return WhatsAppBusinessAccount;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -22997,7 +20491,6 @@ var WhatsAppBusinessAccount = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CPASCollaborationRequest
  * @extends AbstractCrudObject
@@ -23049,16 +20542,6 @@ var CPASCollaborationRequest = function (_AbstractCrudObject) {
   return CPASCollaborationRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23069,7 +20552,6 @@ var CPASCollaborationRequest = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CPASAdvertiserPartnershipRecommendation
  * @extends AbstractCrudObject
@@ -23111,16 +20593,6 @@ var CPASAdvertiserPartnershipRecommendation = function (_AbstractCrudObject) {
   return CPASAdvertiserPartnershipRecommendation;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23131,7 +20603,6 @@ var CPASAdvertiserPartnershipRecommendation = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CPASBusinessSetupConfig
  * @extends AbstractCrudObject
@@ -23177,16 +20648,6 @@ var CPASBusinessSetupConfig = function (_AbstractCrudObject) {
   return CPASBusinessSetupConfig;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23197,7 +20658,6 @@ var CPASBusinessSetupConfig = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CPASMerchantConfig
  * @extends AbstractCrudObject
@@ -23237,16 +20697,6 @@ var CPASMerchantConfig = function (_AbstractCrudObject) {
   return CPASMerchantConfig;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23307,7 +20757,6 @@ var BusinessCreativeFolder = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CreditCard
  * @extends AbstractCrudObject
@@ -23361,16 +20810,6 @@ var CreditCard = function (_AbstractCrudObject) {
   return CreditCard;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23381,7 +20820,6 @@ var CreditCard = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * EventSourceGroup
  * @extends AbstractCrudObject
@@ -23446,16 +20884,6 @@ var EventSourceGroup = function (_AbstractCrudObject) {
   return EventSourceGroup;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23466,7 +20894,6 @@ var EventSourceGroup = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ExtendedCreditInvoiceGroup
  * @extends AbstractCrudObject
@@ -23504,8 +20931,6 @@ var ExtendedCreditInvoiceGroup = function (_AbstractCrudObject) {
 
       return this.createEdge('/ad_accounts', fields, params, AdAccount, pathOverride);
     }
-<<<<<<< HEAD
-=======
 
     // $FlowFixMe : Support Generic Types
 
@@ -23517,7 +20942,6 @@ var ExtendedCreditInvoiceGroup = function (_AbstractCrudObject) {
       // $FlowFixMe : Support Generic Types
       return get$1(ExtendedCreditInvoiceGroup.prototype.__proto__ || Object.getPrototypeOf(ExtendedCreditInvoiceGroup.prototype), 'delete', this).call(this, params);
     }
->>>>>>> brkfst-api-patch
   }, {
     key: 'get',
     value: function get(fields) {
@@ -23556,16 +20980,6 @@ var ExtendedCreditInvoiceGroup = function (_AbstractCrudObject) {
   return ExtendedCreditInvoiceGroup;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23576,7 +20990,6 @@ var ExtendedCreditInvoiceGroup = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ExtendedCreditAllocationConfig
  * @extends AbstractCrudObject
@@ -23651,12 +21064,8 @@ var ExtendedCreditAllocationConfig = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         auth: 'AUTH',
-<<<<<<< HEAD
-        fixed: 'FIXED'
-=======
         fixed: 'FIXED',
         fixed_without_partition: 'FIXED_WITHOUT_PARTITION'
->>>>>>> brkfst-api-patch
       });
     }
   }, {
@@ -23671,16 +21080,6 @@ var ExtendedCreditAllocationConfig = function (_AbstractCrudObject) {
   return ExtendedCreditAllocationConfig;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23691,7 +21090,6 @@ var ExtendedCreditAllocationConfig = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ExtendedCredit
  * @extends AbstractCrudObject
@@ -23783,16 +21181,6 @@ var ExtendedCredit = function (_AbstractCrudObject) {
   return ExtendedCredit;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -23884,7 +21272,6 @@ var BusinessImage = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessAssetSharingAgreement
  * @extends AbstractCrudObject
@@ -23947,16 +21334,6 @@ var BusinessAssetSharingAgreement = function (_AbstractCrudObject) {
   return BusinessAssetSharingAgreement;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -24083,7 +21460,6 @@ var ContentPublishingLimitResponse = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * InstagramInsightsResult
  * @extends AbstractCrudObject
@@ -24134,11 +21510,8 @@ var InstagramInsightsResult = function (_AbstractCrudObject) {
         engagement: 'engagement',
         exits: 'exits',
         follows: 'follows',
-<<<<<<< HEAD
-=======
         ig_reels_avg_watch_time: 'ig_reels_avg_watch_time',
         ig_reels_video_view_total_time: 'ig_reels_video_view_total_time',
->>>>>>> brkfst-api-patch
         impressions: 'impressions',
         likes: 'likes',
         navigation: 'navigation',
@@ -24192,16 +21565,6 @@ var InstagramInsightsResult = function (_AbstractCrudObject) {
   return InstagramInsightsResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -24249,7 +21612,6 @@ var ShadowIGMediaCollaborators = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * IGComment
  * @extends AbstractCrudObject
@@ -24330,16 +21692,6 @@ var IGComment = function (_AbstractCrudObject) {
   return IGComment;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -24350,7 +21702,6 @@ var IGComment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ShadowIGMediaProductTags
  * @extends AbstractCrudObject
@@ -24386,16 +21737,6 @@ var ShadowIGMediaProductTags = function (_AbstractCrudObject) {
   return ShadowIGMediaProductTags;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -24406,7 +21747,6 @@ var ShadowIGMediaProductTags = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * IGMedia
  * @extends AbstractCrudObject
@@ -24430,8 +21770,6 @@ var IGMedia = function (_AbstractCrudObject) {
       return this.getEdge(IGMedia, fields, params, fetchFirstPage, '/children');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getCollaborators',
     value: function getCollaborators(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -24440,7 +21778,6 @@ var IGMedia = function (_AbstractCrudObject) {
       return this.getEdge(ShadowIGMediaCollaborators, fields, params, fetchFirstPage, '/collaborators');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getComments',
     value: function getComments(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -24512,10 +21849,7 @@ var IGMedia = function (_AbstractCrudObject) {
       return Object.freeze({
         caption: 'caption',
         comments_count: 'comments_count',
-<<<<<<< HEAD
-=======
         copyright_check_information: 'copyright_check_information',
->>>>>>> brkfst-api-patch
         id: 'id',
         ig_id: 'ig_id',
         is_comment_enabled: 'is_comment_enabled',
@@ -24536,16 +21870,6 @@ var IGMedia = function (_AbstractCrudObject) {
   return IGMedia;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -24655,7 +21979,6 @@ var ShadowIGHashtag = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * IGUser
  * @extends AbstractCrudObject
@@ -24676,11 +21999,7 @@ var IGUser = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/available_catalogs');
-=======
       return this.getEdge(UserAvailableCatalogs, fields, params, fetchFirstPage, '/available_catalogs');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'getCatalogProductSearch',
@@ -24688,11 +22007,7 @@ var IGUser = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/catalog_product_search');
-=======
       return this.getEdge(ShadowIGUserCatalogProductSearch, fields, params, fetchFirstPage, '/catalog_product_search');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'getContentPublishingLimit',
@@ -24700,9 +22015,6 @@ var IGUser = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/content_publishing_limit');
-=======
       return this.getEdge(ContentPublishingLimitResponse, fields, params, fetchFirstPage, '/content_publishing_limit');
     }
   }, {
@@ -24712,7 +22024,6 @@ var IGUser = function (_AbstractCrudObject) {
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
       return this.getEdge(Dataset, fields, params, fetchFirstPage, '/dataset');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'getInsights',
@@ -24776,11 +22087,7 @@ var IGUser = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/product_appeal');
-=======
       return this.getEdge(IGShoppingProductAppeal, fields, params, fetchFirstPage, '/product_appeal');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'createProductAppeal',
@@ -24788,11 +22095,7 @@ var IGUser = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var pathOverride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-<<<<<<< HEAD
-      return this.createEdge('/product_appeal', fields, params, null, pathOverride);
-=======
       return this.createEdge('/product_appeal', fields, params, IGShoppingProductAppeal, pathOverride);
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'getRecentlySearchedHashtags',
@@ -24800,11 +22103,7 @@ var IGUser = function (_AbstractCrudObject) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-<<<<<<< HEAD
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/recently_searched_hashtags');
-=======
       return this.getEdge(ShadowIGHashtag, fields, params, fetchFirstPage, '/recently_searched_hashtags');
->>>>>>> brkfst-api-patch
     }
   }, {
     key: 'getStories',
@@ -24856,16 +22155,6 @@ var IGUser = function (_AbstractCrudObject) {
   return IGUser;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -24949,7 +22238,6 @@ var OpenBridgeConfiguration = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessAdAccountRequest
  * @extends AbstractCrudObject
@@ -24976,16 +22264,6 @@ var BusinessAdAccountRequest = function (_AbstractCrudObject) {
   return BusinessAdAccountRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -24996,7 +22274,6 @@ var BusinessAdAccountRequest = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessApplicationRequest
  * @extends AbstractCrudObject
@@ -25023,16 +22300,6 @@ var BusinessApplicationRequest = function (_AbstractCrudObject) {
   return BusinessApplicationRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -25043,7 +22310,6 @@ var BusinessApplicationRequest = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessPageRequest
  * @extends AbstractCrudObject
@@ -25070,16 +22336,6 @@ var BusinessPageRequest = function (_AbstractCrudObject) {
   return BusinessPageRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -25090,7 +22346,6 @@ var BusinessPageRequest = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessRoleRequest
  * @extends AbstractCrudObject
@@ -25180,16 +22435,6 @@ var BusinessRoleRequest = function (_AbstractCrudObject) {
   return BusinessRoleRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -25292,7 +22537,6 @@ var WhatsAppBusinessPreVerifiedPhoneNumber = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * SystemUser
  * @extends AbstractCrudObject
@@ -25384,16 +22628,6 @@ var SystemUser = function (_AbstractCrudObject) {
   return SystemUser;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -25404,7 +22638,6 @@ var SystemUser = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Business
  * @extends AbstractCrudObject
@@ -25459,8 +22692,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/adaccount', fields, params, AdAccount, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createAddPhoneNumber',
     value: function createAddPhoneNumber(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -25469,7 +22700,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/add_phone_numbers', fields, params, Business, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'createAdNetworkApplication',
     value: function createAdNetworkApplication(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -25756,8 +22986,6 @@ var Business = function (_AbstractCrudObject) {
       return this.getEdge(CPASMerchantConfig, fields, params, fetchFirstPage, '/cpas_merchant_config');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createCreativeFolder',
     value: function createCreativeFolder(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -25766,7 +22994,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/creative_folders', fields, params, BusinessCreativeFolder, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getCreditCards',
     value: function getCreditCards(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -25823,8 +23050,6 @@ var Business = function (_AbstractCrudObject) {
       return this.getEdge(ExtendedCredit, fields, params, fetchFirstPage, '/extendedcredits');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createImage',
     value: function createImage(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -25833,7 +23058,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/images', fields, params, BusinessImage, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getInitiatedAudienceSharingRequests',
     value: function getInitiatedAudienceSharingRequests(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -25927,8 +23151,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/offline_conversion_data_sets', fields, params, OfflineConversionDataSet, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getOpenBridgeConfigurations',
     value: function getOpenBridgeConfigurations(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -25945,7 +23167,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/openbridge_configurations', fields, params, OpenBridgeConfiguration, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getOwnedAdAccounts',
     value: function getOwnedAdAccounts(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26072,8 +23293,6 @@ var Business = function (_AbstractCrudObject) {
       return get$1(Business.prototype.__proto__ || Object.getPrototypeOf(Business.prototype), 'deleteEdge', this).call(this, '/pages', params);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getPartnerAccountLinking',
     value: function getPartnerAccountLinking(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26082,7 +23301,6 @@ var Business = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/partner_account_linking');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'createPartnerPremiumOption',
     value: function createPartnerPremiumOption(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26163,8 +23381,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/pixel_tos', fields, params, null, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getPreVerifiedNumbers',
     value: function getPreVerifiedNumbers(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26173,7 +23389,6 @@ var Business = function (_AbstractCrudObject) {
       return this.getEdge(WhatsAppBusinessPreVerifiedPhoneNumber, fields, params, fetchFirstPage, '/preverified_numbers');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getReceivedAudienceSharingRequests',
     value: function getReceivedAudienceSharingRequests(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26190,8 +23405,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/setup_managed_partner_adaccounts', fields, params, Business, pathOverride);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'deleteSharePreVerifiedNumbers',
     value: function deleteSharePreVerifiedNumbers() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -26215,7 +23428,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/system_user_access_tokens', fields, params, Business, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getSystemUsers',
     value: function getSystemUsers(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26240,8 +23452,6 @@ var Business = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/third_party_measurement_report_dataset');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createVideo',
     value: function createVideo(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26250,7 +23460,6 @@ var Business = function (_AbstractCrudObject) {
       return this.createEdge('/videos', fields, params, AdVideo, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'get',
     value: function get(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26291,10 +23500,7 @@ var Business = function (_AbstractCrudObject) {
         two_factor_type: 'two_factor_type',
         updated_by: 'updated_by',
         updated_time: 'updated_time',
-<<<<<<< HEAD
-=======
         user_access_expire_time: 'user_access_expire_time',
->>>>>>> brkfst-api-patch
         verification_status: 'verification_status',
         vertical: 'vertical',
         vertical_id: 'vertical_id'
@@ -26627,16 +23833,6 @@ var Business = function (_AbstractCrudObject) {
   return Business;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -26647,7 +23843,6 @@ var Business = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdsPixelStatsResult
  * @extends AbstractCrudObject
@@ -26697,16 +23892,6 @@ var AdsPixelStatsResult = function (_AbstractCrudObject) {
   return AdsPixelStatsResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -26717,7 +23902,6 @@ var AdsPixelStatsResult = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdsPixel
  * @extends AbstractCrudObject
@@ -26749,8 +23933,6 @@ var AdsPixel = function (_AbstractCrudObject) {
       return this.getEdge(Business, fields, params, fetchFirstPage, '/agencies');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'createAhpConfig',
     value: function createAhpConfig(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26759,7 +23941,6 @@ var AdsPixel = function (_AbstractCrudObject) {
       return this.createEdge('/ahp_configs', fields, params, null, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getAssignedUsers',
     value: function getAssignedUsers(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26808,8 +23989,6 @@ var AdsPixel = function (_AbstractCrudObject) {
       return this.getEdge(OfflineConversionDataSetUpload, fields, params, fetchFirstPage, '/offline_event_uploads');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getOpenBridgeConfigurations',
     value: function getOpenBridgeConfigurations(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26818,7 +23997,6 @@ var AdsPixel = function (_AbstractCrudObject) {
       return this.getEdge(OpenBridgeConfiguration, fields, params, fetchFirstPage, '/openbridge_configurations');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'createShadowTrafficHelper',
     value: function createShadowTrafficHelper(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -26927,10 +24105,7 @@ var AdsPixel = function (_AbstractCrudObject) {
         owner_ad_account: 'owner_ad_account',
         owner_business: 'owner_business',
         usage: 'usage',
-<<<<<<< HEAD
-=======
         user_access_expire_time: 'user_access_expire_time',
->>>>>>> brkfst-api-patch
         valid_entries: 'valid_entries'
       });
     }
@@ -26992,16 +24167,6 @@ var AdsPixel = function (_AbstractCrudObject) {
   return AdsPixel;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27075,7 +24240,6 @@ var BrandRequest = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PartnerStudy
  * @extends AbstractCrudObject
@@ -27126,16 +24290,6 @@ var PartnerStudy = function (_AbstractCrudObject) {
   return PartnerStudy;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27146,7 +24300,6 @@ var PartnerStudy = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdStudyObjective
  * @extends AbstractCrudObject
@@ -27178,8 +24331,6 @@ var AdStudyObjective = function (_AbstractCrudObject) {
       return this.getEdge(Application, fields, params, fetchFirstPage, '/applications');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getBrandRequests',
     value: function getBrandRequests(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -27188,7 +24339,6 @@ var AdStudyObjective = function (_AbstractCrudObject) {
       return this.getEdge(BrandRequest, fields, params, fetchFirstPage, '/brand_requests');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getCustomConversions',
     value: function getCustomConversions(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -27205,8 +24355,6 @@ var AdStudyObjective = function (_AbstractCrudObject) {
       return this.getEdge(OfflineConversionDataSet, fields, params, fetchFirstPage, '/offline_conversion_data_sets');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getPartnerPrivateStudies',
     value: function getPartnerPrivateStudies(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -27215,7 +24363,6 @@ var AdStudyObjective = function (_AbstractCrudObject) {
       return this.getEdge(Business, fields, params, fetchFirstPage, '/partner_private_studies');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getPartnerStudies',
     value: function getPartnerStudies(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -27275,16 +24422,6 @@ var AdStudyObjective = function (_AbstractCrudObject) {
   return AdStudyObjective;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27295,7 +24432,6 @@ var AdStudyObjective = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdStudy
  * @extends AbstractCrudObject
@@ -27418,16 +24554,6 @@ var AdStudy = function (_AbstractCrudObject) {
   return AdStudy;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27438,7 +24564,6 @@ var AdStudy = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CloudGame
  * @extends AbstractCrudObject
@@ -27480,16 +24605,6 @@ var CloudGame = function (_AbstractCrudObject) {
   return CloudGame;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27500,7 +24615,6 @@ var CloudGame = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdImage
  * @extends AbstractCrudObject
@@ -27559,16 +24673,6 @@ var AdImage = function (_AbstractCrudObject) {
   return AdImage;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27579,7 +24683,6 @@ var AdImage = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdLabel
  * @extends AbstractCrudObject
@@ -27671,16 +24774,6 @@ var AdLabel = function (_AbstractCrudObject) {
   return AdLabel;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27691,7 +24784,6 @@ var AdLabel = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PlayableContent
  * @extends AbstractCrudObject
@@ -27727,16 +24819,6 @@ var PlayableContent = function (_AbstractCrudObject) {
   return PlayableContent;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27747,7 +24829,6 @@ var PlayableContent = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountAdRulesHistory
  * @extends AbstractCrudObject
@@ -27785,10 +24866,7 @@ var AdAccountAdRulesHistory = function (_AbstractCrudObject) {
         changed_bid: 'CHANGED_BID',
         changed_budget: 'CHANGED_BUDGET',
         email: 'EMAIL',
-<<<<<<< HEAD
-=======
         enable_advantage_plus_creative: 'ENABLE_ADVANTAGE_PLUS_CREATIVE',
->>>>>>> brkfst-api-patch
         enable_autoflow: 'ENABLE_AUTOFLOW',
         endpoint_pinged: 'ENDPOINT_PINGED',
         error: 'ERROR',
@@ -27811,16 +24889,6 @@ var AdAccountAdRulesHistory = function (_AbstractCrudObject) {
   return AdAccountAdRulesHistory;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -27831,7 +24899,6 @@ var AdAccountAdRulesHistory = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountAdVolume
  * @extends AbstractCrudObject
@@ -27868,41 +24935,6 @@ var AdAccountAdVolume = function (_AbstractCrudObject) {
     key: 'RecommendationType',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-        aco_toggle: 'ACO_TOGGLE',
-        aggregated_bid_limited: 'AGGREGATED_BID_LIMITED',
-        aggregated_budget_limited: 'AGGREGATED_BUDGET_LIMITED',
-        aggregated_cost_limited: 'AGGREGATED_COST_LIMITED',
-        auction_overlap: 'AUCTION_OVERLAP',
-        auction_overlap_consolidation: 'AUCTION_OVERLAP_CONSOLIDATION',
-        audience_expansion: 'AUDIENCE_EXPANSION',
-        autoflow_opt_in: 'AUTOFLOW_OPT_IN',
-        automatic_placements: 'AUTOMATIC_PLACEMENTS',
-        capi: 'CAPI',
-        cost_goal: 'COST_GOAL',
-        cost_goal_budget_limited: 'COST_GOAL_BUDGET_LIMITED',
-        cost_goal_cpa_limited: 'COST_GOAL_CPA_LIMITED',
-        creative_badge: 'CREATIVE_BADGE',
-        creative_fatigue: 'CREATIVE_FATIGUE',
-        creative_limited: 'CREATIVE_LIMITED',
-        dead_link: 'DEAD_LINK',
-        ecosystem_bid_reduce_l1_cardinality: 'ECOSYSTEM_BID_REDUCE_L1_CARDINALITY',
-        fragmentation: 'FRAGMENTATION',
-        learning_limited: 'LEARNING_LIMITED',
-        low_outcome: 'LOW_OUTCOME',
-        mmt_carousel_to_video: 'MMT_CAROUSEL_TO_VIDEO',
-        multi_text: 'MULTI_TEXT',
-        music: 'MUSIC',
-        predictive_creative_limited: 'PREDICTIVE_CREATIVE_LIMITED',
-        revert: 'REVERT',
-        semantic_based_audience_expansion: 'SEMANTIC_BASED_AUDIENCE_EXPANSION',
-        signals_growth_capi: 'SIGNALS_GROWTH_CAPI',
-        syd_test_mode: 'SYD_TEST_MODE',
-        top_adsets_with_ads_under_cap: 'TOP_ADSETS_WITH_ADS_UNDER_CAP',
-        top_campaigns_with_ads_under_cap: 'TOP_CAMPAIGNS_WITH_ADS_UNDER_CAP',
-        uneconomical_ads_throttling: 'UNECONOMICAL_ADS_THROTTLING',
-        unused_budget: 'UNUSED_BUDGET',
-=======
         ab_test: 'AB_TEST',
         account_spend_limit: 'ACCOUNT_SPEND_LIMIT',
         aco_toggle: 'ACO_TOGGLE',
@@ -28006,7 +25038,6 @@ var AdAccountAdVolume = function (_AbstractCrudObject) {
         unused_budget: 'UNUSED_BUDGET',
         video_length: 'VIDEO_LENGTH',
         zero_conversion: 'ZERO_CONVERSION',
->>>>>>> brkfst-api-patch
         zero_impression: 'ZERO_IMPRESSION'
       });
     }
@@ -28014,16 +25045,6 @@ var AdAccountAdVolume = function (_AbstractCrudObject) {
   return AdAccountAdVolume;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28034,7 +25055,6 @@ var AdAccountAdVolume = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AsyncRequest
  * @extends AbstractCrudObject
@@ -28082,16 +25102,6 @@ var AsyncRequest = function (_AbstractCrudObject) {
   return AsyncRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28102,7 +25112,6 @@ var AsyncRequest = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAsyncRequestSet
  * @extends AbstractCrudObject
@@ -28189,16 +25198,6 @@ var AdAsyncRequestSet = function (_AbstractCrudObject) {
   return AdAsyncRequestSet;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28209,7 +25208,6 @@ var AdAsyncRequestSet = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BroadTargetingCategories
  * @extends AbstractCrudObject
@@ -28246,16 +25244,6 @@ var BroadTargetingCategories = function (_AbstractCrudObject) {
   return BroadTargetingCategories;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28266,7 +25254,6 @@ var BroadTargetingCategories = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomAudiencesTOS
  * @extends AbstractCrudObject
@@ -28294,16 +25281,6 @@ var CustomAudiencesTOS = function (_AbstractCrudObject) {
   return CustomAudiencesTOS;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28314,7 +25291,6 @@ var CustomAudiencesTOS = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountDeliveryEstimate
  * @extends AbstractCrudObject
@@ -28366,11 +25342,8 @@ var AdAccountDeliveryEstimate = function (_AbstractCrudObject) {
         quality_call: 'QUALITY_CALL',
         quality_lead: 'QUALITY_LEAD',
         reach: 'REACH',
-<<<<<<< HEAD
-=======
         reminders_set: 'REMINDERS_SET',
         subscribers: 'SUBSCRIBERS',
->>>>>>> brkfst-api-patch
         thruplay: 'THRUPLAY',
         value: 'VALUE',
         visit_instagram_profile: 'VISIT_INSTAGRAM_PROFILE'
@@ -28380,16 +25353,6 @@ var AdAccountDeliveryEstimate = function (_AbstractCrudObject) {
   return AdAccountDeliveryEstimate;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28435,7 +25398,6 @@ var AdAccountDsaRecommendations = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountIosFourteenCampaignLimits
  * @extends AbstractCrudObject
@@ -28463,16 +25425,6 @@ var AdAccountIosFourteenCampaignLimits = function (_AbstractCrudObject) {
   return AdAccountIosFourteenCampaignLimits;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28483,7 +25435,6 @@ var AdAccountIosFourteenCampaignLimits = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountMatchedSearchApplicationsEdgeData
  * @extends AbstractCrudObject
@@ -28522,10 +25473,7 @@ var AdAccountMatchedSearchApplicationsEdgeData = function (_AbstractCrudObject) 
         apk_pure: 'APK_PURE',
         aptoide_a1_store: 'APTOIDE_A1_STORE',
         bemobi_mobile_store: 'BEMOBI_MOBILE_STORE',
-<<<<<<< HEAD
-=======
         digital_turbine_store: 'DIGITAL_TURBINE_STORE',
->>>>>>> brkfst-api-patch
         does_not_exist: 'DOES_NOT_EXIST',
         fb_android_store: 'FB_ANDROID_STORE',
         fb_canvas: 'FB_CANVAS',
@@ -28535,11 +25483,8 @@ var AdAccountMatchedSearchApplicationsEdgeData = function (_AbstractCrudObject) 
         instant_game: 'INSTANT_GAME',
         itunes: 'ITUNES',
         itunes_ipad: 'ITUNES_IPAD',
-<<<<<<< HEAD
-=======
         neon_android_store: 'NEON_ANDROID_STORE',
         none: 'NONE',
->>>>>>> brkfst-api-patch
         oculus_app_store: 'OCULUS_APP_STORE',
         oppo: 'OPPO',
         roku_store: 'ROKU_STORE',
@@ -28554,16 +25499,6 @@ var AdAccountMatchedSearchApplicationsEdgeData = function (_AbstractCrudObject) 
   return AdAccountMatchedSearchApplicationsEdgeData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28574,7 +25509,6 @@ var AdAccountMatchedSearchApplicationsEdgeData = function (_AbstractCrudObject) 
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountMaxBid
  * @extends AbstractCrudObject
@@ -28600,16 +25534,6 @@ var AdAccountMaxBid = function (_AbstractCrudObject) {
   return AdAccountMaxBid;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28620,7 +25544,6 @@ var AdAccountMaxBid = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * MinimumBudget
  * @extends AbstractCrudObject
@@ -28650,16 +25573,6 @@ var MinimumBudget = function (_AbstractCrudObject) {
   return MinimumBudget;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28670,7 +25583,6 @@ var MinimumBudget = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessOwnedObjectOnBehalfOfRequest
  * @extends AbstractCrudObject
@@ -28721,16 +25633,6 @@ var BusinessOwnedObjectOnBehalfOfRequest = function (_AbstractCrudObject) {
   return BusinessOwnedObjectOnBehalfOfRequest;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28741,7 +25643,6 @@ var BusinessOwnedObjectOnBehalfOfRequest = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PublisherBlockList
  * @extends AbstractCrudObject
@@ -28822,16 +25723,6 @@ var PublisherBlockList = function (_AbstractCrudObject) {
   return PublisherBlockList;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28842,7 +25733,6 @@ var PublisherBlockList = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountReachEstimate
  * @extends AbstractCrudObject
@@ -28870,16 +25760,6 @@ var AdAccountReachEstimate = function (_AbstractCrudObject) {
   return AdAccountReachEstimate;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -28890,7 +25770,6 @@ var AdAccountReachEstimate = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencyPrediction
  * @extends AbstractCrudObject
@@ -29051,16 +25930,6 @@ var ReachFrequencyPrediction = function (_AbstractCrudObject) {
   return ReachFrequencyPrediction;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -29071,7 +25940,6 @@ var ReachFrequencyPrediction = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * SavedAudience
  * @extends AbstractCrudObject
@@ -29103,10 +25971,6 @@ var SavedAudience = function (_AbstractCrudObject) {
         approximate_count_upper_bound: 'approximate_count_upper_bound',
         delete_time: 'delete_time',
         description: 'description',
-<<<<<<< HEAD
-        extra_info: 'extra_info',
-=======
->>>>>>> brkfst-api-patch
         id: 'id',
         name: 'name',
         operation_status: 'operation_status',
@@ -29124,16 +25988,6 @@ var SavedAudience = function (_AbstractCrudObject) {
   return SavedAudience;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -29144,7 +25998,6 @@ var SavedAudience = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountSubscribedApps
  * @extends AbstractCrudObject
@@ -29171,16 +26024,6 @@ var AdAccountSubscribedApps = function (_AbstractCrudObject) {
   return AdAccountSubscribedApps;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -29191,7 +26034,6 @@ var AdAccountSubscribedApps = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountTargetingUnified
  * @extends AbstractCrudObject
@@ -29280,8 +26122,6 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'RegulatedCountries',
     get: function get() {
       return Object.freeze({
@@ -29539,28 +26379,21 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
       });
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'WhitelistedTypes',
     get: function get() {
       return Object.freeze({
         adgroup_id: 'adgroup_id',
         age_max: 'age_max',
         age_min: 'age_min',
-<<<<<<< HEAD
-=======
         age_range: 'age_range',
->>>>>>> brkfst-api-patch
         alternate_auto_targeting_option: 'alternate_auto_targeting_option',
         app_install_state: 'app_install_state',
         audience_network_positions: 'audience_network_positions',
         behaviors: 'behaviors',
         brand_safety_content_filter_levels: 'brand_safety_content_filter_levels',
         brand_safety_content_severity_levels: 'brand_safety_content_severity_levels',
-<<<<<<< HEAD
-=======
         cafe_ca_contraction_targeting_signal: 'cafe_ca_contraction_targeting_signal',
         cafe_ca_expansion_targeting_signal: 'cafe_ca_expansion_targeting_signal',
->>>>>>> brkfst-api-patch
         catalog_based_targeting: 'catalog_based_targeting',
         cities: 'cities',
         city_keys: 'city_keys',
@@ -29603,10 +26436,7 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
         excluded_user_adclusters: 'excluded_user_adclusters',
         excluded_user_device: 'excluded_user_device',
         exclusions: 'exclusions',
-<<<<<<< HEAD
-=======
         expanded_implicit_custom_audiences: 'expanded_implicit_custom_audiences',
->>>>>>> brkfst-api-patch
         facebook_positions: 'facebook_positions',
         family_statuses: 'family_statuses',
         fb_deal_id: 'fb_deal_id',
@@ -29641,10 +26471,7 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
         location_categories: 'location_categories',
         location_cluster_ids: 'location_cluster_ids',
         location_expansion: 'location_expansion',
-<<<<<<< HEAD
-=======
         marketing_message_targeting: 'marketing_message_targeting',
->>>>>>> brkfst-api-patch
         marketplace_product_categories: 'marketplace_product_categories',
         messenger_positions: 'messenger_positions',
         mobile_device_model: 'mobile_device_model',
@@ -29665,10 +26492,7 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
         relationship_statuses: 'relationship_statuses',
         rtb_flag: 'rtb_flag',
         site_category: 'site_category',
-<<<<<<< HEAD
-=======
         tafe_ca_mitigation_strategy: 'tafe_ca_mitigation_strategy',
->>>>>>> brkfst-api-patch
         targeting_automation: 'targeting_automation',
         targeting_optimization: 'targeting_optimization',
         targeting_relaxation_types: 'targeting_relaxation_types',
@@ -29698,10 +26522,7 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
         apk_pure: 'apk_pure',
         aptoide_a1_store: 'aptoide_a1_store',
         bemobi_mobile_store: 'bemobi_mobile_store',
-<<<<<<< HEAD
-=======
         digital_turbine_store: 'digital_turbine_store',
->>>>>>> brkfst-api-patch
         does_not_exist: 'does_not_exist',
         fb_android_store: 'fb_android_store',
         fb_canvas: 'fb_canvas',
@@ -29711,11 +26532,8 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
         instant_game: 'instant_game',
         itunes: 'itunes',
         itunes_ipad: 'itunes_ipad',
-<<<<<<< HEAD
-=======
         neon_android_store: 'neon_android_store',
         none: 'none',
->>>>>>> brkfst-api-patch
         oculus_app_store: 'oculus_app_store',
         oppo: 'oppo',
         roku_channel_store: 'roku_channel_store',
@@ -29767,16 +26585,6 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
   return AdAccountTargetingUnified;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -29787,7 +26595,6 @@ var AdAccountTargetingUnified = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountTrackingData
  * @extends AbstractCrudObject
@@ -29813,16 +26620,6 @@ var AdAccountTrackingData = function (_AbstractCrudObject) {
   return AdAccountTrackingData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -29833,7 +26630,6 @@ var AdAccountTrackingData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountUser
  * @extends AbstractCrudObject
@@ -29861,16 +26657,6 @@ var AdAccountUser = function (_AbstractCrudObject) {
   return AdAccountUser;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -29881,7 +26667,6 @@ var AdAccountUser = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccount
  * @extends AbstractCrudObject
@@ -29897,8 +26682,6 @@ var AdAccount = function (_AbstractCrudObject) {
   }
 
   createClass(AdAccount, [{
-<<<<<<< HEAD
-=======
     key: 'getAccountControls',
     value: function getAccountControls(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -29915,7 +26698,6 @@ var AdAccount = function (_AbstractCrudObject) {
       return this.createEdge('/account_controls', fields, params, AdAccountBusinessConstraints, pathOverride);
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getActivities',
     value: function getActivities(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -30343,8 +27125,6 @@ var AdAccount = function (_AbstractCrudObject) {
       return this.getEdge(IGUser, fields, params, fetchFirstPage, '/connected_instagram_accounts');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getConversionGoals',
     value: function getConversionGoals(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -30353,7 +27133,6 @@ var AdAccount = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/conversion_goals');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getCustomAudiences',
     value: function getCustomAudiences(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -30418,8 +27197,6 @@ var AdAccount = function (_AbstractCrudObject) {
       return this.getEdge(AdSet, fields, params, fetchFirstPage, '/deprecatedtargetingadsets');
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getDsaRecommendations',
     value: function getDsaRecommendations(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -30428,7 +27205,6 @@ var AdAccount = function (_AbstractCrudObject) {
       return this.getEdge(AdAccountDsaRecommendations, fields, params, fetchFirstPage, '/dsa_recommendations');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'getGeneratePreviews',
     value: function getGeneratePreviews(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -30683,8 +27459,6 @@ var AdAccount = function (_AbstractCrudObject) {
       return get$1(AdAccount.prototype.__proto__ || Object.getPrototypeOf(AdAccount.prototype), 'deleteEdge', this).call(this, '/usersofanyaudience', params);
     }
   }, {
-<<<<<<< HEAD
-=======
     key: 'getValueAdjustmentRules',
     value: function getValueAdjustmentRules(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -30693,7 +27467,6 @@ var AdAccount = function (_AbstractCrudObject) {
       return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/value_adjustment_rules');
     }
   }, {
->>>>>>> brkfst-api-patch
     key: 'get',
     value: function get(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -30721,10 +27494,7 @@ var AdAccount = function (_AbstractCrudObject) {
         ad_account_promotable_objects: 'ad_account_promotable_objects',
         age: 'age',
         agency_client_declaration: 'agency_client_declaration',
-<<<<<<< HEAD
-=======
         all_capabilities: 'all_capabilities',
->>>>>>> brkfst-api-patch
         amount_spent: 'amount_spent',
         attribution_spec: 'attribution_spec',
         balance: 'balance',
@@ -30741,11 +27511,8 @@ var AdAccount = function (_AbstractCrudObject) {
         created_time: 'created_time',
         currency: 'currency',
         custom_audience_info: 'custom_audience_info',
-<<<<<<< HEAD
-=======
         default_dsa_beneficiary: 'default_dsa_beneficiary',
         default_dsa_payor: 'default_dsa_payor',
->>>>>>> brkfst-api-patch
         disable_reason: 'disable_reason',
         end_advertiser: 'end_advertiser',
         end_advertiser_name: 'end_advertiser_name',
@@ -30755,10 +27522,6 @@ var AdAccount = function (_AbstractCrudObject) {
         fb_entity: 'fb_entity',
         funding_source: 'funding_source',
         funding_source_details: 'funding_source_details',
-<<<<<<< HEAD
-        has_advertiser_opted_in_odax: 'has_advertiser_opted_in_odax',
-=======
->>>>>>> brkfst-api-patch
         has_migrated_permissions: 'has_migrated_permissions',
         has_page_authorized_adaccount: 'has_page_authorized_adaccount',
         id: 'id',
@@ -30792,10 +27555,7 @@ var AdAccount = function (_AbstractCrudObject) {
         timezone_name: 'timezone_name',
         timezone_offset_hours_utc: 'timezone_offset_hours_utc',
         tos_accepted: 'tos_accepted',
-<<<<<<< HEAD
-=======
         user_access_expire_time: 'user_access_expire_time',
->>>>>>> brkfst-api-patch
         user_tasks: 'user_tasks',
         user_tos_accepted: 'user_tos_accepted',
         viewable_business: 'viewable_business'
@@ -30912,10 +27672,7 @@ var AdAccount = function (_AbstractCrudObject) {
       return Object.freeze({
         app: 'APP',
         bag_of_accounts: 'BAG_OF_ACCOUNTS',
-<<<<<<< HEAD
-=======
         bidding: 'BIDDING',
->>>>>>> brkfst-api-patch
         claim: 'CLAIM',
         custom: 'CUSTOM',
         engagement: 'ENGAGEMENT',
@@ -30925,15 +27682,10 @@ var AdAccount = function (_AbstractCrudObject) {
         measurement: 'MEASUREMENT',
         offline_conversion: 'OFFLINE_CONVERSION',
         partner: 'PARTNER',
-<<<<<<< HEAD
-        regulated_categories_audience: 'REGULATED_CATEGORIES_AUDIENCE',
-        study_rule_audience: 'STUDY_RULE_AUDIENCE',
-=======
         primary: 'PRIMARY',
         regulated_categories_audience: 'REGULATED_CATEGORIES_AUDIENCE',
         study_rule_audience: 'STUDY_RULE_AUDIENCE',
         subscriber_segment: 'SUBSCRIBER_SEGMENT',
->>>>>>> brkfst-api-patch
         video: 'VIDEO',
         website: 'WEBSITE'
       });
@@ -30950,51 +27702,6 @@ var AdAccount = function (_AbstractCrudObject) {
   return AdAccount;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * AdAccountCustomAudience
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var AdAccountCustomAudience = function (_AbstractCrudObject) {
-  inherits(AdAccountCustomAudience, _AbstractCrudObject);
-
-  function AdAccountCustomAudience() {
-    classCallCheck(this, AdAccountCustomAudience);
-    return possibleConstructorReturn(this, (AdAccountCustomAudience.__proto__ || Object.getPrototypeOf(AdAccountCustomAudience)).apply(this, arguments));
-  }
-
-  createClass(AdAccountCustomAudience, null, [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        audience_type_param_name: 'audience_type_param_name',
-        existing_customer_tag: 'existing_customer_tag',
-        new_customer_tag: 'new_customer_tag'
-      });
-    }
-  }]);
-  return AdAccountCustomAudience;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31005,7 +27712,6 @@ var AdAccountCustomAudience = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountDefaultDestination
  * @extends AbstractCrudObject
@@ -31032,16 +27738,6 @@ var AdAccountDefaultDestination = function (_AbstractCrudObject) {
   return AdAccountDefaultDestination;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31052,7 +27748,6 @@ var AdAccountDefaultDestination = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountDefaultObjective
  * @extends AbstractCrudObject
@@ -31133,16 +27828,6 @@ var AdAccountDefaultObjective = function (_AbstractCrudObject) {
   return AdAccountDefaultObjective;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31153,7 +27838,6 @@ var AdAccountDefaultObjective = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountPromotableObjects
  * @extends AbstractCrudObject
@@ -31181,16 +27865,6 @@ var AdAccountPromotableObjects = function (_AbstractCrudObject) {
   return AdAccountPromotableObjects;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31201,7 +27875,6 @@ var AdAccountPromotableObjects = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAccountRecommendedCamapaignBudget
  * @extends AbstractCrudObject
@@ -31229,16 +27902,6 @@ var AdAccountRecommendedCamapaignBudget = function (_AbstractCrudObject) {
   return AdAccountRecommendedCamapaignBudget;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31340,7 +28003,6 @@ var AdAssetFeedAdditionalData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpec
  * @extends AbstractCrudObject
@@ -31361,10 +28023,7 @@ var AdAssetFeedSpec = function (_AbstractCrudObject) {
       return Object.freeze({
         ad_formats: 'ad_formats',
         additional_data: 'additional_data',
-<<<<<<< HEAD
-=======
         app_product_page_id: 'app_product_page_id',
->>>>>>> brkfst-api-patch
         asset_customization_rules: 'asset_customization_rules',
         autotranslate: 'autotranslate',
         bodies: 'bodies',
@@ -31377,15 +28036,11 @@ var AdAssetFeedSpec = function (_AbstractCrudObject) {
         groups: 'groups',
         images: 'images',
         link_urls: 'link_urls',
-<<<<<<< HEAD
-        optimization_type: 'optimization_type',
-=======
         message_extensions: 'message_extensions',
         onsite_destinations: 'onsite_destinations',
         optimization_type: 'optimization_type',
         reasons_to_shop: 'reasons_to_shop',
         shops_bundle: 'shops_bundle',
->>>>>>> brkfst-api-patch
         titles: 'titles',
         videos: 'videos'
       });
@@ -31397,10 +28052,7 @@ var AdAssetFeedSpec = function (_AbstractCrudObject) {
         add_to_cart: 'ADD_TO_CART',
         apply_now: 'APPLY_NOW',
         audio_call: 'AUDIO_CALL',
-<<<<<<< HEAD
-=======
         book_now: 'BOOK_NOW',
->>>>>>> brkfst-api-patch
         book_travel: 'BOOK_TRAVEL',
         buy: 'BUY',
         buy_now: 'BUY_NOW',
@@ -31408,10 +28060,7 @@ var AdAssetFeedSpec = function (_AbstractCrudObject) {
         call: 'CALL',
         call_me: 'CALL_ME',
         call_now: 'CALL_NOW',
-<<<<<<< HEAD
-=======
         confirm: 'CONFIRM',
->>>>>>> brkfst-api-patch
         contact: 'CONTACT',
         contact_us: 'CONTACT_US',
         donate: 'DONATE',
@@ -31426,17 +28075,11 @@ var AdAssetFeedSpec = function (_AbstractCrudObject) {
         get_directions: 'GET_DIRECTIONS',
         get_offer: 'GET_OFFER',
         get_offer_view: 'GET_OFFER_VIEW',
-<<<<<<< HEAD
-        get_quote: 'GET_QUOTE',
-        get_showtimes: 'GET_SHOWTIMES',
-        get_started: 'GET_STARTED',
-=======
         get_promotions: 'GET_PROMOTIONS',
         get_quote: 'GET_QUOTE',
         get_showtimes: 'GET_SHOWTIMES',
         get_started: 'GET_STARTED',
         inquire_now: 'INQUIRE_NOW',
->>>>>>> brkfst-api-patch
         install_app: 'INSTALL_APP',
         install_mobile_app: 'INSTALL_MOBILE_APP',
         learn_more: 'LEARN_MORE',
@@ -31445,10 +28088,6 @@ var AdAssetFeedSpec = function (_AbstractCrudObject) {
         listen_now: 'LISTEN_NOW',
         message_page: 'MESSAGE_PAGE',
         mobile_download: 'MOBILE_DOWNLOAD',
-<<<<<<< HEAD
-        moments: 'MOMENTS',
-=======
->>>>>>> brkfst-api-patch
         no_button: 'NO_BUTTON',
         open_instant_app: 'OPEN_INSTANT_APP',
         open_link: 'OPEN_LINK',
@@ -31491,16 +28130,6 @@ var AdAssetFeedSpec = function (_AbstractCrudObject) {
   return AdAssetFeedSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31558,7 +28187,6 @@ var AdAssetFeedSpecAssetCustomizationRule = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecAssetLabel
  * @extends AbstractCrudObject
@@ -31585,16 +28213,6 @@ var AdAssetFeedSpecAssetLabel = function (_AbstractCrudObject) {
   return AdAssetFeedSpecAssetLabel;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31605,7 +28223,6 @@ var AdAssetFeedSpecAssetLabel = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecBody
  * @extends AbstractCrudObject
@@ -31633,16 +28250,6 @@ var AdAssetFeedSpecBody = function (_AbstractCrudObject) {
   return AdAssetFeedSpecBody;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31690,7 +28297,6 @@ var AdAssetFeedSpecCallToAction = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecCaption
  * @extends AbstractCrudObject
@@ -31718,16 +28324,6 @@ var AdAssetFeedSpecCaption = function (_AbstractCrudObject) {
   return AdAssetFeedSpecCaption;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31820,7 +28416,6 @@ var AdAssetFeedSpecCarouselChildAttachment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecDescription
  * @extends AbstractCrudObject
@@ -31848,16 +28443,6 @@ var AdAssetFeedSpecDescription = function (_AbstractCrudObject) {
   return AdAssetFeedSpecDescription;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31903,7 +28488,6 @@ var AdAssetFeedSpecEvents = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecGroupRule
  * @extends AbstractCrudObject
@@ -31935,16 +28519,6 @@ var AdAssetFeedSpecGroupRule = function (_AbstractCrudObject) {
   return AdAssetFeedSpecGroupRule;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -31955,7 +28529,6 @@ var AdAssetFeedSpecGroupRule = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecImage
  * @extends AbstractCrudObject
@@ -31985,16 +28558,6 @@ var AdAssetFeedSpecImage = function (_AbstractCrudObject) {
   return AdAssetFeedSpecImage;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32005,7 +28568,6 @@ var AdAssetFeedSpecImage = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecLinkURL
  * @extends AbstractCrudObject
@@ -32036,16 +28598,6 @@ var AdAssetFeedSpecLinkURL = function (_AbstractCrudObject) {
   return AdAssetFeedSpecLinkURL;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32056,7 +28608,6 @@ var AdAssetFeedSpecLinkURL = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecTitle
  * @extends AbstractCrudObject
@@ -32084,16 +28635,6 @@ var AdAssetFeedSpecTitle = function (_AbstractCrudObject) {
   return AdAssetFeedSpecTitle;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32104,7 +28645,6 @@ var AdAssetFeedSpecTitle = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAssetFeedSpecVideo
  * @extends AbstractCrudObject
@@ -32135,16 +28675,6 @@ var AdAssetFeedSpecVideo = function (_AbstractCrudObject) {
   return AdAssetFeedSpecVideo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32278,7 +28808,6 @@ var AdAssetTargetRuleTargeting = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdAsyncRequestSetNotificationResult
  * @extends AbstractCrudObject
@@ -32305,16 +28834,6 @@ var AdAsyncRequestSetNotificationResult = function (_AbstractCrudObject) {
   return AdAsyncRequestSetNotificationResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32325,7 +28844,6 @@ var AdAsyncRequestSetNotificationResult = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdBidAdjustments
  * @extends AbstractCrudObject
@@ -32353,16 +28871,6 @@ var AdBidAdjustments = function (_AbstractCrudObject) {
   return AdBidAdjustments;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32373,7 +28881,6 @@ var AdBidAdjustments = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCampaignBidConstraint
  * @extends AbstractCrudObject
@@ -32399,16 +28906,6 @@ var AdCampaignBidConstraint = function (_AbstractCrudObject) {
   return AdCampaignBidConstraint;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32419,7 +28916,6 @@ var AdCampaignBidConstraint = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCampaignDeliveryStatsUnsupportedReasons
  * @extends AbstractCrudObject
@@ -32446,16 +28942,6 @@ var AdCampaignDeliveryStatsUnsupportedReasons = function (_AbstractCrudObject) {
   return AdCampaignDeliveryStatsUnsupportedReasons;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32466,7 +28952,6 @@ var AdCampaignDeliveryStatsUnsupportedReasons = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCampaignFrequencyControlSpecs
  * @extends AbstractCrudObject
@@ -32494,16 +28979,6 @@ var AdCampaignFrequencyControlSpecs = function (_AbstractCrudObject) {
   return AdCampaignFrequencyControlSpecs;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32514,7 +28989,6 @@ var AdCampaignFrequencyControlSpecs = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCampaignIssuesInfo
  * @extends AbstractCrudObject
@@ -32544,16 +29018,6 @@ var AdCampaignIssuesInfo = function (_AbstractCrudObject) {
   return AdCampaignIssuesInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32564,7 +29028,6 @@ var AdCampaignIssuesInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCampaignLearningStageInfo
  * @extends AbstractCrudObject
@@ -32593,16 +29056,6 @@ var AdCampaignLearningStageInfo = function (_AbstractCrudObject) {
   return AdCampaignLearningStageInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32613,7 +29066,6 @@ var AdCampaignLearningStageInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCampaignOptimizationEvent
  * @extends AbstractCrudObject
@@ -32641,16 +29093,6 @@ var AdCampaignOptimizationEvent = function (_AbstractCrudObject) {
   return AdCampaignOptimizationEvent;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32661,7 +29103,6 @@ var AdCampaignOptimizationEvent = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCampaignPacedBidInfo
  * @extends AbstractCrudObject
@@ -32687,16 +29128,6 @@ var AdCampaignPacedBidInfo = function (_AbstractCrudObject) {
   return AdCampaignPacedBidInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32707,7 +29138,6 @@ var AdCampaignPacedBidInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeAdDisclaimer
  * @extends AbstractCrudObject
@@ -32735,16 +29165,6 @@ var AdCreativeAdDisclaimer = function (_AbstractCrudObject) {
   return AdCreativeAdDisclaimer;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32833,7 +29253,6 @@ var AdCreativeBrandedContentAdsPartners = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeCollectionThumbnailInfo
  * @extends AbstractCrudObject
@@ -32861,16 +29280,6 @@ var AdCreativeCollectionThumbnailInfo = function (_AbstractCrudObject) {
   return AdCreativeCollectionThumbnailInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -32881,7 +29290,6 @@ var AdCreativeCollectionThumbnailInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeDegreesOfFreedomSpec
  * @extends AbstractCrudObject
@@ -32914,16 +29322,6 @@ var AdCreativeDegreesOfFreedomSpec = function (_AbstractCrudObject) {
   return AdCreativeDegreesOfFreedomSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33102,7 +29500,6 @@ var AdCreativeInstagramBrandedContent = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeInteractiveComponentsSpec
  * @extends AbstractCrudObject
@@ -33129,16 +29526,6 @@ var AdCreativeInteractiveComponentsSpec = function (_AbstractCrudObject) {
   return AdCreativeInteractiveComponentsSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33149,7 +29536,6 @@ var AdCreativeInteractiveComponentsSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkData
  * @extends AbstractCrudObject
@@ -33172,10 +29558,7 @@ var AdCreativeLinkData = function (_AbstractCrudObject) {
         additional_image_index: 'additional_image_index',
         app_link_spec: 'app_link_spec',
         attachment_style: 'attachment_style',
-<<<<<<< HEAD
-=======
         automated_product_tags: 'automated_product_tags',
->>>>>>> brkfst-api-patch
         branded_content_shared_to_sponsor_status: 'branded_content_shared_to_sponsor_status',
         branded_content_sponsor_page_id: 'branded_content_sponsor_page_id',
         call_to_action: 'call_to_action',
@@ -33208,17 +29591,6 @@ var AdCreativeLinkData = function (_AbstractCrudObject) {
       });
     }
   }, {
-<<<<<<< HEAD
-    key: 'AttachmentStyle',
-    get: function get() {
-      return Object.freeze({
-        default: 'default',
-        link: 'link'
-      });
-    }
-  }, {
-=======
->>>>>>> brkfst-api-patch
     key: 'FormatOption',
     get: function get() {
       return Object.freeze({
@@ -33233,16 +29605,6 @@ var AdCreativeLinkData = function (_AbstractCrudObject) {
   return AdCreativeLinkData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33253,7 +29615,6 @@ var AdCreativeLinkData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkDataAppLinkSpec
  * @extends AbstractCrudObject
@@ -33282,16 +29643,6 @@ var AdCreativeLinkDataAppLinkSpec = function (_AbstractCrudObject) {
   return AdCreativeLinkDataAppLinkSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33302,7 +29653,6 @@ var AdCreativeLinkDataAppLinkSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkDataCallToAction
  * @extends AbstractCrudObject
@@ -33332,10 +29682,7 @@ var AdCreativeLinkDataCallToAction = function (_AbstractCrudObject) {
         add_to_cart: 'ADD_TO_CART',
         apply_now: 'APPLY_NOW',
         audio_call: 'AUDIO_CALL',
-<<<<<<< HEAD
-=======
         book_now: 'BOOK_NOW',
->>>>>>> brkfst-api-patch
         book_travel: 'BOOK_TRAVEL',
         buy: 'BUY',
         buy_now: 'BUY_NOW',
@@ -33343,10 +29690,7 @@ var AdCreativeLinkDataCallToAction = function (_AbstractCrudObject) {
         call: 'CALL',
         call_me: 'CALL_ME',
         call_now: 'CALL_NOW',
-<<<<<<< HEAD
-=======
         confirm: 'CONFIRM',
->>>>>>> brkfst-api-patch
         contact: 'CONTACT',
         contact_us: 'CONTACT_US',
         donate: 'DONATE',
@@ -33361,17 +29705,11 @@ var AdCreativeLinkDataCallToAction = function (_AbstractCrudObject) {
         get_directions: 'GET_DIRECTIONS',
         get_offer: 'GET_OFFER',
         get_offer_view: 'GET_OFFER_VIEW',
-<<<<<<< HEAD
-        get_quote: 'GET_QUOTE',
-        get_showtimes: 'GET_SHOWTIMES',
-        get_started: 'GET_STARTED',
-=======
         get_promotions: 'GET_PROMOTIONS',
         get_quote: 'GET_QUOTE',
         get_showtimes: 'GET_SHOWTIMES',
         get_started: 'GET_STARTED',
         inquire_now: 'INQUIRE_NOW',
->>>>>>> brkfst-api-patch
         install_app: 'INSTALL_APP',
         install_mobile_app: 'INSTALL_MOBILE_APP',
         learn_more: 'LEARN_MORE',
@@ -33380,10 +29718,6 @@ var AdCreativeLinkDataCallToAction = function (_AbstractCrudObject) {
         listen_now: 'LISTEN_NOW',
         message_page: 'MESSAGE_PAGE',
         mobile_download: 'MOBILE_DOWNLOAD',
-<<<<<<< HEAD
-        moments: 'MOMENTS',
-=======
->>>>>>> brkfst-api-patch
         no_button: 'NO_BUTTON',
         open_instant_app: 'OPEN_INSTANT_APP',
         open_link: 'OPEN_LINK',
@@ -33426,16 +29760,6 @@ var AdCreativeLinkDataCallToAction = function (_AbstractCrudObject) {
   return AdCreativeLinkDataCallToAction;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33446,7 +29770,6 @@ var AdCreativeLinkDataCallToAction = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkDataCallToActionValue
  * @extends AbstractCrudObject
@@ -33482,16 +29805,6 @@ var AdCreativeLinkDataCallToActionValue = function (_AbstractCrudObject) {
   return AdCreativeLinkDataCallToActionValue;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33502,7 +29815,6 @@ var AdCreativeLinkDataCallToActionValue = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkDataChildAttachment
  * @extends AbstractCrudObject
@@ -33538,16 +29850,6 @@ var AdCreativeLinkDataChildAttachment = function (_AbstractCrudObject) {
   return AdCreativeLinkDataChildAttachment;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33558,7 +29860,6 @@ var AdCreativeLinkDataChildAttachment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkDataImageLayerSpec
  * @extends AbstractCrudObject
@@ -33669,16 +29970,6 @@ var AdCreativeLinkDataImageLayerSpec = function (_AbstractCrudObject) {
   return AdCreativeLinkDataImageLayerSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33689,7 +29980,6 @@ var AdCreativeLinkDataImageLayerSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkDataImageOverlaySpec
  * @extends AbstractCrudObject
@@ -33773,12 +30063,8 @@ var AdCreativeLinkDataImageOverlaySpec = function (_AbstractCrudObject) {
         percentage_off: 'percentage_off',
         price: 'price',
         star_rating: 'star_rating',
-<<<<<<< HEAD
-        strikethrough_price: 'strikethrough_price'
-=======
         strikethrough_price: 'strikethrough_price',
         sustainable: 'sustainable'
->>>>>>> brkfst-api-patch
       });
     }
   }, {
@@ -33807,16 +30093,6 @@ var AdCreativeLinkDataImageOverlaySpec = function (_AbstractCrudObject) {
   return AdCreativeLinkDataImageOverlaySpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33827,7 +30103,6 @@ var AdCreativeLinkDataImageOverlaySpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkDataSponsorshipInfoSpec
  * @extends AbstractCrudObject
@@ -33854,16 +30129,6 @@ var AdCreativeLinkDataSponsorshipInfoSpec = function (_AbstractCrudObject) {
   return AdCreativeLinkDataSponsorshipInfoSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33874,7 +30139,6 @@ var AdCreativeLinkDataSponsorshipInfoSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeLinkDataTemplateVideoSpec
  * @extends AbstractCrudObject
@@ -33902,16 +30166,6 @@ var AdCreativeLinkDataTemplateVideoSpec = function (_AbstractCrudObject) {
   return AdCreativeLinkDataTemplateVideoSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33922,7 +30176,6 @@ var AdCreativeLinkDataTemplateVideoSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeObjectStorySpec
  * @extends AbstractCrudObject
@@ -33954,16 +30207,6 @@ var AdCreativeObjectStorySpec = function (_AbstractCrudObject) {
   return AdCreativeObjectStorySpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -33974,7 +30217,6 @@ var AdCreativeObjectStorySpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeOmnichannelLinkSpec
  * @extends AbstractCrudObject
@@ -34001,16 +30243,6 @@ var AdCreativeOmnichannelLinkSpec = function (_AbstractCrudObject) {
   return AdCreativeOmnichannelLinkSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34021,7 +30253,6 @@ var AdCreativeOmnichannelLinkSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativePhotoData
  * @extends AbstractCrudObject
@@ -34052,16 +30283,6 @@ var AdCreativePhotoData = function (_AbstractCrudObject) {
   return AdCreativePhotoData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34072,7 +30293,6 @@ var AdCreativePhotoData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativePhotoDataMediaElements
  * @extends AbstractCrudObject
@@ -34101,16 +30321,6 @@ var AdCreativePhotoDataMediaElements = function (_AbstractCrudObject) {
   return AdCreativePhotoDataMediaElements;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34121,7 +30331,6 @@ var AdCreativePhotoDataMediaElements = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativePlaceData
  * @extends AbstractCrudObject
@@ -34152,16 +30361,6 @@ var AdCreativePlaceData = function (_AbstractCrudObject) {
   return AdCreativePlaceData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34172,7 +30371,6 @@ var AdCreativePlaceData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativePlatformCustomization
  * @extends AbstractCrudObject
@@ -34198,16 +30396,6 @@ var AdCreativePlatformCustomization = function (_AbstractCrudObject) {
   return AdCreativePlatformCustomization;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34218,7 +30406,6 @@ var AdCreativePlatformCustomization = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativePortraitCustomizations
  * @extends AbstractCrudObject
@@ -34245,16 +30432,6 @@ var AdCreativePortraitCustomizations = function (_AbstractCrudObject) {
   return AdCreativePortraitCustomizations;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34265,7 +30442,6 @@ var AdCreativePortraitCustomizations = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativePostClickConfiguration
  * @extends AbstractCrudObject
@@ -34292,16 +30468,6 @@ var AdCreativePostClickConfiguration = function (_AbstractCrudObject) {
   return AdCreativePostClickConfiguration;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34312,7 +30478,6 @@ var AdCreativePostClickConfiguration = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeRecommenderSettings
  * @extends AbstractCrudObject
@@ -34339,16 +30504,6 @@ var AdCreativeRecommenderSettings = function (_AbstractCrudObject) {
   return AdCreativeRecommenderSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34394,7 +30549,6 @@ var AdCreativeSourcingSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeStaticFallbackSpec
  * @extends AbstractCrudObject
@@ -34425,16 +30579,6 @@ var AdCreativeStaticFallbackSpec = function (_AbstractCrudObject) {
   return AdCreativeStaticFallbackSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34445,7 +30589,6 @@ var AdCreativeStaticFallbackSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeTemplateURLSpec
  * @extends AbstractCrudObject
@@ -34477,16 +30620,6 @@ var AdCreativeTemplateURLSpec = function (_AbstractCrudObject) {
   return AdCreativeTemplateURLSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34497,7 +30630,6 @@ var AdCreativeTemplateURLSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeTextData
  * @extends AbstractCrudObject
@@ -34523,16 +30655,6 @@ var AdCreativeTextData = function (_AbstractCrudObject) {
   return AdCreativeTextData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34543,7 +30665,6 @@ var AdCreativeTextData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCreativeVideoData
  * @extends AbstractCrudObject
@@ -34585,16 +30706,6 @@ var AdCreativeVideoData = function (_AbstractCrudObject) {
   return AdCreativeVideoData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34605,7 +30716,6 @@ var AdCreativeVideoData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdCustomizationRuleSpec
  * @extends AbstractCrudObject
@@ -34640,16 +30750,6 @@ var AdCustomizationRuleSpec = function (_AbstractCrudObject) {
   return AdCustomizationRuleSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34660,7 +30760,6 @@ var AdCustomizationRuleSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdDynamicCreative
  * @extends AbstractCrudObject
@@ -34686,16 +30785,6 @@ var AdDynamicCreative = function (_AbstractCrudObject) {
   return AdDynamicCreative;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34706,7 +30795,6 @@ var AdDynamicCreative = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdEntityTargetSpend
  * @extends AbstractCrudObject
@@ -34736,16 +30824,6 @@ var AdEntityTargetSpend = function (_AbstractCrudObject) {
   return AdEntityTargetSpend;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34756,7 +30834,6 @@ var AdEntityTargetSpend = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdKeywords
  * @extends AbstractCrudObject
@@ -34785,16 +30862,6 @@ var AdKeywords = function (_AbstractCrudObject) {
   return AdKeywords;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34805,7 +30872,6 @@ var AdKeywords = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdMonetizationProperty
  * @extends AbstractCrudObject
@@ -34864,16 +30930,6 @@ var AdMonetizationProperty = function (_AbstractCrudObject) {
   return AdMonetizationProperty;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34884,7 +30940,6 @@ var AdMonetizationProperty = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdPlacePageSetMetadata
  * @extends AbstractCrudObject
@@ -34913,16 +30968,6 @@ var AdPlacePageSetMetadata = function (_AbstractCrudObject) {
   return AdPlacePageSetMetadata;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -34933,7 +30978,6 @@ var AdPlacePageSetMetadata = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdPromotedObject
  * @extends AbstractCrudObject
@@ -34953,10 +30997,7 @@ var AdPromotedObject = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         application_id: 'application_id',
-<<<<<<< HEAD
-=======
         conversion_goal_id: 'conversion_goal_id',
->>>>>>> brkfst-api-patch
         custom_conversion_id: 'custom_conversion_id',
         custom_event_str: 'custom_event_str',
         custom_event_type: 'custom_event_type',
@@ -34966,19 +31007,13 @@ var AdPromotedObject = function (_AbstractCrudObject) {
         object_store_url: 'object_store_url',
         offer_id: 'offer_id',
         offline_conversion_data_set_id: 'offline_conversion_data_set_id',
-<<<<<<< HEAD
-=======
         offsite_conversion_event_id: 'offsite_conversion_event_id',
->>>>>>> brkfst-api-patch
         omnichannel_object: 'omnichannel_object',
         page_id: 'page_id',
         pixel_aggregation_rule: 'pixel_aggregation_rule',
         pixel_id: 'pixel_id',
         pixel_rule: 'pixel_rule',
-<<<<<<< HEAD
-=======
         place_page_set: 'place_page_set',
->>>>>>> brkfst-api-patch
         place_page_set_id: 'place_page_set_id',
         product_catalog_id: 'product_catalog_id',
         product_item_id: 'product_item_id',
@@ -34994,10 +31029,7 @@ var AdPromotedObject = function (_AbstractCrudObject) {
         add_payment_info: 'ADD_PAYMENT_INFO',
         add_to_cart: 'ADD_TO_CART',
         add_to_wishlist: 'ADD_TO_WISHLIST',
-<<<<<<< HEAD
-=======
         ad_impression: 'AD_IMPRESSION',
->>>>>>> brkfst-api-patch
         complete_registration: 'COMPLETE_REGISTRATION',
         contact: 'CONTACT',
         content_view: 'CONTENT_VIEW',
@@ -35028,16 +31060,6 @@ var AdPromotedObject = function (_AbstractCrudObject) {
   return AdPromotedObject;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35048,7 +31070,6 @@ var AdPromotedObject = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRecommendation
  * @extends AbstractCrudObject
@@ -35098,16 +31119,6 @@ var AdRecommendation = function (_AbstractCrudObject) {
   return AdRecommendation;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35118,7 +31129,6 @@ var AdRecommendation = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRecommendationData
  * @extends AbstractCrudObject
@@ -35144,16 +31154,6 @@ var AdRecommendationData = function (_AbstractCrudObject) {
   return AdRecommendationData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35164,7 +31164,6 @@ var AdRecommendationData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleEvaluationSpec
  * @extends AbstractCrudObject
@@ -35209,16 +31208,6 @@ var AdRuleEvaluationSpec = function (_AbstractCrudObject) {
   return AdRuleEvaluationSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35229,7 +31218,6 @@ var AdRuleEvaluationSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleExecutionOptions
  * @extends AbstractCrudObject
@@ -35265,16 +31253,6 @@ var AdRuleExecutionOptions = function (_AbstractCrudObject) {
   return AdRuleExecutionOptions;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35285,7 +31263,6 @@ var AdRuleExecutionOptions = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleExecutionSpec
  * @extends AbstractCrudObject
@@ -35344,16 +31321,6 @@ var AdRuleExecutionSpec = function (_AbstractCrudObject) {
   return AdRuleExecutionSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35364,7 +31331,6 @@ var AdRuleExecutionSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleFilters
  * @extends AbstractCrudObject
@@ -35411,16 +31377,6 @@ var AdRuleFilters = function (_AbstractCrudObject) {
   return AdRuleFilters;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35431,7 +31387,6 @@ var AdRuleFilters = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleHistoryResult
  * @extends AbstractCrudObject
@@ -35468,16 +31423,6 @@ var AdRuleHistoryResult = function (_AbstractCrudObject) {
   return AdRuleHistoryResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35488,7 +31433,6 @@ var AdRuleHistoryResult = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleHistoryResultAction
  * @extends AbstractCrudObject
@@ -35517,16 +31461,6 @@ var AdRuleHistoryResultAction = function (_AbstractCrudObject) {
   return AdRuleHistoryResultAction;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35537,7 +31471,6 @@ var AdRuleHistoryResultAction = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleSchedule
  * @extends AbstractCrudObject
@@ -35565,16 +31498,6 @@ var AdRuleSchedule = function (_AbstractCrudObject) {
   return AdRuleSchedule;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35585,7 +31508,6 @@ var AdRuleSchedule = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleScheduleSpec
  * @extends AbstractCrudObject
@@ -35612,16 +31534,6 @@ var AdRuleScheduleSpec = function (_AbstractCrudObject) {
   return AdRuleScheduleSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35632,7 +31544,6 @@ var AdRuleScheduleSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdRuleTrigger
  * @extends AbstractCrudObject
@@ -35691,16 +31602,6 @@ var AdRuleTrigger = function (_AbstractCrudObject) {
   return AdRuleTrigger;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35711,7 +31612,6 @@ var AdRuleTrigger = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdStudyObjectiveID
  * @extends AbstractCrudObject
@@ -35739,16 +31639,6 @@ var AdStudyObjectiveID = function (_AbstractCrudObject) {
   return AdStudyObjectiveID;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35759,7 +31649,6 @@ var AdStudyObjectiveID = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdStudyObjectiveOffsiteDatasets
  * @extends AbstractCrudObject
@@ -35786,16 +31675,6 @@ var AdStudyObjectiveOffsiteDatasets = function (_AbstractCrudObject) {
   return AdStudyObjectiveOffsiteDatasets;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35806,7 +31685,6 @@ var AdStudyObjectiveOffsiteDatasets = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdgroupIssuesInfo
  * @extends AbstractCrudObject
@@ -35836,16 +31714,6 @@ var AdgroupIssuesInfo = function (_AbstractCrudObject) {
   return AdgroupIssuesInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35856,7 +31724,6 @@ var AdgroupIssuesInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdgroupMetadata
  * @extends AbstractCrudObject
@@ -35886,16 +31753,6 @@ var AdgroupMetadata = function (_AbstractCrudObject) {
   return AdgroupMetadata;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35906,7 +31763,6 @@ var AdgroupMetadata = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdgroupPlacementSpecificReviewFeedback
  * @extends AbstractCrudObject
@@ -35967,16 +31823,6 @@ var AdgroupPlacementSpecificReviewFeedback = function (_AbstractCrudObject) {
   return AdgroupPlacementSpecificReviewFeedback;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -35987,7 +31833,6 @@ var AdgroupPlacementSpecificReviewFeedback = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdgroupReviewFeedback
  * @extends AbstractCrudObject
@@ -36014,16 +31859,6 @@ var AdgroupReviewFeedback = function (_AbstractCrudObject) {
   return AdgroupReviewFeedback;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36034,7 +31869,6 @@ var AdgroupReviewFeedback = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdsActionStats
  * @extends AbstractCrudObject
@@ -36054,10 +31888,7 @@ var AdsActionStats = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         value_1d_click: '1d_click',
-<<<<<<< HEAD
-=======
         value_1d_ev: '1d_ev',
->>>>>>> brkfst-api-patch
         value_1d_view: '1d_view',
         value_28d_click: '28d_click',
         value_28d_view: '28d_view',
@@ -36094,16 +31925,6 @@ var AdsActionStats = function (_AbstractCrudObject) {
   return AdsActionStats;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36180,7 +32001,6 @@ var AdsHistogramStats = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdsImageCrops
  * @extends AbstractCrudObject
@@ -36212,16 +32032,6 @@ var AdsImageCrops = function (_AbstractCrudObject) {
   return AdsImageCrops;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36232,7 +32042,6 @@ var AdsImageCrops = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdsOptimalDeliveryGrowthOpportunity
  * @extends AbstractCrudObject
@@ -36260,16 +32069,6 @@ var AdsOptimalDeliveryGrowthOpportunity = function (_AbstractCrudObject) {
   return AdsOptimalDeliveryGrowthOpportunity;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36280,7 +32079,6 @@ var AdsOptimalDeliveryGrowthOpportunity = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AdsPixelStats
  * @extends AbstractCrudObject
@@ -36309,16 +32107,6 @@ var AdsPixelStats = function (_AbstractCrudObject) {
   return AdsPixelStats;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36329,7 +32117,6 @@ var AdsPixelStats = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AgeRange
  * @extends AbstractCrudObject
@@ -36356,16 +32143,6 @@ var AgeRange = function (_AbstractCrudObject) {
   return AgeRange;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36376,7 +32153,6 @@ var AgeRange = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AgencyClientDeclaration
  * @extends AbstractCrudObject
@@ -36413,16 +32189,6 @@ var AgencyClientDeclaration = function (_AbstractCrudObject) {
   return AgencyClientDeclaration;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36433,7 +32199,6 @@ var AgencyClientDeclaration = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AndroidAppLink
  * @extends AbstractCrudObject
@@ -36462,16 +32227,6 @@ var AndroidAppLink = function (_AbstractCrudObject) {
   return AndroidAppLink;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36482,7 +32237,6 @@ var AndroidAppLink = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AsyncSession
  * @extends AbstractCrudObject
@@ -36530,16 +32284,6 @@ var AsyncSession = function (_AbstractCrudObject) {
   return AsyncSession;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36550,7 +32294,6 @@ var AsyncSession = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AttributionSpec
  * @extends AbstractCrudObject
@@ -36577,16 +32320,6 @@ var AttributionSpec = function (_AbstractCrudObject) {
   return AttributionSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36597,7 +32330,6 @@ var AttributionSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AudiencePermissionForActions
  * @extends AbstractCrudObject
@@ -36627,16 +32359,6 @@ var AudiencePermissionForActions = function (_AbstractCrudObject) {
   return AudiencePermissionForActions;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36647,7 +32369,6 @@ var AudiencePermissionForActions = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * AudioCopyright
  * @extends AbstractCrudObject
@@ -36701,16 +32422,6 @@ var AudioCopyright = function (_AbstractCrudObject) {
   return AudioCopyright;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36765,7 +32476,6 @@ var AvatarProfilePicture = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BrandSafetyBlockListUsage
  * @extends AbstractCrudObject
@@ -36795,66 +32505,6 @@ var BrandSafetyBlockListUsage = function (_AbstractCrudObject) {
   return BrandSafetyBlockListUsage;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * BusinessImage
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var BusinessImage = function (_AbstractCrudObject) {
-  inherits(BusinessImage, _AbstractCrudObject);
-
-  function BusinessImage() {
-    classCallCheck(this, BusinessImage);
-    return possibleConstructorReturn(this, (BusinessImage.__proto__ || Object.getPrototypeOf(BusinessImage)).apply(this, arguments));
-  }
-
-  createClass(BusinessImage, [{
-    key: 'get',
-    value: function get(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      // $FlowFixMe : Support Generic Types
-      return this.read(fields, params);
-    }
-  }], [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        business: 'business',
-        creation_time: 'creation_time',
-        hash: 'hash',
-        height: 'height',
-        id: 'id',
-        media_library_url: 'media_library_url',
-        name: 'name',
-        url: 'url',
-        url_128: 'url_128',
-        width: 'width'
-      });
-    }
-  }]);
-  return BusinessImage;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36865,7 +32515,6 @@ var BusinessImage = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessManagedPartnerEligibility
  * @extends AbstractCrudObject
@@ -36893,16 +32542,6 @@ var BusinessManagedPartnerEligibility = function (_AbstractCrudObject) {
   return BusinessManagedPartnerEligibility;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -36913,7 +32552,6 @@ var BusinessManagedPartnerEligibility = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * BusinessPartnerPremiumOptions
  * @extends AbstractCrudObject
@@ -36941,16 +32579,6 @@ var BusinessPartnerPremiumOptions = function (_AbstractCrudObject) {
   return BusinessPartnerPremiumOptions;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37008,7 +32636,6 @@ var BusinessVideo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CRMAddress
  * @extends AbstractCrudObject
@@ -37055,16 +32682,6 @@ var CRMAddress = function (_AbstractCrudObject) {
   return CRMAddress;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37075,7 +32692,6 @@ var CRMAddress = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CampaignGroupBrandConfiguration
  * @extends AbstractCrudObject
@@ -37103,16 +32719,6 @@ var CampaignGroupBrandConfiguration = function (_AbstractCrudObject) {
   return CampaignGroupBrandConfiguration;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37123,7 +32729,6 @@ var CampaignGroupBrandConfiguration = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CampaignGroupCollaborativeAdsPartnerInfo
  * @extends AbstractCrudObject
@@ -37147,16 +32752,6 @@ var CampaignGroupCollaborativeAdsPartnerInfo = function (_AbstractCrudObject) {
   return CampaignGroupCollaborativeAdsPartnerInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37167,7 +32762,6 @@ var CampaignGroupCollaborativeAdsPartnerInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CanvasAdSettings
  * @extends AbstractCrudObject
@@ -37199,16 +32793,6 @@ var CanvasAdSettings = function (_AbstractCrudObject) {
   return CanvasAdSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37219,7 +32803,6 @@ var CanvasAdSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CanvasCollectionThumbnail
  * @extends AbstractCrudObject
@@ -37247,16 +32830,6 @@ var CanvasCollectionThumbnail = function (_AbstractCrudObject) {
   return CanvasCollectionThumbnail;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37267,7 +32840,6 @@ var CanvasCollectionThumbnail = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CanvasDynamicSetting
  * @extends AbstractCrudObject
@@ -37303,16 +32875,6 @@ var CanvasDynamicSetting = function (_AbstractCrudObject) {
   return CanvasDynamicSetting;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37323,7 +32885,6 @@ var CanvasDynamicSetting = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CatalogBasedTargeting
  * @extends AbstractCrudObject
@@ -37349,16 +32910,6 @@ var CatalogBasedTargeting = function (_AbstractCrudObject) {
   return CatalogBasedTargeting;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37369,7 +32920,6 @@ var CatalogBasedTargeting = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CatalogItemAppLinks
  * @extends AbstractCrudObject
@@ -37402,16 +32952,6 @@ var CatalogItemAppLinks = function (_AbstractCrudObject) {
   return CatalogItemAppLinks;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37422,7 +32962,6 @@ var CatalogItemAppLinks = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CatalogItemAppealStatus
  * @extends AbstractCrudObject
@@ -37447,8 +32986,6 @@ var CatalogItemAppealStatus = function (_AbstractCrudObject) {
         use_cases: 'use_cases'
       });
     }
-<<<<<<< HEAD
-=======
   }, {
     key: 'Status',
     get: function get() {
@@ -37460,21 +32997,10 @@ var CatalogItemAppealStatus = function (_AbstractCrudObject) {
         your_request_was_received_see_information_below_to_learn_more_: 'Your request was received. See information below to learn more.'
       });
     }
->>>>>>> brkfst-api-patch
   }]);
   return CatalogItemAppealStatus;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37485,7 +33011,6 @@ var CatalogItemAppealStatus = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CatalogSubVerticalList
  * @extends AbstractCrudObject
@@ -37564,16 +33089,6 @@ var CatalogSubVerticalList = function (_AbstractCrudObject) {
   return CatalogSubVerticalList;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37584,7 +33099,6 @@ var CatalogSubVerticalList = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ChildEvent
  * @extends AbstractCrudObject
@@ -37613,16 +33127,6 @@ var ChildEvent = function (_AbstractCrudObject) {
   return ChildEvent;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37633,7 +33137,6 @@ var ChildEvent = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CollaborativeAdsPartnerInfoListItem
  * @extends AbstractCrudObject
@@ -37657,58 +33160,6 @@ var CollaborativeAdsPartnerInfoListItem = function (_AbstractCrudObject) {
   return CollaborativeAdsPartnerInfoListItem;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * CommerceMerchantTOSAcceptance
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var CommerceMerchantTOSAcceptance = function (_AbstractCrudObject) {
-  inherits(CommerceMerchantTOSAcceptance, _AbstractCrudObject);
-
-  function CommerceMerchantTOSAcceptance() {
-    classCallCheck(this, CommerceMerchantTOSAcceptance);
-    return possibleConstructorReturn(this, (CommerceMerchantTOSAcceptance.__proto__ || Object.getPrototypeOf(CommerceMerchantTOSAcceptance)).apply(this, arguments));
-  }
-
-  createClass(CommerceMerchantTOSAcceptance, [{
-    key: 'get',
-    value: function get(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      // $FlowFixMe : Support Generic Types
-      return this.read(fields, params);
-    }
-  }], [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        business: 'business',
-        id: 'id'
-      });
-    }
-  }]);
-  return CommerceMerchantTOSAcceptance;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37719,7 +33170,6 @@ var CommerceMerchantTOSAcceptance = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CommerceSettings
  * @extends AbstractCrudObject
@@ -37746,16 +33196,6 @@ var CommerceSettings = function (_AbstractCrudObject) {
   return CommerceSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37766,7 +33206,6 @@ var CommerceSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ConnectionsTargeting
  * @extends AbstractCrudObject
@@ -37793,16 +33232,6 @@ var ConnectionsTargeting = function (_AbstractCrudObject) {
   return ConnectionsTargeting;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37813,7 +33242,6 @@ var ConnectionsTargeting = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ContextualBundlingSpec
  * @extends AbstractCrudObject
@@ -37839,16 +33267,6 @@ var ContextualBundlingSpec = function (_AbstractCrudObject) {
   return ContextualBundlingSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37859,7 +33277,6 @@ var ContextualBundlingSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ConversionActionQuery
  * @extends AbstractCrudObject
@@ -37910,16 +33327,6 @@ var ConversionActionQuery = function (_AbstractCrudObject) {
   return ConversionActionQuery;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37930,7 +33337,6 @@ var ConversionActionQuery = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CopyrightReferenceContainer
  * @extends AbstractCrudObject
@@ -37967,16 +33373,6 @@ var CopyrightReferenceContainer = function (_AbstractCrudObject) {
   return CopyrightReferenceContainer;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -37987,7 +33383,6 @@ var CopyrightReferenceContainer = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CoverPhoto
  * @extends AbstractCrudObject
@@ -38017,16 +33412,6 @@ var CoverPhoto = function (_AbstractCrudObject) {
   return CoverPhoto;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38037,7 +33422,6 @@ var CoverPhoto = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CreativeHistory
  * @extends AbstractCrudObject
@@ -38064,16 +33448,6 @@ var CreativeHistory = function (_AbstractCrudObject) {
   return CreativeHistory;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38084,7 +33458,6 @@ var CreativeHistory = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CreditPartitionActionOptions
  * @extends AbstractCrudObject
@@ -38112,16 +33485,6 @@ var CreditPartitionActionOptions = function (_AbstractCrudObject) {
   return CreditPartitionActionOptions;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38132,7 +33495,6 @@ var CreditPartitionActionOptions = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Currency
  * @extends AbstractCrudObject
@@ -38161,16 +33523,6 @@ var Currency = function (_AbstractCrudObject) {
   return Currency;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38181,7 +33533,6 @@ var Currency = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CurrencyAmount
  * @extends AbstractCrudObject
@@ -38210,16 +33561,6 @@ var CurrencyAmount = function (_AbstractCrudObject) {
   return CurrencyAmount;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38230,7 +33571,6 @@ var CurrencyAmount = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomAudienceAdAccount
  * @extends AbstractCrudObject
@@ -38256,16 +33596,6 @@ var CustomAudienceAdAccount = function (_AbstractCrudObject) {
   return CustomAudienceAdAccount;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38276,7 +33606,6 @@ var CustomAudienceAdAccount = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomAudienceDataSource
  * @extends AbstractCrudObject
@@ -38306,10 +33635,7 @@ var CustomAudienceDataSource = function (_AbstractCrudObject) {
       return Object.freeze({
         anything: 'ANYTHING',
         app_users: 'APP_USERS',
-<<<<<<< HEAD
-=======
         ar_effects_events: 'AR_EFFECTS_EVENTS',
->>>>>>> brkfst-api-patch
         ar_experience_events: 'AR_EXPERIENCE_EVENTS',
         campaign_conversions: 'CAMPAIGN_CONVERSIONS',
         combination_custom_audience_users: 'COMBINATION_CUSTOM_AUDIENCE_USERS',
@@ -38336,10 +33662,7 @@ var CustomAudienceDataSource = function (_AbstractCrudObject) {
         instant_article_events: 'INSTANT_ARTICLE_EVENTS',
         lookalike_platform: 'LOOKALIKE_PLATFORM',
         mail_chimp_email_hashes: 'MAIL_CHIMP_EMAIL_HASHES',
-<<<<<<< HEAD
-=======
         messenger_onsite_subscription: 'MESSENGER_ONSITE_SUBSCRIPTION',
->>>>>>> brkfst-api-patch
         mobile_advertiser_ids: 'MOBILE_ADVERTISER_IDS',
         mobile_app_combination_events: 'MOBILE_APP_COMBINATION_EVENTS',
         mobile_app_custom_audience_users: 'MOBILE_APP_CUSTOM_AUDIENCE_USERS',
@@ -38360,10 +33683,7 @@ var CustomAudienceDataSource = function (_AbstractCrudObject) {
         signal_source: 'SIGNAL_SOURCE',
         smart_audience: 'SMART_AUDIENCE',
         store_visit_events: 'STORE_VISIT_EVENTS',
-<<<<<<< HEAD
-=======
         subscriber_list: 'SUBSCRIBER_LIST',
->>>>>>> brkfst-api-patch
         s_expr: 'S_EXPR',
         tokens: 'TOKENS',
         user_ids: 'USER_IDS',
@@ -38392,16 +33712,6 @@ var CustomAudienceDataSource = function (_AbstractCrudObject) {
   return CustomAudienceDataSource;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38449,7 +33759,6 @@ var CustomAudienceGroup = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomAudienceSharingStatus
  * @extends AbstractCrudObject
@@ -38476,16 +33785,6 @@ var CustomAudienceSharingStatus = function (_AbstractCrudObject) {
   return CustomAudienceSharingStatus;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38496,7 +33795,6 @@ var CustomAudienceSharingStatus = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * CustomAudienceStatus
  * @extends AbstractCrudObject
@@ -38523,16 +33821,6 @@ var CustomAudienceStatus = function (_AbstractCrudObject) {
   return CustomAudienceStatus;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38543,7 +33831,6 @@ var CustomAudienceStatus = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * DayPart
  * @extends AbstractCrudObject
@@ -38572,16 +33859,6 @@ var DayPart = function (_AbstractCrudObject) {
   return DayPart;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38592,7 +33869,6 @@ var DayPart = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * DeliveryCheck
  * @extends AbstractCrudObject
@@ -38621,16 +33897,6 @@ var DeliveryCheck = function (_AbstractCrudObject) {
   return DeliveryCheck;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38641,7 +33907,6 @@ var DeliveryCheck = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * DeliveryCheckExtraInfo
  * @extends AbstractCrudObject
@@ -38669,16 +33934,6 @@ var DeliveryCheckExtraInfo = function (_AbstractCrudObject) {
   return DeliveryCheckExtraInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38689,7 +33944,6 @@ var DeliveryCheckExtraInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * DeliveryWindow
  * @extends AbstractCrudObject
@@ -38966,16 +34220,6 @@ var DeliveryWindow = function (_AbstractCrudObject) {
   return DeliveryWindow;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -38986,7 +34230,6 @@ var DeliveryWindow = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * DestinationCatalogSettings
  * @extends AbstractCrudObject
@@ -39021,16 +34264,6 @@ var DestinationCatalogSettings = function (_AbstractCrudObject) {
   return DestinationCatalogSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39041,7 +34274,6 @@ var DestinationCatalogSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * DynamicPostChildAttachment
  * @extends AbstractCrudObject
@@ -39072,16 +34304,6 @@ var DynamicPostChildAttachment = function (_AbstractCrudObject) {
   return DynamicPostChildAttachment;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39092,7 +34314,6 @@ var DynamicPostChildAttachment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Engagement
  * @extends AbstractCrudObject
@@ -39124,16 +34345,6 @@ var Engagement = function (_AbstractCrudObject) {
   return Engagement;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39144,7 +34355,6 @@ var Engagement = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * EntityAtTextRange
  * @extends AbstractCrudObject
@@ -39186,16 +34396,6 @@ var EntityAtTextRange = function (_AbstractCrudObject) {
   return EntityAtTextRange;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39206,7 +34406,6 @@ var EntityAtTextRange = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Experience
  * @extends AbstractCrudObject
@@ -39236,16 +34435,6 @@ var Experience = function (_AbstractCrudObject) {
   return Experience;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39256,7 +34445,6 @@ var Experience = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * FAMEExportConfig
  * @extends AbstractCrudObject
@@ -39285,16 +34473,6 @@ var FAMEExportConfig = function (_AbstractCrudObject) {
   return FAMEExportConfig;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39305,7 +34483,6 @@ var FAMEExportConfig = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * FlexibleTargeting
  * @extends AbstractCrudObject
@@ -39358,16 +34535,6 @@ var FlexibleTargeting = function (_AbstractCrudObject) {
   return FlexibleTargeting;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39378,7 +34545,6 @@ var FlexibleTargeting = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * FundingSourceDetails
  * @extends AbstractCrudObject
@@ -39407,16 +34573,6 @@ var FundingSourceDetails = function (_AbstractCrudObject) {
   return FundingSourceDetails;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39427,7 +34583,6 @@ var FundingSourceDetails = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * FundingSourceDetailsCoupon
  * @extends AbstractCrudObject
@@ -39456,16 +34611,6 @@ var FundingSourceDetailsCoupon = function (_AbstractCrudObject) {
   return FundingSourceDetailsCoupon;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39557,7 +34702,6 @@ var HighDemandPeriodTimeSuggestionWeeklySegment = function (_AbstractCrudObject)
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * IDName
  * @extends AbstractCrudObject
@@ -39584,16 +34728,6 @@ var IDName = function (_AbstractCrudObject) {
   return IDName;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -39604,7 +34738,6 @@ var IDName = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * IGBCAdsPermission
  * @extends AbstractCrudObject
@@ -39640,16 +34773,6 @@ var IGBCAdsPermission = function (_AbstractCrudObject) {
   return IGBCAdsPermission;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -40034,7 +35157,6 @@ var InstagramCarousel = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * InstagramInsightsValue
  * @extends AbstractCrudObject
@@ -40061,16 +35183,6 @@ var InstagramInsightsValue = function (_AbstractCrudObject) {
   return InstagramInsightsValue;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -40227,7 +35339,6 @@ var InstagramVideoMetadata = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * IosAppLink
  * @extends AbstractCrudObject
@@ -40255,18 +35366,6 @@ var IosAppLink = function (_AbstractCrudObject) {
   return IosAppLink;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * JobsJob
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -40279,46 +35378,10 @@ var IosAppLink = function (_AbstractCrudObject) {
 
 /**
  * JobOpening
->>>>>>> brkfst-api-patch
  * @extends AbstractCrudObject
  * @see {@link https://developers.facebook.com/docs/marketing-api/}
  */
 
-<<<<<<< HEAD
-var JobsJob = function (_AbstractCrudObject) {
-  inherits(JobsJob, _AbstractCrudObject);
-
-  function JobsJob() {
-    classCallCheck(this, JobsJob);
-    return possibleConstructorReturn(this, (JobsJob.__proto__ || Object.getPrototypeOf(JobsJob)).apply(this, arguments));
-  }
-
-  createClass(JobsJob, [{
-    key: 'getAugmentedRealitiesMetadata',
-    value: function getAugmentedRealitiesMetadata(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/augmented_realities_metadata');
-    }
-  }, {
-    key: 'getChannelsToIntegrityStatus',
-    value: function getChannelsToIntegrityStatus(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(CatalogItemChannelsToIntegrityStatus, fields, params, fetchFirstPage, '/channels_to_integrity_status');
-    }
-  }, {
-    key: 'getVideosMetadata',
-    value: function getVideosMetadata(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var fetchFirstPage = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      return this.getEdge(AbstractObject, fields, params, fetchFirstPage, '/videos_metadata');
-    }
-  }, {
-=======
 var JobOpening = function (_AbstractCrudObject) {
   inherits(JobOpening, _AbstractCrudObject);
 
@@ -40328,7 +35391,6 @@ var JobOpening = function (_AbstractCrudObject) {
   }
 
   createClass(JobOpening, [{
->>>>>>> brkfst-api-patch
     key: 'get',
     value: function get(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -40341,66 +35403,6 @@ var JobOpening = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         address: 'address',
-<<<<<<< HEAD
-        applinks: 'applinks',
-        category_specific_fields: 'category_specific_fields',
-        custom_label_0: 'custom_label_0',
-        custom_label_1: 'custom_label_1',
-        custom_label_2: 'custom_label_2',
-        custom_label_3: 'custom_label_3',
-        custom_label_4: 'custom_label_4',
-        custom_label_5: 'custom_label_5',
-        custom_label_6: 'custom_label_6',
-        custom_number_0: 'custom_number_0',
-        custom_number_1: 'custom_number_1',
-        custom_number_2: 'custom_number_2',
-        custom_number_3: 'custom_number_3',
-        custom_number_4: 'custom_number_4',
-        custom_number_5: 'custom_number_5',
-        custom_number_6: 'custom_number_6',
-        id: 'id',
-        image_fetch_status: 'image_fetch_status',
-        images: 'images',
-        jobs_job_id: 'jobs_job_id',
-        sanitized_images: 'sanitized_images',
-        unit_price: 'unit_price',
-        url: 'url',
-        visibility: 'visibility'
-      });
-    }
-  }, {
-    key: 'ImageFetchStatus',
-    get: function get() {
-      return Object.freeze({
-        direct_upload: 'DIRECT_UPLOAD',
-        fetched: 'FETCHED',
-        fetch_failed: 'FETCH_FAILED',
-        no_status: 'NO_STATUS',
-        outdated: 'OUTDATED',
-        partial_fetch: 'PARTIAL_FETCH'
-      });
-    }
-  }, {
-    key: 'Visibility',
-    get: function get() {
-      return Object.freeze({
-        published: 'PUBLISHED',
-        staging: 'STAGING'
-      });
-    }
-  }]);
-  return JobsJob;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
         application_callback_url: 'application_callback_url',
         created_time: 'created_time',
         description: 'description',
@@ -40485,7 +35487,6 @@ var JobOpening = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * KeyValue
  * @extends AbstractCrudObject
@@ -40512,16 +35513,6 @@ var KeyValue = function (_AbstractCrudObject) {
   return KeyValue;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -40532,7 +35523,6 @@ var KeyValue = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LeadGenAppointmentBookingInfo
  * @extends AbstractCrudObject
@@ -40560,16 +35550,6 @@ var LeadGenAppointmentBookingInfo = function (_AbstractCrudObject) {
   return LeadGenAppointmentBookingInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -40652,7 +35632,6 @@ var LeadGenAppointmentTimeSlot = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LeadGenConditionalQuestionsGroupChoices
  * @extends AbstractCrudObject
@@ -40680,16 +35659,6 @@ var LeadGenConditionalQuestionsGroupChoices = function (_AbstractCrudObject) {
   return LeadGenConditionalQuestionsGroupChoices;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -40700,7 +35669,6 @@ var LeadGenConditionalQuestionsGroupChoices = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LeadGenConditionalQuestionsGroupQuestions
  * @extends AbstractCrudObject
@@ -40728,16 +35696,6 @@ var LeadGenConditionalQuestionsGroupQuestions = function (_AbstractCrudObject) {
   return LeadGenConditionalQuestionsGroupQuestions;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -40861,7 +35819,6 @@ var LeadGenCustomDisclaimerBody = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LeadGenDraftQuestion
  * @extends AbstractCrudObject
@@ -40894,16 +35851,6 @@ var LeadGenDraftQuestion = function (_AbstractCrudObject) {
   return LeadGenDraftQuestion;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -40990,7 +35937,6 @@ var LeadGenLegalContentCheckbox = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LeadGenPostSubmissionCheckResult
  * @extends AbstractCrudObject
@@ -41018,16 +35964,6 @@ var LeadGenPostSubmissionCheckResult = function (_AbstractCrudObject) {
   return LeadGenPostSubmissionCheckResult;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41074,7 +36010,6 @@ var LeadGenPrivacyPolicy = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LeadGenQuestion
  * @extends AbstractCrudObject
@@ -41108,16 +36043,6 @@ var LeadGenQuestion = function (_AbstractCrudObject) {
   return LeadGenQuestion;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41128,7 +36053,6 @@ var LeadGenQuestion = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LeadGenQuestionOption
  * @extends AbstractCrudObject
@@ -41155,16 +36079,6 @@ var LeadGenQuestionOption = function (_AbstractCrudObject) {
   return LeadGenQuestionOption;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41257,7 +36171,6 @@ var LeadGenURLEntityAtRanges = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LifeEvent
  * @extends AbstractCrudObject
@@ -41306,16 +36219,6 @@ var LifeEvent = function (_AbstractCrudObject) {
   return LifeEvent;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41326,7 +36229,6 @@ var LifeEvent = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Link
  * @extends AbstractCrudObject
@@ -41387,16 +36289,6 @@ var Link = function (_AbstractCrudObject) {
   return Link;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41407,7 +36299,6 @@ var Link = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LiveVideoAdBreakConfig
  * @extends AbstractCrudObject
@@ -41442,16 +36333,6 @@ var LiveVideoAdBreakConfig = function (_AbstractCrudObject) {
   return LiveVideoAdBreakConfig;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41462,7 +36343,6 @@ var LiveVideoAdBreakConfig = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LiveVideoRecommendedEncoderSettings
  * @extends AbstractCrudObject
@@ -41490,16 +36370,6 @@ var LiveVideoRecommendedEncoderSettings = function (_AbstractCrudObject) {
   return LiveVideoRecommendedEncoderSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41510,7 +36380,6 @@ var LiveVideoRecommendedEncoderSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LiveVideoTargeting
  * @extends AbstractCrudObject
@@ -41539,16 +36408,6 @@ var LiveVideoTargeting = function (_AbstractCrudObject) {
   return LiveVideoTargeting;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41559,7 +36418,6 @@ var LiveVideoTargeting = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LocalServiceBusiness
  * @extends AbstractCrudObject
@@ -41619,13 +36477,9 @@ var LocalServiceBusiness = function (_AbstractCrudObject) {
         id: 'id',
         image_fetch_status: 'image_fetch_status',
         images: 'images',
-<<<<<<< HEAD
-        local_service_business_id: 'local_service_business_id',
-=======
         local_info: 'local_info',
         local_service_business_id: 'local_service_business_id',
         main_local_info: 'main_local_info',
->>>>>>> brkfst-api-patch
         phone: 'phone',
         price: 'price',
         price_range: 'price_range',
@@ -41646,10 +36500,7 @@ var LocalServiceBusiness = function (_AbstractCrudObject) {
         available_for_order: 'AVAILABLE_FOR_ORDER',
         discontinued: 'DISCONTINUED',
         in_stock: 'IN_STOCK',
-<<<<<<< HEAD
-=======
         mark_as_sold: 'MARK_AS_SOLD',
->>>>>>> brkfst-api-patch
         out_of_stock: 'OUT_OF_STOCK',
         pending: 'PENDING',
         preorder: 'PREORDER'
@@ -41693,16 +36544,6 @@ var LocalServiceBusiness = function (_AbstractCrudObject) {
   return LocalServiceBusiness;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41713,7 +36554,6 @@ var LocalServiceBusiness = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Location
  * @extends AbstractCrudObject
@@ -41751,16 +36591,6 @@ var Location = function (_AbstractCrudObject) {
   return Location;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41771,7 +36601,6 @@ var Location = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * LookalikeSpec
  * @extends AbstractCrudObject
@@ -41808,16 +36637,6 @@ var LookalikeSpec = function (_AbstractCrudObject) {
   return LookalikeSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41828,7 +36647,6 @@ var LookalikeSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * MailingAddress
  * @extends AbstractCrudObject
@@ -41869,16 +36687,6 @@ var MailingAddress = function (_AbstractCrudObject) {
   return MailingAddress;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41889,7 +36697,6 @@ var MailingAddress = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ManagedPartnerBusiness
  * @extends AbstractCrudObject
@@ -41921,16 +36728,6 @@ var ManagedPartnerBusiness = function (_AbstractCrudObject) {
   return ManagedPartnerBusiness;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -41978,7 +36775,6 @@ var ManagedPartnerExtendedCredit = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * MessagingFeatureStatus
  * @extends AbstractCrudObject
@@ -41997,67 +36793,15 @@ var MessagingFeatureStatus = function (_AbstractCrudObject) {
     key: 'Fields',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-        hop_v2: 'hop_v2'
-=======
         hop_v2: 'hop_v2',
         ig_multi_app: 'ig_multi_app',
         msgr_multi_app: 'msgr_multi_app'
->>>>>>> brkfst-api-patch
       });
     }
   }]);
   return MessagingFeatureStatus;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * MessengerDestinationPageWelcomeMessage
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var MessengerDestinationPageWelcomeMessage = function (_AbstractCrudObject) {
-  inherits(MessengerDestinationPageWelcomeMessage, _AbstractCrudObject);
-
-  function MessengerDestinationPageWelcomeMessage() {
-    classCallCheck(this, MessengerDestinationPageWelcomeMessage);
-    return possibleConstructorReturn(this, (MessengerDestinationPageWelcomeMessage.__proto__ || Object.getPrototypeOf(MessengerDestinationPageWelcomeMessage)).apply(this, arguments));
-  }
-
-  createClass(MessengerDestinationPageWelcomeMessage, null, [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        id: 'id',
-        page_welcome_message_body: 'page_welcome_message_body',
-        page_welcome_message_type: 'page_welcome_message_type',
-        template_name: 'template_name',
-        time_created: 'time_created',
-        time_last_used: 'time_last_used'
-      });
-    }
-  }]);
-  return MessengerDestinationPageWelcomeMessage;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42068,7 +36812,6 @@ var MessengerDestinationPageWelcomeMessage = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * MusicVideoCopyright
  * @extends AbstractCrudObject
@@ -42115,16 +36858,6 @@ var MusicVideoCopyright = function (_AbstractCrudObject) {
   return MusicVideoCopyright;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42135,7 +36868,6 @@ var MusicVideoCopyright = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * OfflineConversionDataSetPermissions
  * @extends AbstractCrudObject
@@ -42164,16 +36896,6 @@ var OfflineConversionDataSetPermissions = function (_AbstractCrudObject) {
   return OfflineConversionDataSetPermissions;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42184,7 +36906,6 @@ var OfflineConversionDataSetPermissions = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * OfflineConversionDataSetUsage
  * @extends AbstractCrudObject
@@ -42210,16 +36931,6 @@ var OfflineConversionDataSetUsage = function (_AbstractCrudObject) {
   return OfflineConversionDataSetUsage;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42230,7 +36941,6 @@ var OfflineConversionDataSetUsage = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * OffsitePixel
  * @extends AbstractCrudObject
@@ -42269,16 +36979,6 @@ var OffsitePixel = function (_AbstractCrudObject) {
   return OffsitePixel;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42289,7 +36989,6 @@ var OffsitePixel = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * OpenGraphContext
  * @extends AbstractCrudObject
@@ -42323,16 +37022,6 @@ var OpenGraphContext = function (_AbstractCrudObject) {
   return OpenGraphContext;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42343,7 +37032,6 @@ var OpenGraphContext = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * OutcomePredictionPoint
  * @extends AbstractCrudObject
@@ -42372,16 +37060,6 @@ var OutcomePredictionPoint = function (_AbstractCrudObject) {
   return OutcomePredictionPoint;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42554,7 +37232,6 @@ var PageAboutStoryComposedBlockInlineStyle = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageCategory
  * @extends AbstractCrudObject
@@ -42583,16 +37260,6 @@ var PageCategory = function (_AbstractCrudObject) {
   return PageCategory;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42603,7 +37270,6 @@ var PageCategory = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageChangeProposal
  * @extends AbstractCrudObject
@@ -42634,16 +37300,6 @@ var PageChangeProposal = function (_AbstractCrudObject) {
   return PageChangeProposal;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42654,7 +37310,6 @@ var PageChangeProposal = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageParking
  * @extends AbstractCrudObject
@@ -42682,16 +37337,6 @@ var PageParking = function (_AbstractCrudObject) {
   return PageParking;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42702,7 +37347,6 @@ var PageParking = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PagePaymentOptions
  * @extends AbstractCrudObject
@@ -42732,69 +37376,6 @@ var PagePaymentOptions = function (_AbstractCrudObject) {
   return PagePaymentOptions;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * PagePostExperiment
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var PagePostExperiment = function (_AbstractCrudObject) {
-  inherits(PagePostExperiment, _AbstractCrudObject);
-
-  function PagePostExperiment() {
-    classCallCheck(this, PagePostExperiment);
-    return possibleConstructorReturn(this, (PagePostExperiment.__proto__ || Object.getPrototypeOf(PagePostExperiment)).apply(this, arguments));
-  }
-
-  createClass(PagePostExperiment, [{
-    key: 'get',
-    value: function get(fields) {
-      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      // $FlowFixMe : Support Generic Types
-      return this.read(fields, params);
-    }
-  }], [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        auto_resolve_settings: 'auto_resolve_settings',
-        creation_time: 'creation_time',
-        creator: 'creator',
-        declared_winning_time: 'declared_winning_time',
-        description: 'description',
-        id: 'id',
-        insight_snapshots: 'insight_snapshots',
-        name: 'name',
-        optimization_goal: 'optimization_goal',
-        publish_status: 'publish_status',
-        publish_time: 'publish_time',
-        scheduled_experiment_timestamp: 'scheduled_experiment_timestamp',
-        updated_time: 'updated_time'
-      });
-    }
-  }]);
-  return PagePostExperiment;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42805,7 +37386,6 @@ var PagePostExperiment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageRestaurantServices
  * @extends AbstractCrudObject
@@ -42840,16 +37420,6 @@ var PageRestaurantServices = function (_AbstractCrudObject) {
   return PageRestaurantServices;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42860,7 +37430,6 @@ var PageRestaurantServices = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageRestaurantSpecialties
  * @extends AbstractCrudObject
@@ -42890,16 +37459,6 @@ var PageRestaurantSpecialties = function (_AbstractCrudObject) {
   return PageRestaurantSpecialties;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42910,7 +37469,6 @@ var PageRestaurantSpecialties = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageSavedFilter
  * @extends AbstractCrudObject
@@ -42950,16 +37508,6 @@ var PageSavedFilter = function (_AbstractCrudObject) {
   return PageSavedFilter;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -42970,7 +37518,6 @@ var PageSavedFilter = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageStartInfo
  * @extends AbstractCrudObject
@@ -42997,16 +37544,6 @@ var PageStartInfo = function (_AbstractCrudObject) {
   return PageStartInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43017,7 +37554,6 @@ var PageStartInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PageUpcomingChange
  * @extends AbstractCrudObject
@@ -43056,16 +37592,6 @@ var PageUpcomingChange = function (_AbstractCrudObject) {
   return PageUpcomingChange;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43076,7 +37602,6 @@ var PageUpcomingChange = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PaymentPricepoints
  * @extends AbstractCrudObject
@@ -43102,16 +37627,6 @@ var PaymentPricepoints = function (_AbstractCrudObject) {
   return PaymentPricepoints;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43122,7 +37637,6 @@ var PaymentPricepoints = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PaymentSubscription
  * @extends AbstractCrudObject
@@ -43179,16 +37693,6 @@ var PaymentSubscription = function (_AbstractCrudObject) {
   return PaymentSubscription;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43199,7 +37703,6 @@ var PaymentSubscription = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Place
  * @extends AbstractCrudObject
@@ -43236,16 +37739,6 @@ var Place = function (_AbstractCrudObject) {
   return Place;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43256,7 +37749,6 @@ var Place = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PlaceTopic
  * @extends AbstractCrudObject
@@ -43297,16 +37789,6 @@ var PlaceTopic = function (_AbstractCrudObject) {
   return PlaceTopic;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43317,7 +37799,6 @@ var PlaceTopic = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * PlatformImageSource
  * @extends AbstractCrudObject
@@ -43345,16 +37826,6 @@ var PlatformImageSource = function (_AbstractCrudObject) {
   return PlatformImageSource;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43365,7 +37836,6 @@ var PlatformImageSource = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Privacy
  * @extends AbstractCrudObject
@@ -43396,16 +37866,6 @@ var Privacy = function (_AbstractCrudObject) {
   return Privacy;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43416,7 +37876,6 @@ var Privacy = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductCatalogImageSettings
  * @extends AbstractCrudObject
@@ -43443,16 +37902,6 @@ var ProductCatalogImageSettings = function (_AbstractCrudObject) {
   return ProductCatalogImageSettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43463,7 +37912,6 @@ var ProductCatalogImageSettings = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductCatalogImageSettingsOperation
  * @extends AbstractCrudObject
@@ -43489,16 +37937,6 @@ var ProductCatalogImageSettingsOperation = function (_AbstractCrudObject) {
   return ProductCatalogImageSettingsOperation;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43509,7 +37947,6 @@ var ProductCatalogImageSettingsOperation = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeedMissingFeedItemReplacement
  * @extends AbstractCrudObject
@@ -43537,16 +37974,6 @@ var ProductFeedMissingFeedItemReplacement = function (_AbstractCrudObject) {
   return ProductFeedMissingFeedItemReplacement;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43557,7 +37984,6 @@ var ProductFeedMissingFeedItemReplacement = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductFeedUploadErrorReport
  * @extends AbstractCrudObject
@@ -43584,16 +38010,6 @@ var ProductFeedUploadErrorReport = function (_AbstractCrudObject) {
   return ProductFeedUploadErrorReport;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43604,7 +38020,6 @@ var ProductFeedUploadErrorReport = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductImage
  * @extends AbstractCrudObject
@@ -43631,90 +38046,16 @@ var ProductImage = function (_AbstractCrudObject) {
     key: 'Fields',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-        id: 'id',
-        image_url: 'image_url'
-=======
         height: 'height',
         id: 'id',
         image_url: 'image_url',
         width: 'width'
->>>>>>> brkfst-api-patch
       });
     }
   }]);
   return ProductImage;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * ProductItemARData
- * @extends AbstractCrudObject
- * @see {@link https://developers.facebook.com/docs/marketing-api/}
- */
-
-var ProductItemARData = function (_AbstractCrudObject) {
-  inherits(ProductItemARData, _AbstractCrudObject);
-
-  function ProductItemARData() {
-    classCallCheck(this, ProductItemARData);
-    return possibleConstructorReturn(this, (ProductItemARData.__proto__ || Object.getPrototypeOf(ProductItemARData)).apply(this, arguments));
-  }
-
-  createClass(ProductItemARData, null, [{
-    key: 'Fields',
-    get: function get() {
-      return Object.freeze({
-        container_effect: 'container_effect',
-        effect_icon: 'effect_icon',
-        effect_parameters: 'effect_parameters',
-        picker_icon: 'picker_icon',
-        product_ar_link: 'product_ar_link',
-        state: 'state',
-        surfaces: 'surfaces'
-      });
-    }
-  }, {
-    key: 'Surfaces',
-    get: function get() {
-      return Object.freeze({
-        b2c_marketplace: 'B2C_MARKETPLACE',
-        c2c_marketplace: 'C2C_MARKETPLACE',
-        da: 'DA',
-        daily_deals: 'DAILY_DEALS',
-        daily_deals_legacy: 'DAILY_DEALS_LEGACY',
-        ig_product_tagging: 'IG_PRODUCT_TAGGING',
-        marketplace: 'MARKETPLACE',
-        marketplace_ads_deprecated: 'MARKETPLACE_ADS_DEPRECATED',
-        marketplace_shops: 'MARKETPLACE_SHOPS',
-        mini_shops: 'MINI_SHOPS',
-        offline_conversions: 'OFFLINE_CONVERSIONS',
-        shops: 'SHOPS',
-        universal_checkout: 'UNIVERSAL_CHECKOUT',
-        whatsapp: 'WHATSAPP'
-      });
-    }
-  }]);
-  return ProductItemARData;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43725,7 +38066,6 @@ var ProductItemARData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductItemCommerceInsights
  * @extends AbstractCrudObject
@@ -43753,16 +38093,6 @@ var ProductItemCommerceInsights = function (_AbstractCrudObject) {
   return ProductItemCommerceInsights;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43773,7 +38103,6 @@ var ProductItemCommerceInsights = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductItemError
  * @extends AbstractCrudObject
@@ -43802,16 +38131,6 @@ var ProductItemError = function (_AbstractCrudObject) {
   return ProductItemError;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43822,7 +38141,6 @@ var ProductItemError = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductItemImporterAddress
  * @extends AbstractCrudObject
@@ -43853,16 +38171,6 @@ var ProductItemImporterAddress = function (_AbstractCrudObject) {
   return ProductItemImporterAddress;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -43960,7 +38268,6 @@ var ProductItemLocalInfoLatLongShape = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductSetMetadata
  * @extends AbstractCrudObject
@@ -43989,16 +38296,6 @@ var ProductSetMetadata = function (_AbstractCrudObject) {
   return ProductSetMetadata;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44009,7 +38306,6 @@ var ProductSetMetadata = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ProductVariant
  * @extends AbstractCrudObject
@@ -44037,16 +38333,6 @@ var ProductVariant = function (_AbstractCrudObject) {
   return ProductVariant;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44057,7 +38343,6 @@ var ProductVariant = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * RawCustomAudience
  * @extends AbstractCrudObject
@@ -44084,16 +38369,6 @@ var RawCustomAudience = function (_AbstractCrudObject) {
   return RawCustomAudience;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44104,7 +38379,6 @@ var RawCustomAudience = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencyActivity
  * @extends AbstractCrudObject
@@ -44135,16 +38409,6 @@ var ReachFrequencyActivity = function (_AbstractCrudObject) {
   return ReachFrequencyActivity;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44155,7 +38419,6 @@ var ReachFrequencyActivity = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencyAdFormat
  * @extends AbstractCrudObject
@@ -44182,16 +38445,6 @@ var ReachFrequencyAdFormat = function (_AbstractCrudObject) {
   return ReachFrequencyAdFormat;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44202,7 +38455,6 @@ var ReachFrequencyAdFormat = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencyCurveLowerConfidenceRange
  * @extends AbstractCrudObject
@@ -44233,16 +38485,6 @@ var ReachFrequencyCurveLowerConfidenceRange = function (_AbstractCrudObject) {
   return ReachFrequencyCurveLowerConfidenceRange;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44253,7 +38495,6 @@ var ReachFrequencyCurveLowerConfidenceRange = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencyCurveUpperConfidenceRange
  * @extends AbstractCrudObject
@@ -44284,16 +38525,6 @@ var ReachFrequencyCurveUpperConfidenceRange = function (_AbstractCrudObject) {
   return ReachFrequencyCurveUpperConfidenceRange;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44304,7 +38535,6 @@ var ReachFrequencyCurveUpperConfidenceRange = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencyDayPart
  * @extends AbstractCrudObject
@@ -44332,16 +38562,6 @@ var ReachFrequencyDayPart = function (_AbstractCrudObject) {
   return ReachFrequencyDayPart;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44352,7 +38572,6 @@ var ReachFrequencyDayPart = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencyEstimatesCurve
  * @extends AbstractCrudObject
@@ -44385,16 +38604,6 @@ var ReachFrequencyEstimatesCurve = function (_AbstractCrudObject) {
   return ReachFrequencyEstimatesCurve;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44405,7 +38614,6 @@ var ReachFrequencyEstimatesCurve = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencyEstimatesPlacementBreakdown
  * @extends AbstractCrudObject
@@ -44427,12 +38635,9 @@ var ReachFrequencyEstimatesPlacementBreakdown = function (_AbstractCrudObject) {
         android: 'android',
         audience_network: 'audience_network',
         desktop: 'desktop',
-<<<<<<< HEAD
-=======
         facebook_search: 'facebook_search',
         fb_reels: 'fb_reels',
         fb_reels_overlay: 'fb_reels_overlay',
->>>>>>> brkfst-api-patch
         ig_android: 'ig_android',
         ig_ios: 'ig_ios',
         ig_other: 'ig_other',
@@ -44449,16 +38654,6 @@ var ReachFrequencyEstimatesPlacementBreakdown = function (_AbstractCrudObject) {
   return ReachFrequencyEstimatesPlacementBreakdown;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44469,7 +38664,6 @@ var ReachFrequencyEstimatesPlacementBreakdown = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ReachFrequencySpec
  * @extends AbstractCrudObject
@@ -44502,16 +38696,6 @@ var ReachFrequencySpec = function (_AbstractCrudObject) {
   return ReachFrequencySpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44522,7 +38706,6 @@ var ReachFrequencySpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * RevSharePolicy
  * @extends AbstractCrudObject
@@ -44549,16 +38732,6 @@ var RevSharePolicy = function (_AbstractCrudObject) {
   return RevSharePolicy;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44569,7 +38742,6 @@ var RevSharePolicy = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * RichMediaElement
  * @extends AbstractCrudObject
@@ -44597,16 +38769,6 @@ var RichMediaElement = function (_AbstractCrudObject) {
   return RichMediaElement;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44617,7 +38779,6 @@ var RichMediaElement = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * SavedMessageResponse
  * @extends AbstractCrudObject
@@ -44656,16 +38817,6 @@ var SavedMessageResponse = function (_AbstractCrudObject) {
   return SavedMessageResponse;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44676,7 +38827,6 @@ var SavedMessageResponse = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * SecuritySettings
  * @extends AbstractCrudObject
@@ -44700,18 +38850,6 @@ var SecuritySettings = function (_AbstractCrudObject) {
   return SecuritySettings;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-/**
- * ShopOrder
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44724,22 +38862,10 @@ var SecuritySettings = function (_AbstractCrudObject) {
 
 /**
  * ShadowIGMediaBuilder
->>>>>>> brkfst-api-patch
  * @extends AbstractCrudObject
  * @see {@link https://developers.facebook.com/docs/marketing-api/}
  */
 
-<<<<<<< HEAD
-var ShopOrder = function (_AbstractCrudObject) {
-  inherits(ShopOrder, _AbstractCrudObject);
-
-  function ShopOrder() {
-    classCallCheck(this, ShopOrder);
-    return possibleConstructorReturn(this, (ShopOrder.__proto__ || Object.getPrototypeOf(ShopOrder)).apply(this, arguments));
-  }
-
-  createClass(ShopOrder, [{
-=======
 var ShadowIGMediaBuilder = function (_AbstractCrudObject) {
   inherits(ShadowIGMediaBuilder, _AbstractCrudObject);
 
@@ -44749,7 +38875,6 @@ var ShadowIGMediaBuilder = function (_AbstractCrudObject) {
   }
 
   createClass(ShadowIGMediaBuilder, [{
->>>>>>> brkfst-api-patch
     key: 'get',
     value: function get(fields) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -44761,24 +38886,6 @@ var ShadowIGMediaBuilder = function (_AbstractCrudObject) {
     key: 'Fields',
     get: function get() {
       return Object.freeze({
-<<<<<<< HEAD
-        creation_time: 'creation_time',
-        id: 'id'
-      });
-    }
-  }]);
-  return ShopOrder;
-}(AbstractCrudObject);
-
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
         copyright_check_status: 'copyright_check_status',
         id: 'id',
         status: 'status',
@@ -44835,7 +38942,6 @@ var ShadowIGUserCatalogProductVariant = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * SplitTestWinner
  * @extends AbstractCrudObject
@@ -44863,16 +38969,6 @@ var SplitTestWinner = function (_AbstractCrudObject) {
   return SplitTestWinner;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -44883,7 +38979,6 @@ var SplitTestWinner = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * Targeting
  * @extends AbstractCrudObject
@@ -45014,16 +39109,6 @@ var Targeting = function (_AbstractCrudObject) {
   return Targeting;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45034,7 +39119,6 @@ var Targeting = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingDynamicRule
  * @extends AbstractCrudObject
@@ -45067,16 +39151,6 @@ var TargetingDynamicRule = function (_AbstractCrudObject) {
   return TargetingDynamicRule;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45087,7 +39161,6 @@ var TargetingDynamicRule = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocation
  * @extends AbstractCrudObject
@@ -45132,16 +39205,6 @@ var TargetingGeoLocation = function (_AbstractCrudObject) {
   return TargetingGeoLocation;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45152,7 +39215,6 @@ var TargetingGeoLocation = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationCity
  * @extends AbstractCrudObject
@@ -45184,16 +39246,6 @@ var TargetingGeoLocationCity = function (_AbstractCrudObject) {
   return TargetingGeoLocationCity;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45204,7 +39256,6 @@ var TargetingGeoLocationCity = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationCustomLocation
  * @extends AbstractCrudObject
@@ -45243,16 +39294,6 @@ var TargetingGeoLocationCustomLocation = function (_AbstractCrudObject) {
   return TargetingGeoLocationCustomLocation;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45263,7 +39304,6 @@ var TargetingGeoLocationCustomLocation = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationElectoralDistrict
  * @extends AbstractCrudObject
@@ -45283,10 +39323,7 @@ var TargetingGeoLocationElectoralDistrict = function (_AbstractCrudObject) {
     get: function get() {
       return Object.freeze({
         country: 'country',
-<<<<<<< HEAD
-=======
         deprecation_code: 'deprecation_code',
->>>>>>> brkfst-api-patch
         electoral_district: 'electoral_district',
         key: 'key',
         name: 'name'
@@ -45296,16 +39333,6 @@ var TargetingGeoLocationElectoralDistrict = function (_AbstractCrudObject) {
   return TargetingGeoLocationElectoralDistrict;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45316,7 +39343,6 @@ var TargetingGeoLocationElectoralDistrict = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationGeoEntities
  * @extends AbstractCrudObject
@@ -45346,16 +39372,6 @@ var TargetingGeoLocationGeoEntities = function (_AbstractCrudObject) {
   return TargetingGeoLocationGeoEntities;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45366,7 +39382,6 @@ var TargetingGeoLocationGeoEntities = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationLocationCluster
  * @extends AbstractCrudObject
@@ -45392,16 +39407,6 @@ var TargetingGeoLocationLocationCluster = function (_AbstractCrudObject) {
   return TargetingGeoLocationLocationCluster;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45412,7 +39417,6 @@ var TargetingGeoLocationLocationCluster = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationLocationExpansion
  * @extends AbstractCrudObject
@@ -45438,16 +39442,6 @@ var TargetingGeoLocationLocationExpansion = function (_AbstractCrudObject) {
   return TargetingGeoLocationLocationExpansion;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45458,7 +39452,6 @@ var TargetingGeoLocationLocationExpansion = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationMarket
  * @extends AbstractCrudObject
@@ -45487,16 +39480,6 @@ var TargetingGeoLocationMarket = function (_AbstractCrudObject) {
   return TargetingGeoLocationMarket;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45507,7 +39490,6 @@ var TargetingGeoLocationMarket = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationPlace
  * @extends AbstractCrudObject
@@ -45541,16 +39523,6 @@ var TargetingGeoLocationPlace = function (_AbstractCrudObject) {
   return TargetingGeoLocationPlace;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45561,7 +39533,6 @@ var TargetingGeoLocationPlace = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationPoliticalDistrict
  * @extends AbstractCrudObject
@@ -45590,16 +39561,6 @@ var TargetingGeoLocationPoliticalDistrict = function (_AbstractCrudObject) {
   return TargetingGeoLocationPoliticalDistrict;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45610,7 +39571,6 @@ var TargetingGeoLocationPoliticalDistrict = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationRegion
  * @extends AbstractCrudObject
@@ -45638,16 +39598,6 @@ var TargetingGeoLocationRegion = function (_AbstractCrudObject) {
   return TargetingGeoLocationRegion;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45658,7 +39608,6 @@ var TargetingGeoLocationRegion = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingGeoLocationZip
  * @extends AbstractCrudObject
@@ -45688,16 +39637,6 @@ var TargetingGeoLocationZip = function (_AbstractCrudObject) {
   return TargetingGeoLocationZip;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45708,7 +39647,6 @@ var TargetingGeoLocationZip = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingProductAudienceSpec
  * @extends AbstractCrudObject
@@ -45736,16 +39674,6 @@ var TargetingProductAudienceSpec = function (_AbstractCrudObject) {
   return TargetingProductAudienceSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45756,7 +39684,6 @@ var TargetingProductAudienceSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingProductAudienceSubSpec
  * @extends AbstractCrudObject
@@ -45783,16 +39710,6 @@ var TargetingProductAudienceSubSpec = function (_AbstractCrudObject) {
   return TargetingProductAudienceSubSpec;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45803,7 +39720,6 @@ var TargetingProductAudienceSubSpec = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingProspectingAudience
  * @extends AbstractCrudObject
@@ -45829,16 +39745,6 @@ var TargetingProspectingAudience = function (_AbstractCrudObject) {
   return TargetingProspectingAudience;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45849,7 +39755,6 @@ var TargetingProspectingAudience = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TargetingRelaxation
  * @extends AbstractCrudObject
@@ -45876,16 +39781,6 @@ var TargetingRelaxation = function (_AbstractCrudObject) {
   return TargetingRelaxation;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -45896,7 +39791,6 @@ var TargetingRelaxation = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * TrackingAndConversionWithDefaults
  * @extends AbstractCrudObject
@@ -45925,16 +39819,6 @@ var TrackingAndConversionWithDefaults = function (_AbstractCrudObject) {
   return TrackingAndConversionWithDefaults;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46011,7 +39895,6 @@ var URL = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UserCoverPhoto
  * @extends AbstractCrudObject
@@ -46039,16 +39922,6 @@ var UserCoverPhoto = function (_AbstractCrudObject) {
   return UserCoverPhoto;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46059,7 +39932,6 @@ var UserCoverPhoto = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UserDevice
  * @extends AbstractCrudObject
@@ -46086,16 +39958,6 @@ var UserDevice = function (_AbstractCrudObject) {
   return UserDevice;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46106,7 +39968,6 @@ var UserDevice = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UserLeadGenDisclaimerResponse
  * @extends AbstractCrudObject
@@ -46133,16 +39994,6 @@ var UserLeadGenDisclaimerResponse = function (_AbstractCrudObject) {
   return UserLeadGenDisclaimerResponse;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46153,7 +40004,6 @@ var UserLeadGenDisclaimerResponse = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UserLeadGenFieldData
  * @extends AbstractCrudObject
@@ -46180,16 +40030,6 @@ var UserLeadGenFieldData = function (_AbstractCrudObject) {
   return UserLeadGenFieldData;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46200,7 +40040,6 @@ var UserLeadGenFieldData = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * UserPaymentMobilePricepoints
  * @extends AbstractCrudObject
@@ -46229,16 +40068,6 @@ var UserPaymentMobilePricepoints = function (_AbstractCrudObject) {
   return UserPaymentMobilePricepoints;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46249,7 +40078,6 @@ var UserPaymentMobilePricepoints = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * ValueBasedEligibleSource
  * @extends AbstractCrudObject
@@ -46277,16 +40105,6 @@ var ValueBasedEligibleSource = function (_AbstractCrudObject) {
   return ValueBasedEligibleSource;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46297,7 +40115,6 @@ var ValueBasedEligibleSource = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoCopyrightConditionGroup
  * @extends AbstractCrudObject
@@ -46325,16 +40142,6 @@ var VideoCopyrightConditionGroup = function (_AbstractCrudObject) {
   return VideoCopyrightConditionGroup;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46345,7 +40152,6 @@ var VideoCopyrightConditionGroup = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoCopyrightGeoGate
  * @extends AbstractCrudObject
@@ -46372,16 +40178,6 @@ var VideoCopyrightGeoGate = function (_AbstractCrudObject) {
   return VideoCopyrightGeoGate;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46392,7 +40188,6 @@ var VideoCopyrightGeoGate = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoCopyrightSegment
  * @extends AbstractCrudObject
@@ -46420,16 +40215,6 @@ var VideoCopyrightSegment = function (_AbstractCrudObject) {
   return VideoCopyrightSegment;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46440,7 +40225,6 @@ var VideoCopyrightSegment = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VideoUploadLimits
  * @extends AbstractCrudObject
@@ -46467,16 +40251,6 @@ var VideoUploadLimits = function (_AbstractCrudObject) {
   return VideoUploadLimits;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46487,7 +40261,6 @@ var VideoUploadLimits = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * VoipInfo
  * @extends AbstractCrudObject
@@ -46519,16 +40292,6 @@ var VoipInfo = function (_AbstractCrudObject) {
   return VoipInfo;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46539,7 +40302,6 @@ var VoipInfo = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * WebAppLink
  * @extends AbstractCrudObject
@@ -46566,16 +40328,6 @@ var WebAppLink = function (_AbstractCrudObject) {
   return WebAppLink;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46661,7 +40413,6 @@ var WhatsAppBusinessHealthStatusForMessageSend = function (_AbstractCrudObject) 
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * WhatsAppBusinessProfile
  * @extends AbstractCrudObject
@@ -46708,16 +40459,6 @@ var WhatsAppBusinessProfile = function (_AbstractCrudObject) {
   return WhatsAppBusinessProfile;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46728,7 +40469,6 @@ var WhatsAppBusinessProfile = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * WindowsAppLink
  * @extends AbstractCrudObject
@@ -46757,16 +40497,6 @@ var WindowsAppLink = function (_AbstractCrudObject) {
   return WindowsAppLink;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46777,7 +40507,6 @@ var WindowsAppLink = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * WindowsPhoneAppLink
  * @extends AbstractCrudObject
@@ -46805,16 +40534,6 @@ var WindowsPhoneAppLink = function (_AbstractCrudObject) {
   return WindowsPhoneAppLink;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46825,7 +40544,6 @@ var WindowsPhoneAppLink = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * WoodhengePurchasedPAYGReceipt
  * @extends AbstractCrudObject
@@ -46862,16 +40580,6 @@ var WoodhengePurchasedPAYGReceipt = function (_AbstractCrudObject) {
   return WoodhengePurchasedPAYGReceipt;
 }(AbstractCrudObject);
 
-<<<<<<< HEAD
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-=======
 /*
 * Copyright (c) Meta Platforms, Inc. and affiliates.
 * All rights reserved.
@@ -46882,7 +40590,6 @@ var WoodhengePurchasedPAYGReceipt = function (_AbstractCrudObject) {
 * 
 */
 
->>>>>>> brkfst-api-patch
 /**
  * WorkUserFrontline
  * @extends AbstractCrudObject
