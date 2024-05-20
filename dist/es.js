@@ -14642,10 +14642,12 @@ var VideoUploadSession = function () {
       this._filePath = video.filepath;
       this._slideshowSpec = null;
       this._name = video.name;
+      this._description = video.description;
     } else if (video.slideshow_spec) {
       this._slideshowSpec = video.slideshow_spec;
       this._filePath = null;
       this._name = null;
+      this._description = null;
     }
 
     this._accountId = video.getParentId();
@@ -14713,9 +14715,6 @@ var VideoUploadSession = function () {
       if (this._filePath) {
         context.filePath = this._filePath;
       }
-      if (this._name) {
-        context.name = this._name;
-      }
       if (this._slideshowSpec) {
         context.slideshowSpec = this._slideshowSpec;
       }
@@ -14730,6 +14729,10 @@ var VideoUploadSession = function () {
 
       context.sessionId = this._sessionId;
       context.accountId = this._accountId;
+
+      if (this._description) {
+        context.description = this._description;
+      }
 
       if (this._name) {
         context.fileName = this._name;
@@ -14993,6 +14996,14 @@ var VideoUploadRequestContext = function () {
       this._name = name;
     }
   }, {
+    key: "description",
+    get: function get() {
+      return this._description;
+    },
+    set: function set(description) {
+      this._description = description;
+    }
+  }, {
     key: "sessionId",
     get: function get() {
       return this._sessionId;
@@ -15227,11 +15238,17 @@ var AdVideo = function (_AbstractCrudObject) {
     get: function get() {
       return this.name;
     }
+  }, {
+    key: "description",
+    get: function get() {
+      return this.description;
+    }
   }], [{
     key: "Fields",
     get: function get() {
       return Object.freeze({
         name: "name",
+        description: "description",
         filepath: "filepath",
         id: "id",
         slideshow_spec: "slideshow_spec"

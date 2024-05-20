@@ -29,6 +29,7 @@ export default class AdVideo extends AbstractCrudObject {
   static get Fields(): Object {
     return Object.freeze({
       name: "name",
+      description: "description",
       filepath: "filepath",
       id: "id",
       slideshow_spec: "slideshow_spec",
@@ -45,6 +46,10 @@ export default class AdVideo extends AbstractCrudObject {
 
   get name(): string {
     return this.name;
+  }
+
+  get description(): string {
+    return this.description;
   }
 
   /**
