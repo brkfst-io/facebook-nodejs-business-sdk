@@ -2279,11 +2279,15 @@ var VideoUploadFinishRequestManager = function (_VideoUploadRequestMa3) {
       if (context.name) {
         title = context.name;
       }
-      return {
+      var params = {
         upload_phase: "finish",
         upload_session_id: context.sessionId,
         title: title
       };
+      if (context.description) {
+        params.description = context.description;
+      }
+      return params;
     }
   }]);
   return VideoUploadFinishRequestManager;

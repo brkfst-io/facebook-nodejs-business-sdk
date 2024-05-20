@@ -298,11 +298,15 @@ class VideoUploadFinishRequestManager extends VideoUploadRequestManager {
     if (context.name) {
       title = context.name;
     }
-    return {
+    const params = {
       upload_phase: "finish",
       upload_session_id: context.sessionId,
       title: title,
     };
+    if (context.description) {
+      params.description = context.description;
+    }
+    return params;
   }
 }
 
