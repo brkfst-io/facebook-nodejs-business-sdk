@@ -539,12 +539,12 @@ var FacebookAdsApi = function () {
   createClass(FacebookAdsApi, null, [{
     key: "VERSION",
     get: function get() {
-      return "v19.0";
+      return "v20.0";
     }
   }, {
     key: "SDK_VERSION",
     get: function get() {
-      return "19.0.0";
+      return "20.0.0";
     }
   }, {
     key: "GRAPH",
